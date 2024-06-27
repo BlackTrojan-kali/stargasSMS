@@ -25,7 +25,13 @@
                 <i class="fa-solid fa-user"></i>
                 {{Auth::user()->email}}
             </p>
-            <h2 class="text-xl">Stargas Stock Management System</h2>
+            <h2 class="text-xl">Stargas Supply Chain Management System</h2>
+            <h2 class="text-xl">
+                Region: {{Auth::user()->region}} 
+            </h2>
+            <h2 class="text-xl">
+                Role: {{Auth::user()->role}} 
+            </h2>
             </div>
             <div class=" mt-10 cursor-pointer text-center">
                 <form action="{{route("logout")}}" method="post">
@@ -41,9 +47,17 @@
         <nav class="mt-2 p-4 w-full text-white bg-blue-400 rounded-md">
             <a href="{{route('dashboard')}}"><i class="fa-solid fa-home"></i> Accueil</a>
             <a href="{{route('manageUsers')}}" >Gerer les utilisateur</a>
-            <a href="" >Gerer les Produits</a>
+            <a href="{{route('manageArticles')}}" >Gerer les Produits</a>
             <a href="" >Etats</a>
         </nav>
+        @elseif (Auth::user()->role=="magazinier")
+        <nav class="mt-2 p-4 w-full text-white bg-blue-400 rounded-md">
+            <a href=""><i class="fa-solid fa-home"></i> Accueil</a>
+            <a href="" >Mouvements</a>
+            <a href="" >Historique</a>
+            <a href="" >Etats</a>
+        </nav>
+        
         @endif
        </header>
     
@@ -61,6 +75,12 @@
     <script>
     $(document).ready(function(){
         toastr.success("{{session('success')}}")
+    })
+</script>
+    @elseif ($errors->has('message'))
+    <script>
+    $(document).ready(function(){
+        toastr.error("{{$errors->first('message')}}")
     })
 </script>
     @endif

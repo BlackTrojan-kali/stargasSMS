@@ -24,7 +24,7 @@
                     <td>{{$user->region}}</td>
                     <td>
                         <a href="{{route('editUser',$user->id)}}" class="px-4 p-1 rounded-md bg-blue-500 text-white"><i class="fa-solid fa-edit"></i></a>
-                        <a href="" class="px-4 p-1 rounded-md bg-red-500 text-white"><i class="fa-solid fa-trash"></i></a>
+                        <a  id ={{$user->id}} class="delete px-4 p-1 rounded-md bg-red-500 text-white"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
                     
@@ -34,4 +34,40 @@
         </thead>
     </table>
 </div>
+
+<script>
+$(document).ready(function(){
+        $(".delete").on("click",function(e){
+            e.preventDefault()
+            userId = $(this).attr('id');
+            Swal.fire({
+  title: "Etes vous sures ? cette operation est irreversible",
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: "Supprimer",
+  denyButtonText: `Annuler`
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $.ajax({
+        type:"DELETE",
+        url:"deleteUser/"+userId,
+        dataType:"json",
+        data:{
+            "id":userId,
+            "_token":"{{csrf_token()}}"
+        },
+        success:function(res){
+            Swal.fire("element supprime avec success", "", "success");
+           $('table').load(" table")
+        }
+    })
+  } else if (result.isDenied) {
+    Swal.fire("Changement non enregistre", "", "info");
+  }
+});
+          
+        })
+    })
+</script>
 @endsection

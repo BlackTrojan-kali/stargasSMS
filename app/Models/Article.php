@@ -9,6 +9,6 @@ class Article extends Model
 {
     use HasFactory;
     public function hasStock(){
-        return $this->hasOne(Stock::class);
+        return $this->hasMany(Stock::class,"article_id","id");
     }
 }

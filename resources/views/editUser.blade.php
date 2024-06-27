@@ -3,7 +3,7 @@
 
 <center>
  <h1 class="text-xl font-bold">Modifier L'utilisateur {{$user->name}}</h1>
-    <form action="{{route('updateUser',$user->id)}}" method="post" class="w-6/12 border-2 mt-2 p-5 border-blue-400 rounded-md">
+    <form action="{{route('updateUser',$user->id)}}" method="post" class="w-4/12 border-2 mt-2 p-5 border-blue-400 rounded-md">
         @csrf
         <div class="champs">
             <label for="username">Nom:</label>

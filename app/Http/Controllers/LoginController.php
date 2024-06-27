@@ -27,7 +27,9 @@ class LoginController extends Controller
                 case "super":
                     return redirect()->route('dashboard')->withSuccess("You have successfully  logged in");
                     break;
-                    
+                case "magazinier":
+                    return redirect()->route("dashboard-manager")->withSucces("You have successfully  logged in");
+                    break;       
             }
         }
         return back()->withErrors([

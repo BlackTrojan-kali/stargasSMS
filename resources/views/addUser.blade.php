@@ -2,7 +2,7 @@
 @section('content')
 <center>
     <h1 class="text-xl font-bold">Ajouter un nouvelle utilisateur</h1>
-    <form action="{{route('addUser')}}" method="post" class="w-6/12 border-2 mt-2 p-5 border-blue-400 rounded-md">
+    <form action="{{route('addUser')}}" method="post" class="md:w-4/12 border-2 mt-2 p-5 border-blue-400 rounded-md">
         @csrf
         <div class="champs">
             <label for="username">Nom:</label>

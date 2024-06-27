@@ -35,4 +35,9 @@ class SuperAdminPageController extends Controller
         $user->save();
         return redirect()->route('manageUsers')->withSuccess("utilisateur modifier avec success");
     }
+    public function deleteUser(Request $request, $id){
+        $user=  User::findOrFail($id);
+        $user->delete();
+        return  response()->json(["message"=>"element supprime avec success"]);
+    }
 }

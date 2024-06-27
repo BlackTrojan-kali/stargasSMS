@@ -26,7 +26,7 @@
         </div>
         <br><br>
         <div class="box p-4 rounded-md font-bold w-6/12 shaodw-md shadow-white/60 text-blue-400 bg-white">
-            <h2>Bienvenue sur Stargas Stock Management System</h2>
+            <h2>Bienvenue sur Stargas Supply Chain Management System</h2>
         </div>
         <br>
         <div class="bg-white rounded-md p-4 w-6/12">
