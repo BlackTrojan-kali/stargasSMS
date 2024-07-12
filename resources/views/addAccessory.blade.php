@@ -12,7 +12,7 @@
                 <p class="text-red-500">{{$errors->first('title')}}</p>
             @endif
         </div>
-        <div class="champs">
+        <div class="champs hidden">
             <label for="title">Poids:</label>
             <select name="poids" class="w-full p-3 font-bold" id="">
                 <option value="12.5" selected>12.5 Kg</option>
@@ -23,10 +23,10 @@
                 <p class="text-red-500">{{$errors->first('poids')}}</p>
             @endif
         </div>
-        <div class="champ text-start my-4 font-bold">
+        <div class="champ text-start my-4 font-bold hidden">
         <label for="title">Etat:</label>
-         <input type="radio" name="state" value="1" class="w-10" required>Plein
-        <input type="radio" name="state"  value="0" class="w-10" required>Vide
+          <input type="radio" name="state" value="1" class="w-10" required disabled>Plein
+        <input type="radio" name="state"  value="0" class="w-10" required disabled>Vide
         <br>
 
         @if ($errors->has("state"))
@@ -36,7 +36,6 @@
         <div class="text-start mt-2">
             <label for="" class="text-start">type:</label>
             <select name="type" id="" class="w-full p-2 font-bold" required>
-                <option value="bouteille-gaz">Bouteille de gaz</option>
                 <option value="accessoire">Accessoire</option>
             </select>
 

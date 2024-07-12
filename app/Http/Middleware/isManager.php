@@ -16,7 +16,7 @@ class isManager
      */
     public function handle(Request $request, Closure $next): Response
     {   
-        if(Auth::user()->role != "magazinier"){
+        if(Auth::user()->role != "magasin"){
             return redirect()->route('login')->withErrors(["warning"=>"you are not authorized to access this ressource"]);
         }
         return $next($request);

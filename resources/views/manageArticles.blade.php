@@ -2,7 +2,7 @@
 @section('content')
 <div class="p-8">
     <div class="w-full flex justify-end mb-4">
-        <button class="bg-red-500 text-white font-bold p-4 rounded-md "><a href="{{route('addArticle')}}">Ajouter  un Article</a></button>
+        <button class="bg-red-500 text-white font-bold p-4 rounded-md "><a href="{{route("chooseArticleType")}}">Ajouter  un Article</a></button>
     </div>
     <table class="w-full bg-orange-200 border-separate p-4 rounded-md text-center">
         <thead class="font-bold">
@@ -19,7 +19,7 @@
                <tr>
                 <td>{{$article->title}}</td>
                 <td>{{$article->type}}</td>
-                <td>{{$article->weight}} Kg</td>
+                <td>{{$article->weight ==0 ? "-":$article->weight." kg"}}</td>
                 <td>{{$article->state ? "plein":"vide"}}</td>
                 <td>     <a  id ={{$article->id}} class="delete px-4 p-1 rounded-md bg-red-500 text-white cursor-pointer"><i class="fa-solid fa-trash"></i></a>
                 </td>

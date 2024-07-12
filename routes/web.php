@@ -15,13 +15,17 @@ Route::group(["middleware"=>"auth"],function(){
             Route::get("/editUser/{id}",[Controllers\SuperAdminPageController::class,"editUser"])->name("editUser");
             Route::post("/updateUser/{id}",[Controllers\SuperAdminPageController::class,"updateUser"])->name("updateUser");
             Route::delete("/deleteUser/{id}",[Controllers\SuperAdminPageController::class,"deleteUser"])->name("deleteUser");
+            Route::get("/chooseArticleType",[Controllers\ArticleController::class,"choose"])->name("chooseArticleType");
             Route::get("/manageArtilces",[Controllers\ArticleController::class,"show"])->name("manageArticles");
             Route::get("/addArticle",[Controllers\ArticleController::class,"insert"])->name("addArticle");
+            Route::get("/addAccessory",[Controllers\ArticleController::class,"insertAcc"])->name("addAccessory");
             Route::post("/insertArticle",[Controllers\ArticleController::class,"store"])->name("insertArticle");
             Route::delete("/deleteArticle/{id}",[Controllers\ArticleController::class,"delete"])->name("deleteArticle");
       });  
       Route::middleware(isManager::class)->group(function () {
           Route::get("/manager/dashboar",[Controllers\MagazinierController::class,"show"])->name("dashboard-manager");
+          Route::get("manager/moveActions/{action}/{type}",[Controllers\MagazinierController::class,"registerAction"])->name("registerMoveForm");
+          Route::post("manager/moveActioins/save/{action}",[Controllers\MagazinierController::class,"saveBottleMove"])->name("saveBottleMove");
       });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });

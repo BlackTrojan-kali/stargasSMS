@@ -17,6 +17,12 @@ class ArticleController extends Controller
     public function insert(Request $request){
         return view("addArticle");
     }
+    public function insertAcc(Request $request){
+        return view("addAccessory");
+    }
+    public function choose(Request $request){
+        return view("choseProductType");
+    }
     public function delete(Request $request,$id){
         $article = Article::findOrFail($id);
         $article->delete();
@@ -33,7 +39,7 @@ class ArticleController extends Controller
         $weight = floatval($request->poids);
         $state = intval($request->state);
         if($type == "bouteille-gaz"){
-            $acticles = Article::where("title","=",$request->title)->where("weight","=",$weight)->where("state","=",$state)->get();
+            $acticles = Article::where("weight","=",$weight)->where("state","=",$state)->get();
             if(count($acticles) >=1){
                 return back()->withErrors(["message"=>"article existe deja"]);        
             }
@@ -50,7 +56,7 @@ class ArticleController extends Controller
         $stock->qty = 0;
         $stock->type = $article->type;
         $stock->region = "centre";
-        $stock->category = "magazin";
+        $stock->category = "magasin";
         $article->hasStock()->save($stock);
         
         $stock2 = new Stock();
@@ -120,6 +126,66 @@ class ArticleController extends Controller
         $article->state = $state;
         $article->type = $type;
         $article->save();
+
+
+        $stock = new Stock();
+        $stock->qty = 0;
+        $stock->type = $article->type;
+        $stock->region = "centre";
+        $stock->category = "magasin";
+        $article->hasStock()->save($stock);     
+
+        $stock2 = new Stock();
+        $stock2->qty = 0;
+        $stock2->type = $article->type;
+        $stock2->region = "centre";
+        $stock2->category = "production";
+        $article->hasStock()->save($stock2);
+     
+        $stock8 = new Stock();
+        $stock8->qty = 0;
+        $stock8->type = $article->type;
+        $stock8->region = "centre";
+        $stock8->category = "commercial";
+        $article->hasStock()->save($stock8);
+     
+        $stock3 = new Stock();
+        $stock3->qty = 0;
+        $stock3->type = $article->type;
+        $stock3->region="ouest";
+        $stock3->category ="commercial";
+        $article->hasStock()->save($stock3);
+
+        $stock4 = new Stock();
+        $stock4->qty = 0;
+        $stock4->type = $article->type;
+        $stock4->region="littoral";
+        $stock4->category ="commercial";
+        $article->hasStock()->save($stock4);
+
+        $stock5 = new Stock();
+        $stock5->qty = 0;
+        $stock5->type = $article->type;
+        $stock5->region="sud";
+        $stock5->category ="commercial";
+        $article->hasStock()->save($stock5);
+
+        $stock6 = new Stock();
+        $stock6->qty = 0;
+        $stock6->type = $article->type;
+        $stock6->region="est";
+        $stock6->category ="commercial";
+        $article->hasStock()->save($stock6);
+
+        $stock7 = new Stock();
+        $stock7->qty = 0;
+        $stock7->type = $article->type;
+        $stock7->region="nord";
+        $stock7->category ="commercial";
+        $article->hasStock()->save($stock7);
+        
+    
+
         return back()->withSuccess("article insere avec succes");
 
         }

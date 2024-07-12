@@ -16,7 +16,7 @@ class isProducer
      */
     public function handle(Request $request, Closure $next): Response
     {   
-        if(Auth::user()->role != "producteur"){
+        if(Auth::user()->role != "production"){
             return redirect()->route('login')->withErrors(["warning"=>"you are not authorized to access this ressource"]);
         }
         return $next($request);

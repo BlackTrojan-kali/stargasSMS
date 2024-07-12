@@ -48,15 +48,15 @@
         <div class="w-full text-start">
             <label for="">Role:</label>
             <select name="role" id="" class="w-full text-center p-2 mt-2 mb-2" >
-                <option value="magazinier">Magazinier</option>
-                <option value="producteur">Producteur</option>
+                <option value="magasin">Magazinier</option>
+                <option value="production">Producteur</option>
                 <option value="commercial">Commercial</option>
                 
             </select>
         </div>
         <div class="w-full flex justify-between mt-4">
-            <button type="reset" class="p-2 bg-red-500 text-white">Annuler</button>
-            <button type="submit" class="p-2 bg-green-500 text-white">Enregistrer</button>
+            <button type="reset" class="p-2 bg-black text-white">Annuler</button>
+            <button type="submit" class="p-2 bg-blue-400 text-white">Enregistrer</button>
         </div>
     </form>
 </center>

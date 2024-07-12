@@ -16,6 +16,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
      
     @if(session('success'))
     <script>
@@ -56,22 +57,28 @@
             </form>
             </div>
         </div>
-        @if(Auth::user()->role == "super")
-        <nav class="mt-2 p-2 first-letter: w-full text-white bg-blue-400 rounded-md">
-            <a href="{{route('dashboard')}}"><i class="fa-solid fa-home"></i> ACCEUIL</a>
-            <a href="{{route('manageUsers')}}" >GERER LES UTILISATEURS</a>
-            <a href="{{route('manageArticles')}}" >GERER LES PRODUITS</a>
-            <a href="" >ETATS</a>
-        </nav>
-        @elseif (Auth::user()->role=="magazinier")
-        <nav class="mt-2 p-2 w-full text-white bg-blue-400 rounded-md">
+      
+        <nav class="mt-2 p-2 w-full text-white flex gap-2 bg-blue-400 rounded-md">
             <a href="{{route("dashboard-manager")}}"><i class="fa-solid fa-home"></i> ACCEUIL</a>
-            <a href="{{route("moveActions")}}" >MOUVEMENTS</a>
+            <div class="font-bold cursor-pointer dropdown relative" >MOUVEMENTS <i class="fa-solid fa-angle-down"></i>
+             <div class="dropdown-items">
+                  <ul class="items">
+                    <div class="dropdown-2">
+                        elem 1
+                        <div class="dropdown-items-2">
+                            <ul
+                        </ul>
+                        </div>
+                    </div>
+                  </ul>
+             </div>
+              
+            </div>
+            
             <a href="" >HISTORIQUE</a>
             <a href="" >ETATS</a>
         </nav>
         
-        @endif
        </header>
     
     
@@ -84,6 +91,5 @@
         </div>
         <p>&copy; 2024</p>
     </footer>
-   
 </body>
 </html>
