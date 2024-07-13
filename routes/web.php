@@ -23,9 +23,11 @@ Route::group(["middleware"=>"auth"],function(){
             Route::delete("/deleteArticle/{id}",[Controllers\ArticleController::class,"delete"])->name("deleteArticle");
       });  
       Route::middleware(isManager::class)->group(function () {
-          Route::get("/manager/dashboar",[Controllers\MagazinierController::class,"show"])->name("dashboard-manager");
-          Route::get("manager/moveActions/{action}/{type}",[Controllers\MagazinierController::class,"registerAction"])->name("registerMoveForm");
-          Route::post("manager/moveActioins/save/{action}",[Controllers\MagazinierController::class,"saveBottleMove"])->name("saveBottleMove");
+          Route::get("/manager/dashboard",[Controllers\MagazinierController::class,"show"])->name("dashboard-manager");
+          Route::post("manager/moveActioins/save/{action}/{state}",[Controllers\MagazinierController::class,"saveBottleMove"])->name("saveBottleMove");
+          Route::post("manager/moveActioins/save/{action}",[Controllers\MagazinierController::class,"saveAccessoryMoves"])->name("saveAccessoryMove");
+          //historique des mouvements
+          Route::get("/manager/history",[Controllers\MagazinierController::class,"showHistory"])->name("manager-history");
       });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("article_id");
             $table->unsignedBigInteger("stock_id");
-            $table->string("label");
+            $table->string("origin");
+            $table->text("label");
             $table->double("entree");
             $table->double("sortie");
             $table->integer("qty");

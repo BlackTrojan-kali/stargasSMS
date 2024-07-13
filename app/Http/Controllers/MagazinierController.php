@@ -18,7 +18,8 @@ class MagazinierController extends Controller
             $categorie = Auth::user()->role;
         }
         $stocks = Stock::where("region","=",Auth::user()->region)->where("category","=",$categorie)->with("article")->get();
-        return view('manager.dashboard',["stocks"=>$stocks]);
+        $accessories = Article::where("type","=","accessoire")->get("title");
+        return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories]);
     }
     public function showmove(Request $request){
         return  view("manager.moveActions");
@@ -40,19 +41,23 @@ public function registerAction(Request $request, $action, $type){
         return view("manager.registerAccessory",["action"=>$action]);
     }
 }
-public function saveBottleMove(Request $request, $action){
+public function showHistory(Request $request){
+    $accessories = Article::where("type","=","accessoire")->get("title");
+    return view("manager.history",["accessories"=>$accessories]);
+}
+public function saveBottleMove(Request $request, $action, $state){
     $request->validate([
         "origin"=>"string | required",
         "weight"=>"string |required",
+        "label"=>"string | max:250 |required",
         "qty"=>"numeric | required | min:0 |max:1000",
-        "state"=>"string | required"
     ]);
-    $state = intval($request->state);
+    $state = intval($state);
     $weight = floatval($request->weight);
     $region = Auth::user()->region;
     $article = Article::where("type","=","bouteille-gaz")->where("weight","=",$weight)->where("state","=",$state)->first();
    if($article){
-    $stock = Stock::where("article_id","=",$article->id)->where("category","=","magazin")->where("region","=",$region)->first();
+    $stock = Stock::where("article_id","=",$article->id)->where("category","=",Auth::user()->role)->where("region","=",$region)->first();
 
    
  if($stock){
@@ -71,7 +76,8 @@ public function saveBottleMove(Request $request, $action){
         $move->article_id = $article->id;
         $move->qty = $request->qty;
         $move->stock_id = $stock->id;
-        $move->label = $request->origin;
+        $move->origin = $request->origin;
+        $move->label = $request->label;
         if($action =="entry"){
             $move->entree = 1;
             $move->sortie = 0;
@@ -89,6 +95,56 @@ public function saveBottleMove(Request $request, $action){
         return back()->withErrors(["message"=>"stock inexistant"]);
     }    
 }else{
+    return back()->withErrors(["message"=>"stock inexistant"]);
+}
+}
+//SAVE ACCESSORIES
+public function saveAccessoryMoves(Request $request, $action){
+    $request->validate([
+        "title"=>"string |required",
+        "qty"=>"numeric | required",
+        "label"=>"string | max:250 |required"
+    ]);
+    $article = Article::where("title","=",$request->title)->where("type","=","accessoire")->first();
+    if($article){
+
+    $stock = Stock::where("article_id","=",$article->id)->where("category","=",Auth::user()->role)->where("region","=",Auth::user()->region)->first();
+    if($stock){
+        
+    if($action == "entry"){
+        $stock->qty = $stock->qty +$request->qty;
+          $stock->save();
+      }else{
+          $stock->qty = $stock->qty - $request->qty;
+          if($stock->qty <= 0){
+              $stock->qty = 0;
+          }
+          $stock->save();
+          
+      }
+
+          
+        $move = new Movement();
+        $move->article_id = $article->id;
+        $move->qty = $request->qty;
+        $move->stock_id = $stock->id;
+        $move->origin = "null";
+        $move->label = $request->label;
+        if($action =="entry"){
+            $move->entree = 1;
+            $move->sortie = 0;
+        }else{
+
+            $move->entree = 0;
+            $move->sortie = 1;
+        }
+        $move->save();
+
+    
+        return back()->withSuccess("mouvement enregistre avec succes");
+    }
+}  
+else{
     return back()->withErrors(["message"=>"stock inexistant"]);
 }
 }

@@ -1,13 +1,18 @@
 @extends("Layouts.appLayout")
 @section("content")
-
+<?php
+$name = "stargaz"
+?>
 <center class="w-full p-4">
     <h1 class="mb-3 text-xl font-bold">Enregistrer un nouveau produit</h1>
     <form action="{{route("insertArticle")}}" method="POST" class="p-4 border border-blue-400 rounded-lg w-5/12">
         @csrf
+      
         <div class="champs">
             <label for="title">Nom:</label>
-            <input type="text" name="title" required>
+            <select name="title" class="w-full p-3 font-bold" id="">
+                <option value="stargaz" selected>Stargaz</option>
+            </select>
             @if ($errors->has("title"))
                 <p class="text-red-500">{{$errors->first('title')}}</p>
             @endif
@@ -37,7 +42,6 @@
             <label for="" class="text-start">type:</label>
             <select name="type" id="" class="w-full p-2 font-bold" required>
                 <option value="bouteille-gaz">Bouteille de gaz</option>
-                <option value="accessoire">Accessoire</option>
             </select>
 
             @if ($errors->has("type"))
