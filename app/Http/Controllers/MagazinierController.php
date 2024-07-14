@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Movement;
 use App\Models\Stock;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,7 +44,30 @@ public function registerAction(Request $request, $action, $type){
 }
 public function showHistory(Request $request){
     $accessories = Article::where("type","=","accessoire")->get("title");
-    return view("manager.history",["accessories"=>$accessories]);
+    $allMoves = Movement::with("fromStock","fromArticle")->orderBy("created_at","DESC")->get();
+    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves]);
+}
+public function showfilteredHistory(Request $request){
+    $request->validate([
+        "fromdate"=>"date|required",
+        "todate"=>"date|required",
+        "type"=>"string|required"
+    ]);
+    $fromdate = /*Carbon::createFromFormat("Y-m-d",*/$request->fromdate;//)->toString();
+    $todate = /*Carbon::createFromFormat("Y-m-d",$request->*/$request->todate;//)->toString();
+    $accessories = Article::where("type","=","accessoire")->get("title");
+    if($request->type == "boutielles-pleines" ){
+        $type = "bouteille-gaz";
+        $state= 1;
+    }elseif( $request->type == "bouteilles-vides"){
+        $type = "bouteille-gaz";
+        $state = 0;
+    }else{
+        $type = "accessoire";
+        $state = 0;
+    }
+    $allMoves = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("articles.state",$state)->select("movements.*")->get();
+    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves]);
 }
 public function saveBottleMove(Request $request, $action, $state){
     $request->validate([

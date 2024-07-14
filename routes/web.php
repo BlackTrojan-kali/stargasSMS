@@ -28,6 +28,7 @@ Route::group(["middleware"=>"auth"],function(){
           Route::post("manager/moveActioins/save/{action}",[Controllers\MagazinierController::class,"saveAccessoryMoves"])->name("saveAccessoryMove");
           //historique des mouvements
           Route::get("/manager/history",[Controllers\MagazinierController::class,"showHistory"])->name("manager-history");
+          Route::post("/manager/filteredHistory",[Controllers\MagazinierController::class,"showfilteredHistory"])->name("manager-filtered-history");
       });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });
