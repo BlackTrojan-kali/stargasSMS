@@ -44,8 +44,9 @@ public function registerAction(Request $request, $action, $type){
 }
 public function showHistory(Request $request){
     $accessories = Article::where("type","=","accessoire")->get("title");
-    $allMoves = Movement::with("fromStock","fromArticle")->orderBy("created_at","DESC")->get();
-    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves]);
+    $allMoves = Movement::with("fromStock","fromArticle")->where("entree",1)->orderBy("created_at","DESC")->get();
+    $allMovesOut = Movement::with("fromStock","fromArticle")->where("sortie",1)->orderBy("created_at","DESC")->get();
+    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
 }
 public function showfilteredHistory(Request $request){
     $request->validate([
@@ -66,8 +67,11 @@ public function showfilteredHistory(Request $request){
         $type = "accessoire";
         $state = 0;
     }
-    $allMoves = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("articles.state",$state)->select("movements.*")->get();
-    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves]);
+    $allMoves = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("movements.entree",1)->where("articles.type",$type)->where("articles.state",$state)->select("movements.*")->get();
+   
+    $allMovesOut = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("movements.entree",0)->where("articles.state",$state)->select("movements.*")->get();
+   
+    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
 }
 public function saveBottleMove(Request $request, $action, $state){
     $request->validate([
@@ -113,13 +117,13 @@ public function saveBottleMove(Request $request, $action, $state){
         $move->save();
 
     
-        return back()->withSuccess("mouvement enregistre avec succes");
+        return response()->json(['success' => 'mouvement enregistre avec succes']);
     
         }else{
-        return back()->withErrors(["message"=>"stock inexistant"]);
+        return response()->json(["error"=>"stock inexistant"]);
     }    
 }else{
-    return back()->withErrors(["message"=>"stock inexistant"]);
+    return response()->json(["error"=>"stock inexistant"]);
 }
 }
 //SAVE ACCESSORIES
@@ -165,11 +169,11 @@ public function saveAccessoryMoves(Request $request, $action){
         $move->save();
 
     
-        return back()->withSuccess("mouvement enregistre avec succes");
+        return response()->json(["success"=>"mouvement enregistre avec succes"]);
     }
 }  
 else{
-    return back()->withErrors(["message"=>"stock inexistant"]);
+    return response()->json(["error"=>"stock inexistant"]);
 }
 }
 }

@@ -24,7 +24,7 @@
         @apply w-full h-9 mt-2 bg-gray-400/25 p-2 mb-2;
     }
     .dropdown, .drop-2{
-       @apply text-center relative 
+       @apply text-center 
     }
     .drop-items,.drop-items-2{
         @apply hidden
@@ -37,11 +37,11 @@
         background-color: rgba(0, 0, 0, 0.363);
     }
     .dropdown:hover>.drop-items{
-        @apply block absolute z-20 bg-blue-200 rounded-md text-black w-full 
+        @apply block absolute z-20 bg-blue-200 rounded-md text-black w-56 
     }
     
      .drop-2:hover> .drop-items-2{
-     @apply block absolute -right-28 text-start  bg-blue-300 top-0  w-full rounded-md
+     @apply block absolute -right-48 text-start  bg-blue-300 top-0  w-full rounded-md
     }
     .modals-active{
         @apply w-full bg-black/25 fixed h-full top-0 left-0 flex justify-center;
@@ -60,7 +60,7 @@
     }
     .modal-active
      form{
-        @apply  p-4
+        @apply  p-3
     }
     .modal-champs{
         @apply text-start mb-3

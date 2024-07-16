@@ -47,7 +47,9 @@
         </form>
         </div>
      </div>
-     <br><br><br>
+     <br>
+     <h1 class="font-bold text-2xl">Historique des entrees</h1>
+     <br>
      <div>
          <table class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
             <thead class="p-2 bg-gray-500 text-white">
@@ -57,9 +59,9 @@
                     <td>origin</td>
                     <td>article</td>
                     <td>entree</td>
-                    <td>sortie</td>
                     <td>qte</td>
-                    <td>commantaire</td>
+                    <td>state</td>
+                    <td>commentaire</td>
                     
                 </tr>
             </thead>
@@ -71,8 +73,42 @@
                         <td>{{$move->origin}}</td>
                         <td>{{$move->fromArticle->title}}</td>
                         <td>{{$move->entree}}</td>
+                        <td>{{$move->qty}}</td>
+                        <td>{{$move->fromArticle->state? "plein":"vide"}}</td>
+                        <td>{{$move->label}}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+     </div>
+     <br>
+     <h1 class="font-bold text-2xl">Historique des Sortie</h1>
+     <br>
+     <div>
+         <table class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
+            <thead class="p-2 bg-gray-500 text-white">
+                <tr>
+                    <td>Date</td>
+                    <td>identifiant</td>
+                    <td>origin</td>
+                    <td>article</td>
+                    <td>sortie</td>
+                    <td>qte</td>
+                    <td>state</td>
+                    <td>commentaire</td>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($allMovesOut as $move )
+                    <tr class="hover:text-white hover:bg-blue-400">
+                        <td>{{$move->created_at}}</td>
+                        <td>{{$move->id}}</td>
+                        <td>{{$move->origin}}</td>
+                        <td>{{$move->fromArticle->title}}</td>
                         <td>{{$move->sortie}}</td>
                         <td>{{$move->qty}}</td>
+                        <td>{{$move->fromArticle->state? "plein":"vide"}}</td>
                         <td>{{$move->label}}</td>
                     </tr>
                 @endforeach

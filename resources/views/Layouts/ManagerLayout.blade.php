@@ -77,17 +77,25 @@
 
 
                     <ul class="drop-items-2">
-                        <li class="elem"><a href="">GPL Vrac</a></li>
-                        <li class="elem" id="activate-form-outcome-vide"><a>Bouteilles Vides</a></li>
-                        <li class="elem" id="activate-form-outcome-pleine"><a>Bouteilles Pleines</a></li>
-                        <li class="elem" id="activate-form-outcome-accessory"><a>Accessoires</a></li>
+                        <li class="elem"><a href="">GPL Vrac (sortie)</a></li>
+                        <li class="elem" id="activate-form-outcome-vide"><a>Bouteilles Vides(sortie)</a></li>
+                        <li class="elem" id="activate-form-outcome-pleine"><a>Bouteilles Pleines(sortie)</a></li>
+                        <li class="elem" id="activate-form-outcome-accessory"><a>Accessoires(sortie)</a></li>
                     </ul> 
                                </div>
             </div>
             </div>
             
             <a href="{{route("manager-history")}}" >HISTORIQUE</a>
-            <a href="" >ETATS</a>
+            <a href="" >RELEVE</a>
+            
+            <div class="dropdown">    ETATS <i class="fa-solid fa-angle-down"></i>
+            <div class="drop-items">
+                <ul>
+                    <div class="drop-items-2 elem"> mouvements entree</div>
+                    <div class="drop-items-2 elem">mouvements sortie</div>
+                </ul>
+            </div>
         </nav>
         
        </header>
@@ -109,19 +117,22 @@
                 <h1>Entree de Bouteilles Pleines</h1>
                 <span class="close-modal">X   </span>
             </div>
-            <form action="{{route("saveBottleMove",["action"=>"entry","state"=>1])}}" method="POST">
+            <span class="success text-green-500 "></span>
+            <span class="errors text-red-500 "></span>
+            <form id="entry-pleine-form"  >
                 @csrf
                 <div class="modal-champs">
                     <label for="">Type d'operation:</label>
                     <select name="origin" id="">
-                        <option value="achat">achat</option>
-                        <option value="client">client</option>
                         <option value="region">region</option>
                         <option value="production">production</option>
                     </select>
+                    @if ($errors->has('origin'))
+                        <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                    @endif
                 </div>
                 <div class="modal-champs">
-                    <label for="">Type d'operations:</label> <div>
+                    <label for="">Type de bouteilles:</label> <div>
                     <input type="radio" value="6" name="weight"> 6kg
                     <input type="radio" value="12.5" name="weight">12.5kg
                     <input type="radio" value="50" name="weight">50 kg
@@ -130,14 +141,20 @@
                 <div class="modal-champs">
                     <label for="">Quantite :</label>
                     <input type="number" name="qty">
+                    @if ($errors->has('qty'))
+                        <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                    @endif
                 </div>
                 <div class="modal-champs">
                     <label for="">Libelle</label>
                     <input type="text" name="label">
+                    @if ($errors->has('label'))
+                        <span class="text-rex-500">{{$errors->first("label")}}</span>
+                    @endif
                 </div>
                 <div class="modal-validation">
                 <button type="reset">annuler</button>
-                <button type="submit">creer</button>
+                <button type="submit" id="submitForm">creer</button>
             </div>
             </form>
         </div></center>
@@ -152,7 +169,9 @@
                  <h1>Entree de Bouteilles Vides</h1>
                  <span class="close-modal">X   </span>
              </div>
-             <form action="{{route("saveBottleMove",["action"=>"entry","state"=>0])}}" method="POST">
+             <span class="success text-green-500"></span>
+             <span class="errors text-red-500"></span>
+             <form id="entry-vides-form" >
                 @csrf
                  <div class="modal-champs">
                      <label for="">Type d'operation:</label>
@@ -162,9 +181,12 @@
                          <option value="region">region</option>
                          <option value="production">production</option>
                      </select>
+                     @if ($errors->has('origin'))
+                         <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
-                     <label for="">Type d'operations:</label> <div>
+                     <label for="">Type de bouteilles:</label> <div>
                      <input type="radio" value="6" name="weight"> 6kg
                      <input type="radio" value="12.5" name="weight">12.5kg
                      <input type="radio" value="50" name="weight">50 kg
@@ -173,14 +195,20 @@
                  <div class="modal-champs">
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
+                     @if ($errors->has('qty'))
+                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
+                     @if ($errors->has('label'))
+                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                     @endif
                  </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
-                 <button type="submit">creer</button>
+                 <button type="submit" id="submitForm">creer</button>
              </div>
              </form>
          </div></center>
@@ -195,7 +223,9 @@
                  <h1>Entree de Accessoire</h1>
                  <span class="close-modal">X   </span>
              </div>
-             <form action="{{route("saveAccessoryMove",["action"=>"entry"])}}" method="POST">
+             <span class="success text-green-500"></span>
+             <span class="errors text-red-500"></span>
+             <form id="entry-accessory-form" >
                 @csrf
                  <div class="modal-champs">
                      <label for="">Type d'accessiore:</label>
@@ -205,18 +235,27 @@
                          <option value="{{$accessory->title}}">{{$accessory->title}}</option>
                         @endforeach
                      </select>
+                     @if ($errors->has('title'))
+                         <span class="text-rex-500">{{$errors->first("title")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
                  </div>
+                 @if ($errors->has('qty'))
+                     <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                 @endif
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
+                     @if ($errors->has('label'))
+                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                     @endif
                  </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
-                 <button type="submit">creer</button>
+                 <button type="submit" >creer</button>
              </div>
              </form>
          </div></center>
@@ -232,19 +271,22 @@
                  <h1>Sortie de Bouteilles Pleines</h1>
                  <span class="close-modal">X   </span>
              </div>
-             <form action="{{route("saveBottleMove",["action"=>"outcome","state"=>1])}}" method="POST">
+             <span class="success text-green-500"></span>
+             <span class="errors text-red-500"></span>
+             <form id="outcome-pleine-form" >
                @csrf
                 <div class="modal-champs">
                      <label for="">Type d'operation:</label>
                      <select name="origin" id="">
-                         <option value="achat">achat</option>
                          <option value="client">client</option>
                          <option value="region">region</option>
-                         <option value="production">production</option>
                      </select>
+                     @if ($errors->has('origin'))
+                         <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
-                     <label for="">Type d'operations:</label> <div>
+                     <label for="">Type de bouteilles:</label> <div>
                      <input type="radio" value="6" name="weight"> 6kg
                      <input type="radio" value="12.5" name="weight">12.5kg
                      <input type="radio" value="50" name="weight">50 kg
@@ -253,14 +295,20 @@
                  <div class="modal-champs">
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
+                     @if ($errors->has('qty'))
+                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
+                     @if ($errors->has('label'))
+                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                     @endif
                  </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
-                 <button type="submit">creer</button>
+                 <button type="submit" id="submitForm">creer</button>
              </div>
              </form>
          </div></center>
@@ -275,19 +323,21 @@
                  <h1>Sortie de Bouteilles Vides</h1>
                  <span class="close-modal">X</span>
              </div>
-             <form action="{{route("saveBottleMove",["action"=>"outcome","state"=>0])}}" method="POST">
+             <span class="success text-green-500"></span>
+             <span class="errors text-red-500"></span>
+             <form id="outcome-vides-form" >
              @csrf
                 <div class="modal-champs">
                      <label for="">Type d'operation:</label>
                      <select name="origin" id="">
-                         <option value="achat">achat</option>
-                         <option value="client">client</option>
-                         <option value="region">region</option>
                          <option value="production">production</option>
                      </select>
+                     @if ($errors->has('origin'))
+                         <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
-                     <label for="">Type d'operations:</label> <div>
+                     <label for="">Type de bouteilles:</label> <div>
                      <input type="radio" value="6" name="weight"> 6kg
                      <input type="radio" value="12.5" name="weight">12.5kg
                      <input type="radio" value="50" name="weight">50 kg
@@ -296,10 +346,16 @@
                  <div class="modal-champs">
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
+                     @if ($errors->has('qty'))
+                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
+                     @if ($errors->has('label'))
+                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                     @endif
                  </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
@@ -318,7 +374,9 @@
                  <h1>Sortie de Accessoire</h1>
                  <span class="close-modal">X   </span>
              </div>
-             <form action="{{route("saveAccessoryMove",["action"=>"outcome"])}}" method="POST">
+             <span class="success text-green-500"></span>
+             <span class="errors text-red-500"></span>
+             <form id="outcome-accessory-form" >
                 @csrf
                 <div class="modal-champs">
                      <label for="">Type d'accessiore:</label>
@@ -328,18 +386,27 @@
                          <option value="{{$accessory->title}}">{{$accessory->title}}</option>
                         @endforeach
                      </select>
+                     @if ($errors->has('title'))
+                         <span class="text-rex-500">{{$errors->first("title")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
+                     @if ($errors->has('qty'))
+                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                     @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
+                     @if ($errors->has('label'))
+                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                     @endif
                  </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
-                 <button type="submit">creer</button>
+                 <button type="submit" id="submitForm">creer</button>
              </div>
              </form>
          </div></center>
@@ -469,6 +536,125 @@
                     $("#outcome-accessory").removeClass("modals-active")
                 }
             })
+
+            //VALIDATION DES FORMULAIRES
+            //FORMULAIRE ENTREES BOUTIELLES PLEINES
+            $("#entry-pleine-form").submit(function(e){
+                e.preventDefault()
+
+                $.ajax({
+                    url:"{{route("saveBottleMove",["action"=>"entry","state"=>1])}}",
+                    method:"POST",
+                    data:$(this).serialize(),
+                    success: function(response){
+                        if(response.error){
+                            $(".errors").text(response.error);
+                            $(".success").text("");
+                        }else{
+                            $(".errors").text("");
+                            $(".success").text(response.success);
+                            $("#entry-pleine-form")[0].reset();
+                        }
+                    }
+                })
+            })
+
+        //VALIDATION FORMULAIRE ENTREES BOUTEILLES VIDES
+        $("#entry-vides-form").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url:"{{route("saveBottleMove",["action"=>"entry","state"=>0])}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".success").text(response.success);
+                        $(".errors").text("");
+                        $("#entry-vides-form")[0].reset();
+                    }
+                }
+
+            })
+        })
+        //VALIDATION FORMULAIRE ENTREE ACCESSOIRES
+        $("#entry-accessory-form").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:"{{route("saveAccessoryMove",["action"=>"entry"])}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".errors").text("");
+                        $(".success").text(response.success);
+                        $("#entry-accessory-form")[0].reset()
+                    }
+                }
+            })
+        })
+        // VALIDATION DE FORMULAIRE SORTIE BOUTEILLES PLEINES
+        $("#outcome-pleine-form").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url:"{{route("saveBottleMove",["action"=>"outcome","state"=>1])}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".errors").text("");
+                        $(".success").text(response.success)
+                        $("#outcome-pleine-form")[0].reset()
+                    }
+                }
+            })
+        })
+        //VALIDATION DE FORMULAIRE SORTIE BOUTIELLES VIDE
+        $("#outcome-vides-form").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url:"{{route("saveBottleMove",["action"=>"outcome","state"=>0])}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".errors").text("");
+                        $(".success").text(response.success);
+                        $("#outcome-vides-form")[0].reset()
+                    }
+                }
+            })
+        })
+        //VALIDATION FORMULAIRE SORTIE ACCESSOIRES
+        $("#outcome-accessory-form").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url:"{{route("saveAccessoryMove",["action"=>"outcome"])}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".errors").text("");
+                        $(".success").text(response.success);
+                        $("#outcome-accessory-form")[0].reset();
+                    }
+                }
+            })
+        })
         })
     </script>
 </body>
