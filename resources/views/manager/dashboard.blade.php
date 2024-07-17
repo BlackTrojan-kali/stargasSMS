@@ -9,7 +9,11 @@
     ?>
   <div class="relative w-6/12">
     <div class="w-11/12 flex justify-between font-bold">
-      <p>{{$stock->article->title}} <span class="text-green-500">{{$stock->article->state? "pleine":"vide"}}</span></p>
+      <p>{{$stock->article->title}} <span class="text-blue-400">{{$stock->article->weight>0? $stock->article->weight."kg":""}} </span> 
+        @if ($stock->type == "bouteille-gaz")
+        <span class="text-green-500">{{$stock->article->state? "pleine":"vide"}}</span></p>
+          
+        @endif
       <p>{{$stock->qty}}</p>
     </div>
     <div class="w-full bg-gray-300 h-8 rounded-e-full">

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Citerne;
 use App\Models\Movement;
 use App\Models\Stock;
+use App\Models\Vracstock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,8 @@ class MagazinierController extends Controller
         }
         $stocks = Stock::where("region","=",Auth::user()->region)->where("category","=",$categorie)->with("article")->get();
         $accessories = Article::where("type","=","accessoire")->get("title");
-        return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories]);
+        $vracstocks = Citerne::all();
+        return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories,"vrac"=>$vracstocks]);
     }
     public function showmove(Request $request){
         return  view("manager.moveActions");
@@ -32,6 +35,13 @@ class MagazinierController extends Controller
         return view("manager.MovetypeAdd",["action"=>$action]);
     }
 }
+//RELEVES RELEVES RELEVES RELEVES RELEVES
+public function showReleve(Request $request){
+    $accessories = Article::where("type","=","accessoire")->get("title");
+    $vracstocks = Citerne::all();
+    return view("manager.releves",["accessories"=>$accessories,"vrac"=>$vracstocks]);
+}
+
 public function registerAction(Request $request, $action, $type){
     if($type == "bouteille-gaz"){
         
@@ -46,7 +56,8 @@ public function showHistory(Request $request){
     $accessories = Article::where("type","=","accessoire")->get("title");
     $allMoves = Movement::with("fromStock","fromArticle")->where("entree",1)->orderBy("created_at","DESC")->get();
     $allMovesOut = Movement::with("fromStock","fromArticle")->where("sortie",1)->orderBy("created_at","DESC")->get();
-    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
+    $vracstocks = Citerne::all();
+    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut,"vrac"=>$vracstocks]);
 }
 public function showfilteredHistory(Request $request){
     $request->validate([
@@ -70,8 +81,8 @@ public function showfilteredHistory(Request $request){
     $allMoves = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("movements.entree",1)->where("articles.type",$type)->where("articles.state",$state)->select("movements.*")->get();
    
     $allMovesOut = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("movements.entree",0)->where("articles.state",$state)->select("movements.*")->get();
-   
-    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
+    $vracstocks = Citerne::all();
+    return view("manager.history",["accessories"=>$accessories,"vrac"=>$vracstocks,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
 }
 public function saveBottleMove(Request $request, $action, $state){
     $request->validate([

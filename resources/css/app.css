@@ -51,7 +51,7 @@
     }
     .modal-active{
         width: 350px;
-        height: 400px;
+        height: 420px;
         @apply mt-20  bg-white text-center rounded-lg overflow-hidden border border-gray-400;
         
     }

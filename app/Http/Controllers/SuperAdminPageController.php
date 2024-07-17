@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,8 @@ class SuperAdminPageController extends Controller
 {
     //
     public function show(Request $request){
-        return view('dashboard');
+        $stocks = Stock::with("article")->get();
+        return view('dashboard',["stocks"=>$stocks]);
     }
     public function showUsers(Request $request){
         $users = User::where("role","!=","super")->get();

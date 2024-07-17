@@ -21,6 +21,10 @@ Route::group(["middleware"=>"auth"],function(){
             Route::get("/addAccessory",[Controllers\ArticleController::class,"insertAcc"])->name("addAccessory");
             Route::post("/insertArticle",[Controllers\ArticleController::class,"store"])->name("insertArticle");
             Route::delete("/deleteArticle/{id}",[Controllers\ArticleController::class,"delete"])->name("deleteArticle");
+            //citernes
+            Route::get("/addCiterns",[Controllers\CiternController::class,"showFormAddCitern"])->name("addCiterns");
+            Route::post("/validateCiterns",[Controllers\CiternController::class,"validateFormAddCitern"])->name("validateCiterns");
+            Route::delete("/deleteCitern/{id}",[Controllers\CiternController::class,"delete"])->name("deleteCiterne");
       });  
       Route::middleware(isManager::class)->group(function () {
           Route::get("/manager/dashboard",[Controllers\MagazinierController::class,"show"])->name("dashboard-manager");
@@ -29,6 +33,9 @@ Route::group(["middleware"=>"auth"],function(){
           //historique des mouvements
           Route::get("/manager/history",[Controllers\MagazinierController::class,"showHistory"])->name("manager-history");
           Route::post("/manager/filteredHistory",[Controllers\MagazinierController::class,"showfilteredHistory"])->name("manager-filtered-history");
+            //RELEVES
+            Route::post("/manager/gplMove/{action}",[Controllers\CiternController::class,"moveGpl"])->name("MoveGpl");
+            Route::get("/manager/releves",[Controllers\MagazinierController::class,"showReleve"])->name("showReleve");
       });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });

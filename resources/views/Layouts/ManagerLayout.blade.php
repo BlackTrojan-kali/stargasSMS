@@ -66,7 +66,7 @@
                 <div class="drop-2 elem">
                     Entree
                     <ul class="drop-items-2">
-                        <li class="elem"><a href="">GPL Vrac</a></li>
+                        <li class="elem" id="activate-form-entry-gpl"><a href="">GPL Vrac</a></li>
                         <li class="elem" id="activate-form-entry-vide"><a>Bouteilles Vides</a></li>
                         <li class="elem" id="activate-form-entry-pleine"><a>Bouteilles Pleines</a></li>
                         <li class="elem" id="activate-form-entry-accessory"><a>Accessoires</a></li>
@@ -77,7 +77,7 @@
 
 
                     <ul class="drop-items-2">
-                        <li class="elem"><a href="">GPL Vrac (sortie)</a></li>
+                        <li class="elem " id="activate-form-outcome-gpl"><a href="">GPL Vrac (sortie)</a></li>
                         <li class="elem" id="activate-form-outcome-vide"><a>Bouteilles Vides(sortie)</a></li>
                         <li class="elem" id="activate-form-outcome-pleine"><a>Bouteilles Pleines(sortie)</a></li>
                         <li class="elem" id="activate-form-outcome-accessory"><a>Accessoires(sortie)</a></li>
@@ -87,27 +87,70 @@
             </div>
             
             <a href="{{route("manager-history")}}" >HISTORIQUE</a>
-            <a href="" >RELEVE</a>
+            <a href="{{route("showReleve")}}">RELEVE</a>
             
-            <div class="dropdown">    ETATS <i class="fa-solid fa-angle-down"></i>
+            <div class="dropdown cursor-pointer font-bold">    ETATS <i class="fa-solid fa-angle-down"></i>
             <div class="drop-items">
-                <ul>
-                    <div class="drop-items-2 elem"> mouvements entree</div>
-                    <div class="drop-items-2 elem">mouvements sortie</div>
-                </ul>
+                <div class="elem">Mouvements Entree</div>
+                <div class="elem">Mouvements Sortie</div>
+                <div class="elem">Mouvements Global</div>
+            </div>
             </div>
         </nav>
         
        </header>
-    
-    
     @yield('content')
     <br><br><br><br><br><br><br><br>
 
 
-
 <!--ENTREE FORMULAIRES-->
+    <div id="entry-gpl" class="modals">
+        <center>
+           
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Entree de GPL Vrac</h1>
+                    <span class="close-modal">X   </span>
+                </div>
+                <span class="success text-green-500 "></span>
+                <span class="errors text-red-500 "></span>
+                <form id="entry-gpl-form"  >
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Type de citerne:</label>
+                        <select name="citerne" id="">
+                         @foreach ($vrac as $vra )
+                             <option value="{{$vra->name}}">{{$vra->name}} - ({{$vra->type}})</option>
+                         @endforeach
+                        </select>
+                        @if ($errors->has('citerne'))
+                            <span class="text-rex-500">{{$errors->first("citerne")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Quantite</label> <div>
+                        <input type="number" name="qty">
 
+                        @if ($errors->has('qty'))
+                            <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                        @endif
+                        </div>
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Libelle</label>
+                        <input type="text" name="label">
+                        @if ($errors->has('label'))
+                            <span class="text-rex-500">{{$errors->first("label")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                    <button type="reset">annuler</button>
+                    <button type="submit" id="submitForm">creer</button>
+                </div>
+                </form>
+            </div>
+        </center>
+    </div>
 
     <div id="entry-pleine" class="modals">
        <center>
@@ -263,6 +306,55 @@
 
 <!--SORTIES FORMULAIRES-->
 
+<div id="outcome-gpl" class="modals">
+    <center>
+       
+        <div class="modal-active">
+            <div class="modal-head">
+                <h1>Outcome de GPL Vrac</h1>
+                <span class="close-modal">X   </span>
+            </div>
+            <span class="success text-green-500 "></span>
+            <span class="errors text-red-500 "></span>
+            <form id="outcome-gpl-form"  >
+                @csrf
+                <div class="modal-champs">
+                    <label for="">Type de citerne:</label>
+                    <select name="citerne" id="">
+                        @foreach ($vrac as $vrac)
+                            
+                        <option value="{{$vrac->name}}">{{$vrac->name}}-({{$vrac->type}})</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('citerne'))
+                        <span class="text-rex-500">{{$errors->first("citerne")}}</span>
+                    @endif
+                </div>
+                <div class="modal-champs">
+                    <label for="">Quantite</label> <div>
+                    <input type="number" name="qty">
+
+                    @if ($errors->has('qty'))
+                        <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                    @endif
+                    </div>
+                </div>
+                <div class="modal-champs">
+                    <label for="">Libelle</label>
+                    <input type="text" name="label">
+                    @if ($errors->has('label'))
+                        <span class="text-rex-500">{{$errors->first("label")}}</span>
+                    @endif
+                </div>
+                <div class="modal-validation">
+                <button type="reset">annuler</button>
+                <button type="submit" id="submitForm">creer</button>
+            </div>
+            </form>
+        </div>
+    </center>
+</div>
+
     <div id="outcome-pleine" class="modals">
         <center>
         
@@ -413,7 +505,7 @@
      </div>
 
     
-    
+     
     <footer class="mt-10 w-full bg-blue-950 flex justify-between p-4 text-white rounded-md">
         <div>
             <a href=""  >Contacter</a>
@@ -427,7 +519,22 @@
     <script>
         //form deployment
         $(document).ready(function(){
+            //ACTION ENTRY ON MODAL GPL
+            $("#activate-form-entry-gpl").on("click",function(e){
+                e.preventDefault()
+                if($("#entry-gpl").hasClass("modals")){
+                    $("#entry-gpl").addClass("modals-active");
+                    $("#entry-gpl").removeClass("modals");
+                }
 
+            $(".close-modal").on("click",function(e){
+                e.preventDefault()
+                if($("#entry-gpl").hasClass("modals-active")){
+                    $("#entry-gpl").addClass("modals");
+                    $("#entry-gpl").removeClass("modals-active");
+                }
+            })
+            })
             //ACTION ENTRY ON MODAL BOUTEILLES-VIDES
             $("#activate-form-entry-vide").on("click",function(e){
                 e.preventDefault()
@@ -482,7 +589,22 @@
                 }
             })
 
+            //ACTION OUTCOME ON MODAL BOUTEILLES-VIDES
+            $("#activate-form-outcome-gpl").on("click",function(e){
+                e.preventDefault()
+                if($("#outcome-gpl").hasClass("modals")){
+                    $("#outcome-gpl").addClass("modals-active");
+                    $("#outcome-gpl").removeClass("modals");
+                }
 
+            $(".close-modal").on("click",function(e){
+                e.preventDefault()
+                if($("#outcome-gpl").hasClass("modals-active")){
+                    $("#outcome-gpl").addClass("modals");
+                    $("#outcome-gpl").removeClass("modals-active");
+                }
+            })
+            })
             //ACTION OUTCOME ON MODAL BOUTEILLES-VIDES
             $("#activate-form-outcome-vide").on("click",function(e){
                 e.preventDefault()
@@ -538,6 +660,20 @@
             })
 
             //VALIDATION DES FORMULAIRES
+            //FORMULAIRE ENTREES GPL
+            $("#entry-gpl-form").submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url:"{{route("MoveGpl",["action"=>"entry"])}}",
+                    method:"POST",
+                    data:$(this).serialize(),
+                    success:function(response){
+                        $(".success").text(response.success);
+                        $("#entry-gpl-form")[0].reset();
+                    }
+                })
+
+            })
             //FORMULAIRE ENTREES BOUTIELLES PLEINES
             $("#entry-pleine-form").submit(function(e){
                 e.preventDefault()

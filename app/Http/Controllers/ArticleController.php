@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Citerne;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,8 @@ class ArticleController extends Controller
     //
     public function show(Request $request){
         $articles = Article::all();
-        return view("manageArticles",["articles"=>$articles]);
+        $citerns = Citerne::all();
+        return view("manageArticles",["articles"=>$articles,"citernes"=>$citerns]);
     }
     public function insert(Request $request){
         return view("addArticle");
