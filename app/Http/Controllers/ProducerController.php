@@ -8,6 +8,8 @@ use App\Models\Article;
 use App\Models\Citerne;
 use App\Models\Movement;
 use App\Models\Stock;
+use App\Models\Vracmovement;
+use App\Models\Vracstock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +21,37 @@ class ProducerController extends Controller
     public function show(){
         $stocks = Stock::where("category","production")->get();
         $vracstocks = Citerne::where("type","mobile")->get();
-        return view("producer.dashboard",["vrac"=>$vracstocks,"stocks"=>$stocks]);
+        $fixe  = Citerne::where("type","fixe")->get();
+        return view("producer.dashboard",["vrac"=>$vracstocks,"stocks"=>$stocks,"fixe"=>$fixe]);
+    }
+    public function showCiterne(){
+        
+        $stocks = Stock::where("category","production")->get();
+        $vracstocks = Citerne::where("type","mobile")->get();
+        $fixe  = Citerne::where("type","fixe")->get();
+        return view("producer.citerne",["vrac"=>$vracstocks,"stocks"=>$stocks,"fixe"=>$fixe]);
+    }
+    public function depotage(Request $request){
+        $request->validate([
+            "fixe"=>"string | required",
+            "mobile"=>"string | required",
+            "qty"=>"numeric |required",
+            "matricule"=>"string |required"
+        ]);
+        $fixe= intval($request->fixe);
+        $mobile = intval($request->mobile);
+        $stock = Vracstock::where("citerne_id",$fixe)->first();
+        $stock->stock_theo += $request->qty;
+        $stock->stock_rel = $stock->stock_theo;
+        $stock->save();
+        $move = new Vracmovement();
+        $move->citerne_id = $fixe;
+        $move->vracstock_id = $stock->id;
+        $move->qty = $request->qty;
+        $move->matricule = $request->matricule;
+        $move->save();
+        return response()->json(["success"=>"mouvement enregistre avec success"]);         
+        
     }
     
 public function saveBottleMove(Request $request, $action, $state){

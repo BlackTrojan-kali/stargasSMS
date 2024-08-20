@@ -67,7 +67,7 @@
                     Reception
                     <ul class="drop-items-2">
                         <li class="elem" id="activate-form-entry-gpl"><a href="">GPL Vrac Reception</a></li>
-                        <li class="elem" id="activate-form-entry-depotage"><a>Depotage</a></li>
+                        <li class="elem" id="activate-form-entry-accessory"><a>Depotage</a></li>
                         <li class="elem" id="activate-form-entry-vide"><a>Bouteilles vides Reception</a></li>
                     </ul>
                 </div>
@@ -83,7 +83,8 @@
                            </div>
             </div>
             </div>
-            <a href="{{route("manager-history")}}" >Production</a>
+            <a href="{{route("manager-history")}}" >PRODUCTION</a>
+            <a href="{{ route("showCiterne") }}">CITERNES</a>
             <a href="{{route("showRelevePro")}}">RECEPTION</a>
             
             <div class="dropdown cursor-pointer font-bold">    ETATS <i class="fa-solid fa-angle-down"></i>
@@ -216,19 +217,33 @@
         
          <div class="modal-active">
              <div class="modal-head">
-                 <h1>Entree de Accessoire</h1>
+                 <h1>Depotage GPL Vrac</h1>
                  <span class="close-modal">X   </span>
              </div>
              <span class="success text-green-500"></span>
              <span class="errors text-red-500"></span>
-             <form id="entry-accessory-form" >
+             <form id="entry-accessory-form" method="POST" action="{{ route("Depotage") }}" >
                 @csrf
                  <div class="modal-champs">
-                     <label for="">Type d'accessiore:</label>
-                     <select name="title" id="">
+                     <label for="">Citerne Mobile:</label>
+                     <select name="mobile" id="">
+                        @foreach ($vrac as $vra )
+                            <option value="{{ $vra->id }} }}">{{ $vra->name }}-({{ $vra->type }})</option>
+                        @endforeach
                      </select>
-                     @if ($errors->has('title'))
-                         <span class="text-red-500">{{$errors->first("title")}}</span>
+                     @if ($errors->has('mobile'))
+                         <span class="text-red-500">{{$errors->first("mobile")}}</span>
+                     @endif
+                 </div>
+                 <div class="modal-champs">
+                     <label for="">Citerne Fixe:</label>
+                     <select name="fixe" id="">
+                        @foreach ($fixe as $fix )
+                            <option value="{{ $fix->id }}">{{ $fix->name }}-({{ $fix->type }})</option>                            
+                        @endforeach
+                     </select>
+                     @if ($errors->has('fixe'))
+                         <span class="text-red-500">{{$errors->first("fixe")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
@@ -239,10 +254,10 @@
                      <span class="text-red-500">{{$errors->first("qty")}}</span>
                  @endif
                  <div class="modal-champs">
-                     <label for="">Libelle</label>
-                     <input type="text" name="label">
-                     @if ($errors->has('label'))
-                         <span class="text-red-500">{{$errors->first("label")}}</span>
+                     <label for="">Matricule du Vehicule</label>
+                     <input type="text" name="matricule">
+                     @if ($errors->has('matricule'))
+                         <span class="text-red-500">{{$errors->first("matricule")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -284,7 +299,9 @@
             })
             })
         
-            $("# ").on("click",function(e){
+      
+            //ACTION ENTRY ON MODAL BOUTEILLES-PLEINES
+            $("#activate-form-entry-accessory").on("click",function(e){
                 e.preventDefault()
             if($("#entry-accessory").hasClass("modals")){
              $("#entry-accessory").addClass("modals-active")
@@ -304,7 +321,7 @@
 
 
                     //ACTION ENTRY ON MODAL BOUTEILLES-VIDES
-                    $("#activate-form-entry-vide").on("click",function(e){
+          $("#activate-form-entry-vide").on("click",function(e){
                 e.preventDefault()
             if($("#entry-vides").hasClass("modals")){
              $("#entry-vides").addClass("modals-active")
@@ -322,24 +339,6 @@
             })
       
 
-             
-            //ACTION ENTRY ON MODAL BOUTEILLES-VIDES
-            $("#activate-form-entry-vide").on("click",function(e){
-                e.preventDefault()
-            if($("#entry-vides").hasClass("modals")){
-             $("#entry-vides").addClass("modals-active")
-
-             $("#entry-vides").removeClass("modals")
-            }
-            })
-
-            $(".close-modal").on("click",function(e){
-                e.preventDefault()
-                if($("#entry-vides").hasClass("modals-active")){
-                    $("#entry-vides").addClass("modals")
-                    $("#entry-vides").removeClass("modals-active")
-                }
-            })
       
 
 
@@ -383,6 +382,26 @@
             })
 
 
+        //VALIDATION FORMULAIRE Depotage gpl
+        $("#entry-accessory-form").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:"{{route("Depotage")}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".errors").text("");
+                        $(".success").text(response.success);
+                        $("#entry-accessory-form")[0].reset()
+                        $("table").load(location.href + " table")
+                    }
+                }
+            })
+        })
 
         })
        

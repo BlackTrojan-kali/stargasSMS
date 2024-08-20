@@ -44,6 +44,8 @@ Route::group(["middleware"=>"auth"],function(){
             Route::post("/producer/gplMove",[Controllers\CiternController::class,"moveGpl"])->name("MoveGplPro");
             Route::get("/producer/releves",[Controllers\CiternController::class,"showReleve"])->name("showRelevePro");
             Route::post("producer/moveActioins/save/{action}/{state}",[Controllers\ProducerController::class,"saveBottleMove"])->name("saveBottleMovePro");
+            Route::post("/producer/moveVrac",[Controllers\ProducerController::class,"depotage"])->name("Depotage");
+            Route::get("/producer/citernes",[Controllers\ProducerController::class,"showCiterne"])->name("showCitene");
       });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });
