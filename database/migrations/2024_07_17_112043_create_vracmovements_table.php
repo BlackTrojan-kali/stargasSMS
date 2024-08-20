@@ -17,8 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("vracstock_id");
             
             $table->string("qty");
-            $table->string("type_move")->nullable();
-            $table->text("label")->nullable();
+            $table->text("matricule");
             $table->foreign("citerne_id")->references("id")->on("citernes")->onDelete("cascade");
             $table->foreign("vracstock_id")->references("id")->on("vracstocks")->onDelete("cascade");
             $table->timestamps();

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->double("entree");
             $table->double("sortie");
             $table->integer("qty");
+            $table->string("service");
             $table->foreign("article_id")->references("id")->on("articles")->onDelete("cascade");
             $table->foreign("stock_id")->references("id")->on("stocks")->onDelete("cascade");
             $table->timestamps();

@@ -12,6 +12,13 @@
             @endif
         </div>
         <div class="champs">
+            <label for="">Capacité en KG:</label>
+            <input type="number" name="capacity" id="">
+            @if ($errors->has("capacity"))
+                <span class="text-red-500">{{$errors->first("name")}}</span>
+            @endif
+        </div>
+        <div class="champs">
             <label for="">Type</label>
             <select name="type" id="" class="w-full p-2 h-10">
                 <option value="mobile">Mobile</option>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers as Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\isManager;
+use App\Http\Middleware\isProducer;
 use App\Http\Middleware\IsSuper;
 
 Route::group(["middleware"=>"auth"],function(){
@@ -33,9 +34,16 @@ Route::group(["middleware"=>"auth"],function(){
           //historique des mouvements
           Route::get("/manager/history",[Controllers\MagazinierController::class,"showHistory"])->name("manager-history");
           Route::post("/manager/filteredHistory",[Controllers\MagazinierController::class,"showfilteredHistory"])->name("manager-filtered-history");
-            //RELEVES
-            Route::post("/manager/gplMove/{action}",[Controllers\CiternController::class,"moveGpl"])->name("MoveGpl");
-            Route::get("/manager/releves",[Controllers\MagazinierController::class,"showReleve"])->name("showReleve");
+         Route::delete("/manager/DeleteMove/{id}",[Controllers\MagazinierController::class,"deleteMove"])->name("deleteMove");
+          //RELEVES
+            Route::post("/manager/gplMove",[Controllers\CiternController::class,"moveGpl"])->name("MoveGpl");
+            Route::get("/manager/releves",[Controllers\CiternController::class,"showReleve"])->name("showReleve");
+      });
+      Route::middleware(isProducer::class)->group(function(){
+            Route::get("/producer/dashboard",[Controllers\ProducerController::class,"show"])->name("dashboard-producer");
+            Route::post("/producer/gplMove",[Controllers\CiternController::class,"moveGpl"])->name("MoveGplPro");
+            Route::get("/producer/releves",[Controllers\CiternController::class,"showReleve"])->name("showRelevePro");
+            Route::post("producer/moveActioins/save/{action}/{state}",[Controllers\ProducerController::class,"saveBottleMove"])->name("saveBottleMovePro");
       });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });

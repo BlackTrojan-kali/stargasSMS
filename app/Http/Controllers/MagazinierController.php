@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Action;
 use App\Models\Article;
 use App\Models\Citerne;
-use App\Models\Movement;
 use App\Models\Stock;
+use App\Models\Movement;
 use App\Models\Vracstock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class MagazinierController extends Controller
         }
         $stocks = Stock::where("region","=",Auth::user()->region)->where("category","=",$categorie)->with("article")->get();
         $accessories = Article::where("type","=","accessoire")->get("title");
-        $vracstocks = Citerne::all();
+        $vracstocks = Citerne::where("type","mobile")->get();
         return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories,"vrac"=>$vracstocks]);
     }
     public function showmove(Request $request){
@@ -35,12 +36,7 @@ class MagazinierController extends Controller
         return view("manager.MovetypeAdd",["action"=>$action]);
     }
 }
-//RELEVES RELEVES RELEVES RELEVES RELEVES
-public function showReleve(Request $request){
-    $accessories = Article::where("type","=","accessoire")->get("title");
-    $vracstocks = Citerne::all();
-    return view("manager.releves",["accessories"=>$accessories,"vrac"=>$vracstocks]);
-}
+
 
 public function registerAction(Request $request, $action, $type){
     if($type == "bouteille-gaz"){
@@ -53,10 +49,10 @@ public function registerAction(Request $request, $action, $type){
     }
 }
 public function showHistory(Request $request){
-    $accessories = Article::where("type","=","accessoire")->get("title");
-    $allMoves = Movement::with("fromStock","fromArticle")->where("entree",1)->orderBy("created_at","DESC")->get();
-    $allMovesOut = Movement::with("fromStock","fromArticle")->where("sortie",1)->orderBy("created_at","DESC")->get();
-    $vracstocks = Citerne::all();
+    $accessories = Article::where("type","=","accessoire")->where("service",Auth::user()->role)->get("title");
+    $allMoves = Movement::with("fromStock","fromArticle")->where("entree",1)->where("service",Auth::user()->role)->orderBy("created_at","DESC")->get();
+    $allMovesOut = Movement::with("fromStock","fromArticle")->where("sortie",1)->where("service",Auth::user()->role)->orderBy("created_at","DESC")->get();
+    $vracstocks = Citerne::where("type","mobile")->get();
     return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut,"vrac"=>$vracstocks]);
 }
 public function showfilteredHistory(Request $request){
@@ -67,7 +63,7 @@ public function showfilteredHistory(Request $request){
     ]);
     $fromdate = /*Carbon::createFromFormat("Y-m-d",*/$request->fromdate;//)->toString();
     $todate = /*Carbon::createFromFormat("Y-m-d",$request->*/$request->todate;//)->toString();
-    $accessories = Article::where("type","=","accessoire")->get("title");
+    $accessories = Article::where("type","=","accessoire")->where("service",Auth::user()->role)->get("title");
     if($request->type == "boutielles-pleines" ){
         $type = "bouteille-gaz";
         $state= 1;
@@ -78,10 +74,10 @@ public function showfilteredHistory(Request $request){
         $type = "accessoire";
         $state = 0;
     }
-    $allMoves = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("movements.entree",1)->where("articles.type",$type)->where("articles.state",$state)->select("movements.*")->get();
+    $allMoves = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("movements.entree",1)->where("service",Auth::user()->role)->where("articles.type",$type)->where("articles.state",$state)->select("movements.*")->get();
    
-    $allMovesOut = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("movements.entree",0)->where("articles.state",$state)->select("movements.*")->get();
-    $vracstocks = Citerne::all();
+    $allMovesOut = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("movements.entree",0)->where("articles.state",$state)->where("service",Auth::user()->role)->select("movements.*")->get();
+    $vracstocks = Citerne::where("type","mobile")->get();
     return view("manager.history",["accessories"=>$accessories,"vrac"=>$vracstocks,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
 }
 public function saveBottleMove(Request $request, $action, $state){
@@ -94,28 +90,42 @@ public function saveBottleMove(Request $request, $action, $state){
     $state = intval($state);
     $weight = floatval($request->weight);
     $region = Auth::user()->region;
+    $service = Auth::user()->role;
     $article = Article::where("type","=","bouteille-gaz")->where("weight","=",$weight)->where("state","=",$state)->first();
    if($article){
     $stock = Stock::where("article_id","=",$article->id)->where("category","=",Auth::user()->role)->where("region","=",$region)->first();
-
+    
    
  if($stock){
     if($action == "entry"){
       $stock->qty = $stock->qty +$request->qty;
+      $stockQty =  $stock->qty;
         $stock->save();
+        //notify boss
+        $actions = new Action();
+        $actions->description = Auth::user()->name."[entry] - [{{$request->qty}}] - [{{$article->type}}]- [{{$article->weighy}} KG]";
+        $actions->id_user = Auth::user()->id;
     }else{
         $stock->qty = $stock->qty - $request->qty;
+        $stockQty =  $stock->qty;
         if($stock->qty <= 0){
             $stock->qty = 0;
+            $stockQty =  $stock->qty;
         }
         $stock->save();
-        
+
+          //notify boss
+          $actions = new Action();
+          $actions->description = Auth::user()->name."[outcome] - [{{$request->qty}}] - [{{$article->type}}]- [{{$article->weighy}} KG]";
+          $actions->id_user = Auth::user()->id;
     }
         $move = new Movement();
         $move->article_id = $article->id;
         $move->qty = $request->qty;
         $move->stock_id = $stock->id;
         $move->origin = $request->origin;
+        $move->stock = $stockQty;
+        $move->service = $service;
         $move->label = $request->label;
         if($action =="entry"){
             $move->entree = 1;
@@ -137,6 +147,22 @@ public function saveBottleMove(Request $request, $action, $state){
     return response()->json(["error"=>"stock inexistant"]);
 }
 }
+//delete move
+
+public function deleteMove($id,Request $request){
+    $move= Movement::findOrFail($id);
+    $stock = Stock::findOrFail($move->stock_id);
+    if($move->entree == 1){
+        $stock->qty -= $move->qty;
+        $stock->save();
+    }else if($move->sortie == 1){
+        $stock->qty += $stock->qty;
+        $stock->save();
+    }
+    $move->delete();
+    return response()->json(["message"=>"movement supprime avec success"]);
+}
+
 //SAVE ACCESSORIES
 public function saveAccessoryMoves(Request $request, $action){
     $request->validate([
@@ -148,26 +174,38 @@ public function saveAccessoryMoves(Request $request, $action){
     if($article){
 
     $stock = Stock::where("article_id","=",$article->id)->where("category","=",Auth::user()->role)->where("region","=",Auth::user()->region)->first();
-    if($stock){
-        
+  
+    if($stock){ 
     if($action == "entry"){
         $stock->qty = $stock->qty +$request->qty;
+        
+        $stockQty = $stock->qty;     
           $stock->save();
+          //notify boss
+          $actions = new Action();
+          $actions->description = Auth::user()->name."[entry] - [{{$request->qty}}] - [{{$article->type}}]- [{{$article->weighy}} KG]";
+          $actions->id_user = Auth::user()->id;
+          $actions->save();
       }else{
           $stock->qty = $stock->qty - $request->qty;
+          
+        $stockQty = $stock->qty;     
           if($stock->qty <= 0){
               $stock->qty = 0;
+              
+        $stockQty = $stock->qty;     
           }
           $stock->save();
-          
       }
 
           
         $move = new Movement();
         $move->article_id = $article->id;
         $move->qty = $request->qty;
+        $move->stock = $stockQty;
         $move->stock_id = $stock->id;
         $move->origin = "null";
+        $move->service = Auth::user()->role;
         $move->label = $request->label;
         if($action =="entry"){
             $move->entree = 1;

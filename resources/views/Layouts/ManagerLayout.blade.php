@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stargas SMS</title>
+    <title>Stargas SCsMS</title>
     <link rel="icon" href="/images/logo.png">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="toastr.css" rel="stylesheet"/>
     @vite('resources/css/app.css')
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -77,7 +78,7 @@
 
 
                     <ul class="drop-items-2">
-                        <li class="elem " id="activate-form-outcome-gpl"><a href="">GPL Vrac (sortie)</a></li>
+                       <!-- <li class="elem " id="activate-form-outcome-gpl"><a href="">GPL Vrac (sortie)</a></li> -->
                         <li class="elem" id="activate-form-outcome-vide"><a>Bouteilles Vides(sortie)</a></li>
                         <li class="elem" id="activate-form-outcome-pleine"><a>Bouteilles Pleines(sortie)</a></li>
                         <li class="elem" id="activate-form-outcome-accessory"><a>Accessoires(sortie)</a></li>
@@ -87,7 +88,7 @@
             </div>
             
             <a href="{{route("manager-history")}}" >HISTORIQUE</a>
-            <a href="{{route("showReleve")}}">RELEVE</a>
+            <a href="{{route("showReleve")}}">RECEPTION</a>
             
             <div class="dropdown cursor-pointer font-bold">    ETATS <i class="fa-solid fa-angle-down"></i>
             <div class="drop-items">
@@ -124,7 +125,7 @@
                          @endforeach
                         </select>
                         @if ($errors->has('citerne'))
-                            <span class="text-rex-500">{{$errors->first("citerne")}}</span>
+                            <span class="text-red-500">{{$errors->first("citerne")}}</span>
                         @endif
                     </div>
                     <div class="modal-champs">
@@ -132,15 +133,22 @@
                         <input type="number" name="qty">
 
                         @if ($errors->has('qty'))
-                            <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                            <span class="text-red-500">{{$errors->first("qty")}}</span>
                         @endif
                         </div>
                     </div>
                     <div class="modal-champs">
-                        <label for="">Libelle</label>
-                        <input type="text" name="label">
-                        @if ($errors->has('label'))
-                            <span class="text-rex-500">{{$errors->first("label")}}</span>
+                        <label for="">Numero Bordereau Livraison:</label>
+                        <input type="text" name="livraison">
+                        @if ($errors->has('livraison'))
+                            <span class="text-red-500">{{$errors->first("label")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Matricule du vehicule :</label>
+                        <input type="text" name="matricule">
+                        @if ($errors->has('matricule'))
+                            <span class="text-red-500">{{$errors->first("label")}}</span>
                         @endif
                     </div>
                     <div class="modal-validation">
@@ -171,7 +179,7 @@
                         <option value="production">production</option>
                     </select>
                     @if ($errors->has('origin'))
-                        <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                        <span class="text-red-500">{{$errors->first("origin")}}</span>
                     @endif
                 </div>
                 <div class="modal-champs">
@@ -185,14 +193,14 @@
                     <label for="">Quantite :</label>
                     <input type="number" name="qty">
                     @if ($errors->has('qty'))
-                        <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                        <span class="text-red-500">{{$errors->first("qty")}}</span>
                     @endif
                 </div>
                 <div class="modal-champs">
                     <label for="">Libelle</label>
                     <input type="text" name="label">
                     @if ($errors->has('label'))
-                        <span class="text-rex-500">{{$errors->first("label")}}</span>
+                        <span class="text-red-500">{{$errors->first("label")}}</span>
                     @endif
                 </div>
                 <div class="modal-validation">
@@ -225,7 +233,7 @@
                          <option value="production">production</option>
                      </select>
                      @if ($errors->has('origin'))
-                         <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                         <span class="text-red-500">{{$errors->first("origin")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
@@ -239,14 +247,14 @@
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
                      @if ($errors->has('qty'))
-                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                         <span class="text-red-500">{{$errors->first("qty")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
                      @if ($errors->has('label'))
-                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                         <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -279,7 +287,7 @@
                         @endforeach
                      </select>
                      @if ($errors->has('title'))
-                         <span class="text-rex-500">{{$errors->first("title")}}</span>
+                         <span class="text-red-500">{{$errors->first("title")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
@@ -287,13 +295,13 @@
                      <input type="number" name="qty">
                  </div>
                  @if ($errors->has('qty'))
-                     <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                     <span class="text-red-500">{{$errors->first("qty")}}</span>
                  @endif
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
                      @if ($errors->has('label'))
-                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                         <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -327,7 +335,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('citerne'))
-                        <span class="text-rex-500">{{$errors->first("citerne")}}</span>
+                        <span class="text-red-500">{{$errors->first("citerne")}}</span>
                     @endif
                 </div>
                 <div class="modal-champs">
@@ -335,7 +343,7 @@
                     <input type="number" name="qty">
 
                     @if ($errors->has('qty'))
-                        <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                        <span class="text-red-500">{{$errors->first("qty")}}</span>
                     @endif
                     </div>
                 </div>
@@ -343,7 +351,7 @@
                     <label for="">Libelle</label>
                     <input type="text" name="label">
                     @if ($errors->has('label'))
-                        <span class="text-rex-500">{{$errors->first("label")}}</span>
+                        <span class="text-red-500">{{$errors->first("label")}}</span>
                     @endif
                 </div>
                 <div class="modal-validation">
@@ -374,7 +382,7 @@
                          <option value="region">region</option>
                      </select>
                      @if ($errors->has('origin'))
-                         <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                         <span class="text-red-500">{{$errors->first("origin")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
@@ -388,14 +396,14 @@
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
                      @if ($errors->has('qty'))
-                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                         <span class="text-red-500">{{$errors->first("qty")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
                      @if ($errors->has('label'))
-                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                         <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -425,7 +433,7 @@
                          <option value="production">production</option>
                      </select>
                      @if ($errors->has('origin'))
-                         <span class="text-rex-500">{{$errors->first("origin")}}</span>
+                         <span class="text-red-500">{{$errors->first("origin")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
@@ -439,14 +447,14 @@
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
                      @if ($errors->has('qty'))
-                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                         <span class="text-red-500">{{$errors->first("qty")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
                      @if ($errors->has('label'))
-                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                         <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -479,21 +487,21 @@
                         @endforeach
                      </select>
                      @if ($errors->has('title'))
-                         <span class="text-rex-500">{{$errors->first("title")}}</span>
+                         <span class="text-red-500">{{$errors->first("title")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Quantite :</label>
                      <input type="number" name="qty">
                      @if ($errors->has('qty'))
-                         <span class="text-rex-500">{{$errors->first("qty")}}</span>
+                         <span class="text-red-500">{{$errors->first("qty")}}</span>
                      @endif
                  </div>
                  <div class="modal-champs">
                      <label for="">Libelle</label>
                      <input type="text" name="label">
                      @if ($errors->has('label'))
-                         <span class="text-rex-500">{{$errors->first("label")}}</span>
+                         <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -518,7 +526,7 @@
 
     <script>
         //form deployment
-        $(document).ready(function(){
+        $(function(){
             //ACTION ENTRY ON MODAL GPL
             $("#activate-form-entry-gpl").on("click",function(e){
                 e.preventDefault()
@@ -664,12 +672,14 @@
             $("#entry-gpl-form").submit(function(e){
                 e.preventDefault();
                 $.ajax({
-                    url:"{{route("MoveGpl",["action"=>"entry"])}}",
+                    url:"{{route("MoveGpl")}}",
                     method:"POST",
                     data:$(this).serialize(),
                     success:function(response){
                         $(".success").text(response.success);
                         $("#entry-gpl-form")[0].reset();
+                        $(".text-red-500").load(location.href + " .text-red-500")
+                        $("table").load(location.href + " table")
                     }
                 })
 
@@ -690,6 +700,7 @@
                             $(".errors").text("");
                             $(".success").text(response.success);
                             $("#entry-pleine-form")[0].reset();
+                            $("table").load(location.href + " table")
                         }
                     }
                 })
@@ -710,6 +721,7 @@
                         $(".success").text(response.success);
                         $(".errors").text("");
                         $("#entry-vides-form")[0].reset();
+                        $("table").load(location.href + " table")
                     }
                 }
 
@@ -730,6 +742,7 @@
                         $(".errors").text("");
                         $(".success").text(response.success);
                         $("#entry-accessory-form")[0].reset()
+                        $("table").load(location.href + " table")
                     }
                 }
             })
@@ -749,6 +762,7 @@
                         $(".errors").text("");
                         $(".success").text(response.success)
                         $("#outcome-pleine-form")[0].reset()
+                        $("table").load(location.href + " table")
                     }
                 }
             })
@@ -768,6 +782,7 @@
                         $(".errors").text("");
                         $(".success").text(response.success);
                         $("#outcome-vides-form")[0].reset()
+                        $("table").load(location.href + " table")
                     }
                 }
             })
@@ -787,6 +802,7 @@
                         $(".errors").text("");
                         $(".success").text(response.success);
                         $("#outcome-accessory-form")[0].reset();
+                        $("table").load(location.href + " table")
                     }
                 }
             })

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('citernes', function (Blueprint $table) {
+        Schema::create('receives', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->unique();
-            $table->string("type");
-            $table->string("capacity");
+            $table->unsignedBigInteger("id_citerne");
+            $table->double("qty");
+            $table->string("receiver");
+            $table->string("livraison");
+            $table->string("matricule");
+            $table->foreign("id_citerne")->references("id")->on("citernes")->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('citernes');
+        Schema::dropIfExists('receives');
     }
 };

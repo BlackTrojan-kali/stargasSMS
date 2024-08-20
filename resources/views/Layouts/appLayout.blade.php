@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stargas SMS</title>
+    <title>Stargas SCMS</title>
     <link rel="icon" href="/images/logo.png">
     <link href="toastr.css" rel="stylesheet"/>
     @vite('resources/css/app.css')

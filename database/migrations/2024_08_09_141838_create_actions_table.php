@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('citernes', function (Blueprint $table) {
+        Schema::create('actions', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->unique();
-            $table->string("type");
-            $table->string("capacity");
+            $table->unsignedBigInteger("id_user");
+            $table->String("desctiption");
+            $table->foreign("id_user")->references("id")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('citernes');
+        Schema::dropIfExists('actions');
     }
 };

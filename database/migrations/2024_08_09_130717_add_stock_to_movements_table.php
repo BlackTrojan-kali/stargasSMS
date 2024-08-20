@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('citernes', function (Blueprint $table) {
-            $table->id();
-            $table->string("name")->unique();
-            $table->string("type");
-            $table->string("capacity");
-            $table->timestamps();
+        Schema::table('movements', function (Blueprint $table) {
+            //
+            $table->integer("stock")->nullable();
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('citernes');
+        Schema::table('movements', function (Blueprint $table) {
+            //
+        });
     }
 };
