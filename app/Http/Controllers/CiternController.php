@@ -19,10 +19,12 @@ public function showReleve(Request $request){
     $vracstocks = Citerne::where("type","mobile")->get();
     $receptions = Receive::with("citerne")->get();
     $fixe  = Citerne::where("type","fixe")->get();
+    
+    $allvrackstocks = Citerne::all();
     if(Auth::user()->role == "magasin"){
-    return view("manager.reception",["accessories"=>$accessories,"vrac"=>$vracstocks,"receptions"=>$receptions]);
+    return view("manager.reception",["accessories"=>$accessories,"vrac"=>$vracstocks,"receptions"=>$receptions,"all"=>$allvrackstocks]);
     }else{
-        return view("producer.reception",["receptions"=>$receptions,"vrac"=>$vracstocks,"fixe"=>$fixe]);
+        return view("producer.reception",["receptions"=>$receptions,"vrac"=>$vracstocks,"fixe"=>$fixe,"all"=>$allvrackstocks]);
     }
 }
     public function showFormAddCitern(Request $request){

@@ -203,6 +203,13 @@
                         <span class="text-red-500">{{$errors->first("label")}}</span>
                     @endif
                 </div>
+                <div class="modal-champs">
+                    <label for="">Bordereau :</label>
+                    <input type="text" name="bord">
+                    @if ($errors->has('bord'))
+                        <span class="text-red-500">{{$errors->first("bord")}}</span>
+                    @endif
+                </div>
                 <div class="modal-validation">
                 <button type="reset">annuler</button>
                 <button type="submit" id="submitForm">creer</button>
@@ -257,6 +264,13 @@
                          <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
+                 <div class="modal-champs">
+                     <label for="">Bordereau :</label>
+                     <input type="text" name="bord">
+                     @if ($errors->has('bord'))
+                         <span class="text-red-500">{{$errors->first("bord")}}</span>
+                     @endif
+                 </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
                  <button type="submit" id="submitForm">creer</button>
@@ -302,6 +316,13 @@
                      <input type="text" name="label">
                      @if ($errors->has('label'))
                          <span class="text-red-500">{{$errors->first("label")}}</span>
+                     @endif
+                 </div>
+                 <div class="modal-champs">
+                     <label for="">Bordereau :</label>
+                     <input type="text" name="bord">
+                     @if ($errors->has('bord'))
+                         <span class="text-red-500">{{$errors->first("bord")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">
@@ -406,6 +427,13 @@
                          <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
+                 <div class="modal-champs">
+                     <label for="">Bordereau :</label>
+                     <input type="text" name="bord">
+                     @if ($errors->has('bord'))
+                         <span class="text-red-500">{{$errors->first("bord")}}</span>
+                     @endif
+                 </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
                  <button type="submit" id="submitForm">creer</button>
@@ -457,6 +485,13 @@
                          <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
+                 <div class="modal-champs">
+                     <label for="">Bordereau :</label>
+                     <input type="text" name="bord">
+                     @if ($errors->has('bord'))
+                         <span class="text-red-500">{{$errors->first("bord")}}</span>
+                     @endif
+                 </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
                  <button type="submit">creer</button>
@@ -502,6 +537,13 @@
                      <input type="text" name="label">
                      @if ($errors->has('label'))
                          <span class="text-red-500">{{$errors->first("label")}}</span>
+                     @endif
+                 </div>
+                 <div class="modal-champs">
+                     <label for="">Bordereau :</label>
+                     <input type="text" name="bord">
+                     @if ($errors->has('bord'))
+                         <span class="text-red-500">{{$errors->first("bord")}}</span>
                      @endif
                  </div>
                  <div class="modal-validation">

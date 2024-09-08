@@ -62,6 +62,7 @@
                     <td>article</td>
                     <td>entree</td>
                     <td>qte</td>
+                    <td>bordereau</td>
                     <td>stock</td>
                     <td>state</td>
                     <td>commentaire</td>
@@ -78,6 +79,7 @@
                         <td>{{$move->fromArticle->type}} - {{$move->fromArticle->weight}} KG </td>
                         <td>{{$move->entree}}</td>
                         <td>{{$move->qty}}</td>
+                        <td>{{$move->bordereau}}</td>
                         <td>{{$move->stock}}</td>
                         <td>{{$move->fromArticle->state? "plein":"vide"}}</td>
                         <td>{{$move->label}} <span class="text-red-500 delete"> supprimer</span></td>
@@ -99,6 +101,7 @@
                     <td>article</td>
                     <td>sortie</td>
                     <td>qte</td>
+                    <td>Bordereau</td>
                     <td>stock</td>
                     <td>state</td>
                     <td>commentaire</td>
@@ -114,6 +117,7 @@
                         <td>{{$move->fromArticle->type}} - {{$move->fromArticle->weight}} KG </td>
                         <td>{{$move->sortie}}</td>
                         <td>{{$move->qty}}</td>
+                        <td>{{$move->bordereau}}</td>
                         <td>{{$move->stock}}</td>
                         <td>{{$move->fromArticle->state? "plein":"vide"}}</td>
                         <td>{{$move->label}} <span class="text-red-500 delete"> supprimer</span></td>

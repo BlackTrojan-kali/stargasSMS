@@ -49,7 +49,7 @@ public function registerAction(Request $request, $action, $type){
     }
 }
 public function showHistory(Request $request){
-    $accessories = Article::where("type","=","accessoire")->where("service",Auth::user()->role)->get("title");
+    $accessories = Article::where("type","=","accessoire")->get("title");
     $allMoves = Movement::with("fromStock","fromArticle")->where("entree",1)->where("service",Auth::user()->role)->orderBy("created_at","DESC")->get();
     $allMovesOut = Movement::with("fromStock","fromArticle")->where("sortie",1)->where("service",Auth::user()->role)->orderBy("created_at","DESC")->get();
     $vracstocks = Citerne::where("type","mobile")->get();
@@ -86,6 +86,7 @@ public function saveBottleMove(Request $request, $action, $state){
         "weight"=>"string |required",
         "label"=>"string | max:250 |required",
         "qty"=>"numeric | required | min:0 |max:1000",
+        "bord"=>"string | required "
     ]);
     $state = intval($state);
     $weight = floatval($request->weight);
@@ -122,6 +123,7 @@ public function saveBottleMove(Request $request, $action, $state){
         $move = new Movement();
         $move->article_id = $article->id;
         $move->qty = $request->qty;
+        $move->bordereau = $request->bord;
         $move->stock_id = $stock->id;
         $move->origin = $request->origin;
         $move->stock = $stockQty;
@@ -168,7 +170,8 @@ public function saveAccessoryMoves(Request $request, $action){
     $request->validate([
         "title"=>"string |required",
         "qty"=>"numeric | required",
-        "label"=>"string | max:250 |required"
+        "label"=>"string | max:250 |required",
+        "bord"=>"string | required"
     ]);
     $article = Article::where("title","=",$request->title)->where("type","=","accessoire")->first();
     if($article){
@@ -205,6 +208,7 @@ public function saveAccessoryMoves(Request $request, $action){
         $move->stock = $stockQty;
         $move->stock_id = $stock->id;
         $move->origin = "null";
+        $move->bordereau = $request->bord;
         $move->service = Auth::user()->role;
         $move->label = $request->label;
         if($action =="entry"){

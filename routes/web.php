@@ -45,8 +45,13 @@ Route::group(["middleware"=>"auth"],function(){
             Route::get("/producer/releves",[Controllers\CiternController::class,"showReleve"])->name("showRelevePro");
             Route::post("producer/moveActioins/save/{action}/{state}",[Controllers\ProducerController::class,"saveBottleMove"])->name("saveBottleMovePro");
             Route::post("/producer/moveVrac",[Controllers\ProducerController::class,"depotage"])->name("Depotage");
-            Route::get("/producer/citernes",[Controllers\ProducerController::class,"showCiterne"])->name("showCitene");
-      });
+            Route::get("/producer/citernes",[Controllers\ProducerController::class,"showCiterne"])->name("showCiterne");
+            Route::get("/producer/makeRel/{id}",[Controllers\ProducerController::class,"makeRel"])->name("makeRel"); 
+            Route::post("/producer/postRel/{id}",[Controllers\ProducerController::class,"postRel"])->name("postRel");
+            Route::post("/producer/makeMove",[Controllers\ProducerController::class,"produceGas"])->name("produceGas");
+            Route::post("/producer/makeTransmission",[Controllers\ProducerController::class,"transmitGas"])->name("transmitGas");
+            Route::get("/producer/moveEntryPro/{state}/{type}/{weight}",[Controllers\ProducerController::class,"showEntry"])->name("moveEntryPro");
+           });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });
 Route::get('/login',[Controllers\LoginController::class, 'show'])->name('login');

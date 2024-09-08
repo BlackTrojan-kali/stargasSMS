@@ -5,10 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Citerne extends Model
+class Transmit extends Model
 {
     use HasFactory;
-    public function Stock(){
-        return $this->hasOne(Vracstock::class,"citerne_id");
-    }
 }

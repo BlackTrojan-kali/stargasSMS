@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Citerne extends Model
+class Producermove extends Model
 {
     use HasFactory;
-    public function Stock(){
-        return $this->hasOne(Vracstock::class,"citerne_id");
+    public function citerne(){
+        return $this->belongsTo(Citerne::class, "id_citerne");
     }
 }

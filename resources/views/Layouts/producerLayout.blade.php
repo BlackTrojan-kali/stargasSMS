@@ -71,27 +71,56 @@
                         <li class="elem" id="activate-form-entry-vide"><a>Bouteilles vides Reception</a></li>
                     </ul>
                 </div>
-                <div class="drop-2 elem">
-                    Transfert
-
-
-                    <ul class="drop-items-2">
-                       <!-- <li class="elem " id="activate-form-outcome-gpl"><a href="">GPL Vrac (sortie)</a></li> -->
-                        <li class="elem" id="activate-form-outcome-vide"><a>Bouteilles Vides (trans.)</a></li>
-                        <li class="elem" id="activate-form-outcome-pleine"><a>Bouteilles Pleines (trans.)</a></li>
-                    </ul> 
-                           </div>
+               
             </div>
             </div>
-            <a href="{{route("manager-history")}}" >PRODUCTION</a>
+            <div class="font-bold cursor-pointer dropdown relative" >PRODUCTION <i class="fa-solid fa-angle-down"></i>
+                <div class="drop-items ">
+                    <div class="elem" id="activate-production-form">
+                        Production
+                    
+                    </div>
+                    <div class="elem " id="activate-transmit-form">
+                        Transfert
+    
+    
+                               </div>
+                </div>
+                </div>
             <a href="{{ route("showCiterne") }}">CITERNES</a>
             <a href="{{route("showRelevePro")}}">RECEPTION</a>
             
             <div class="dropdown cursor-pointer font-bold">    ETATS <i class="fa-solid fa-angle-down"></i>
             <div class="drop-items">
-                <div class="elem">Mouvements Entree</div>
-                <div class="elem">Mouvements Sortie</div>
-                <div class="elem">Mouvements Global</div>
+                <div class="drop-2 elem">
+                    MOUVEMENTS ENTREES
+                    <ul class="drop-items-2">
+                        <li class="elem" id="activate-form-entry-gpl"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>1,"weight"=>12.5]) }}">12.5 KG</a></li>
+                        <li class="elem" id="activate-form-entry-accessory"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>1,"weight"=>50]) }}">  50 KG</a></li>
+                        <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>1,"weight"=>6]) }}">6 KG</a></li>
+                        <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>1,"weight"=>0]) }}">ACCESSOIRES</a></li>
+                    </ul>
+                </div>
+                
+                <div class="drop-2 elem">
+                    MOUVEMENTS Sortie
+                    <ul class="drop-items-2">
+                        <li class="elem" id="activate-form-entry-gpl"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>0,"weight"=>12.5]) }}">12.5 KG (sortie)</a></li>
+                        <li class="elem" id="activate-form-entry-accessory"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>0,"weight"=>50]) }}">50 KG (sortie)</a></li>
+                        <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>0,"weight"=>6]) }}">6 KG (sortie)</a></li>
+                        <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryPro",["state"=>1,"type"=>0,"weight"=>0]) }}">ACCESSOIRES (sortie)</a></li>
+                    </ul>
+                </div>
+                
+                <div class="drop-2 elem">
+                    MOUVEMENTS Global
+                    <ul class="drop-items-2">
+                        <li class="elem" id="activate-form-entry-gpl"><a href="">12.5 KG (global)</a></li>
+                        <li class="elem" id="activate-form-entry-accessory"><a>50 KG (global)</a></li>
+                        <li class="elem" id="activate-form-entry-vide"><a>6 KG (global)</a></li>
+                        <li class="elem" id="activate-form-entry-vide"><a>ACCESSOIRES (global)</a></li>
+                    </ul>
+                </div>
             </div>
             </div>
         </nav>
@@ -99,7 +128,127 @@
        </header>  
        @yield('content')
        <br><br><br><br><br><br><br><br>
+       <!--FORMULAIRE DE PRODUCTION-->
+       <div id="produce-gpl" class="modals">
+        <center>
+           
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>MISE EN PRODUCTION</h1>
+                    <span class="close-modal">X</span>
+                </div>
+                <span class="success text-green-500 "></span>
+                <span class="errors text-red-500 "></span>
+                <form id="produce-gpl-form"  >
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Type de citerne:</label>
+                        <select name="citerne" id="">
+                         @foreach ($all  as $vra )
+                             <option value="{{$vra->name}}">{{$vra->name}} - ({{$vra->type}})</option>
+                         @endforeach
+                        </select>
+                        @if ($errors->has('citerne'))
+                            <span class="text-red-500">{{$errors->first("citerne")}}</span>
+                        @endif
+                    </div> <div class="modal-champs">
+                        <label for="">Type de Bouteilles:</label>
+                        <select name="type" id="">
+                             <option value="12.5">12.5 KG</option>
+                             <option value="50">50 KG</option>
+                             <option value="6">6 KG</option>
+                        </select>
+                        @if ($errors->has('type'))
+                            <span class="text-red-500">{{$errors->first("type")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Quantite</label> <div>
+                        <input type="number" name="qty">
+
+                        @if ($errors->has('qty'))
+                            <span class="text-red-500">{{$errors->first("qty")}}</span>
+                        @endif
+                        </div>
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Numero Bordereau</label>
+                        <input type="text" name="bord">
+                        @if ($errors->has('bord'))
+                            <span class="text-red-500">{{$errors->first("bord")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                    <button type="reset">annuler</button>
+                    <button type="submit" id="submitForm">creer</button>
+                </div>
+                </form>
+            </div>
+        </center>
+    </div>
+
+    
+    <div id="transmit-form" class="modals">
+        <center>
+           
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>TRANSFERT DE BOUTEILLES</h1>
+                    <span class="close-modal">X   </span>
+                </div>
+                <span class="success text-green-500 "></span>
+                <span class="errors text-red-500 "></span>
+                <form id="transmiting-form"  >
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Type de citerne:</label>
+                      <div>
+                        <input type="radio" name="state" value="0">
+                        Vide
+                        <input type="radio" name="state" value="1">
+                        Pleine
+                    </div>
+                        @if ($errors->has('citerne'))
+                            <span class="text-red-500">{{$errors->first("citerne")}}</span>
+                        @endif
+                    </div> <div class="modal-champs">
+                        <label for="">Type de Bouteilles:</label>
+                        <select name="type" id="">
+                             <option value="12.5">12.5KG</option>
+                             <option value="50">50KG</option>
+                             <option value="6">6KG</option>
+                        </select>
+                        @if ($errors->has('type'))
+                            <span class="text-red-500">{{$errors->first("type")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Quantite</label> <div>
+                        <input type="number" name="qty">
+
+                        @if ($errors->has('qty'))
+                            <span class="text-red-500">{{$errors->first("qty")}}</span>
+                        @endif
+                        </div>
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Numero Bordereau</label>
+                        <input type="text" name="bord">
+                        @if ($errors->has('bord'))
+                            <span class="text-red-500">{{$errors->first("bord")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                    <button type="reset">annuler</button>
+                    <button type="submit" id="submitForm">creer</button>
+                </div>
+                </form>
+            </div>
+        </center>
+    </div>
        
+       <!--FIN DES FORMULAIRES DE PRODUCTION-->
+
 
 <!--ENTREE FORMULAIRES-->
     <div id="entry-gpl" class="modals">
@@ -203,6 +352,13 @@
                          <span class="text-red-500">{{$errors->first("label")}}</span>
                      @endif
                  </div>
+                 <div class="modal-champs">
+                     <label for="">Bordereau</label>
+                     <input type="text" name="bord">
+                     @if ($errors->has('bord'))
+                         <span class="text-red-500">{{$errors->first("bord")}}</span>
+                     @endif
+                 </div>
                  <div class="modal-validation">
                  <button type="reset">annuler</button>
                  <button type="submit" id="submitForm">creer</button>
@@ -282,6 +438,39 @@
     <script>
         //form deployment
         $(function(){
+            //ACTION  PRODUCE
+            
+            $("#activate-production-form").on("click",function(e){
+                e.preventDefault()
+                if($("#produce-gpl").hasClass("modals")){
+                    $("#produce-gpl").addClass("modals-active");
+                    $("#produce-gpl").removeClass("modals");
+                }
+
+            $(".close-modal").on("click",function(e){
+                e.preventDefault()
+                if($("#produce-gpl").hasClass("modals-active")){
+                    $("#produce-gpl").addClass("modals");
+                    $("#produce-gpl").removeClass("modals-active");
+                }
+            })
+            })     
+            $("#activate-transmit-form").on("click",function(e){
+                e.preventDefault()
+                if($("#transmit-form").hasClass("modals")){
+                    $("#transmit-form").addClass("modals-active");
+                    $("#transmit-form").removeClass("modals");
+                }
+
+            $(".close-modal").on("click",function(e){
+                e.preventDefault()
+                if($("#transmit-form").hasClass("modals-active")){
+                    $("#transmit-form").addClass("modals");
+                    $("#transmit-form").removeClass("modals-active");
+                }
+            })
+            })
+
             //ACTION ENTRY ON MODAL GPL
             $("#activate-form-entry-gpl").on("click",function(e){
                 e.preventDefault()
@@ -299,7 +488,7 @@
             })
             })
         
-      
+            
             //ACTION ENTRY ON MODAL BOUTEILLES-PLEINES
             $("#activate-form-entry-accessory").on("click",function(e){
                 e.preventDefault()
@@ -339,9 +528,49 @@
             })
       
 
-      
+        //VALIDATION FORMULAIRES PRODUCTION
 
+        $("#produce-gpl-form").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url:"{{route("produceGas")}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".success").text(response.success);
+                        $(".errors").text("");
+                        $("#entry-vides-form")[0].reset();
+                        $("table").load(location.href + " table")
+                    }
+                }
 
+            })
+        })
+        
+        $("#transmiting-form").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url:"{{route("transmitGas")}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        $(".success").text("");
+                    }else{
+                        $(".success").text(response.success);
+                        $(".errors").text("");
+                        $("#transmiting-form")[0].reset();
+                        $("table").load(location.href + " table")
+                    }
+                }
+
+            })
+        })
             
         //VALIDATION FORMULAIRE ENTREES BOUTEILLES VIDES
         $("#entry-vides-form").submit(function(e){

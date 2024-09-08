@@ -7,5 +7,11 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
+        inject({
+            jQuery: 'jquery',
+          }),
     ],
+    optimizeDeps: {
+        include: ['jquery'],
+      },
 });
