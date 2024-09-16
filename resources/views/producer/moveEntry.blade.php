@@ -4,7 +4,7 @@
     <center>
         
         @if(!empty($moves2->first()))
-        <h1>MOUVEMENT DES {{ $moves2[0]->fromArticle->type }} {{ $moves2[0]->fromArticle->weight }} KG </h1>
+        <h1>MOUVEMENT DES {{ $moves2[0]->fromArticle->type }} {{ $moves2[0]->fromArticle->weight }} KG VIDES </h1>
     @endif
         <table class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
             <thead class="bg-gray-500 text-white p-2 border-collapse-0">
@@ -43,7 +43,7 @@
             </tbody>
         </table>
         @if(!empty($moves->first()))
-            <h1>MOUVEMENT DES {{ $moves[0]->fromArticle->type }} {{ $moves[0]->fromArticle->weight }} KG </h1>
+            <h1>MOUVEMENT DES {{ $moves[0]->fromArticle->type }} {{ $moves[0]->fromArticle->weight }} KG PLEINES </h1>
             @endif
             <table class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
                 <thead class="bg-gray-500 text-white p-2 border-collapse-0">
@@ -59,7 +59,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(!empty($moves->first())){
+                    @if(!empty($moves->first()))
                     @foreach ($moves as $move )
                     <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
                         <td>

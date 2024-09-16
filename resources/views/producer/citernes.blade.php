@@ -1,7 +1,7 @@
 @extends('Layouts.producerLayout')
 @section('content')
 <center>
-    <h1 class="font-bold text-2xl">Etat des Citernes</h1>
+    <h1 class="font-bold text-2xl">Etat du Stock</h1>
             <table  class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
                 <thead  class="text-white font-bold text-center bg-slate-600 p-2">
                     <tr>

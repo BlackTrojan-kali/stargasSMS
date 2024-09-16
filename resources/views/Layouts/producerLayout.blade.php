@@ -436,6 +436,8 @@
         <p>&copy; 2024</p>
     </footer>
     <script type="module">
+        
+    $('table').DataTable();
         //form deployment
         $(function(){
             //ACTION  PRODUCE

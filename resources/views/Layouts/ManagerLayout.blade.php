@@ -660,6 +660,7 @@
     <script type="module">
         //TRANSMIT FORM
          
+    $('table').DataTable();
         $("#activate-transmit-form").on("click",function(e){
                 e.preventDefault()
                 if($("#transmit-form").hasClass("modals")){

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("type");
             $table->string("service");
             $table->float("qty");
+            $table->string("service");
+            $table->string("destination");
             $table->string("bordereau");
             $table->timestamps();
         });

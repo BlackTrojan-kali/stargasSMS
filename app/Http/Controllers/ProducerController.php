@@ -36,16 +36,21 @@ class ProducerController extends Controller
         $vracstocks = Citerne::where("type","mobile")->get();
         $fixe  = Citerne::where("type","fixe")->get();
         if($weight>0){
-            $moves = Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("articles.state",$state)->where("articles.weight",$weight)->select("movements.*")->with("fromArticle")->get();
+            $moves = Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("movements.service",Auth::user()->role)->where("articles.state",$state)->where("articles.weight",$weight)->select("movements.*")->with("fromArticle")->get();
     
-            $moves2 = Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("articles.state",0)->where("articles.weight",$weight)->select("movements.*")->with("fromArticle")->get();
+            $moves2 = Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("movements.service",Auth::user()->role)->where("articles.state",0)->where("articles.weight",$weight)->select("movements.*")->with("fromArticle")->get();
          
             
         }else{
-            $moves2= Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("articles.state",0)->where("articles.weight",$weight)->select("movements.*")->with("fromArticle")->get();
-            $moves = Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("articles.type","accessoire")->select("movements.*")->get();
+            $moves2= Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("movements.service",Auth::user()->role)->where("articles.state",0)->where("articles.weight",$weight)->select("movements.*")->with("fromArticle")->get();
+            $moves = Movement::join("articles","movements.article_id","articles.id")->where("movements.entree",$type)->where("movements.service",Auth::user()->role)->where("articles.type","accessoire")->select("movements.*")->get();
         }
-
+        if(Auth::user()->role =="magasin"){
+            
+    $accessories = Article::where("type","=","accessoire")->get("title");
+        return view("manager.moveEntryMan",["vrac"=>$vracstocks,"stocks"=>$stocks,"accessories"=>$accessories,"fixe"=>$fixe,"all"=>$allvrackstocks,"moves"=>$moves,"moves2"=>$moves2]);
+            
+        }
         return view("producer.moveEntry",["vrac"=>$vracstocks,"stocks"=>$stocks,"fixe"=>$fixe,"all"=>$allvrackstocks,"moves"=>$moves,"moves2"=>$moves2]);
             
     }
