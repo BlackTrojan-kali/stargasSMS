@@ -163,13 +163,13 @@
                         @endif
                     </div>
                     <div class="modal-champs">
-                        <label for="">Quantite</label> <div>
+                        <label for="">Quantite</label> 
                         <input type="number" name="qty">
 
                         @if ($errors->has('qty'))
                             <span class="text-red-500">{{$errors->first("qty")}}</span>
                         @endif
-                        </div>
+                        
                     </div>
                     <div class="modal-champs">
                         <label for="">Numero Bordereau</label>
@@ -223,13 +223,13 @@
                         @endif
                     </div>
                     <div class="modal-champs">
-                        <label for="">Quantite</label> <div>
+                        <label for="">Quantite</label>
                         <input type="number" name="qty">
 
                         @if ($errors->has('qty'))
                             <span class="text-red-500">{{$errors->first("qty")}}</span>
                         @endif
-                        </div>
+                        
                     </div>
                     <div class="modal-champs">
                         <label for="">Numero Bordereau</label>
@@ -275,13 +275,13 @@
                         @endif
                     </div>
                     <div class="modal-champs">
-                        <label for="">Quantite</label> <div>
+                        <label for="">Quantite</label> 
                         <input type="number" name="qty">
 
                         @if ($errors->has('qty'))
                             <span class="text-red-500">{{$errors->first("qty")}}</span>
                         @endif
-                        </div>
+                        
                     </div>
                     <div class="modal-champs">
                         <label for="">Numero Bordereau Livraison:</label>

@@ -201,10 +201,18 @@ public function produceGas(Request $request){
     $type = floatval($request->type);
     $move = new Producermove();
     $citerne = Citerne::where("name",$request->citerne)->with("Stock")->first();
+    $stockQty = intval($citerne->stock->stock_theo);
+    if($stockQty < (intval($request->qty) * floatval($type))){
+        return response()->json(["error"=>"stock citerne insuffisant"]);
+    }
+    
     $move->id_citerne = $citerne->id;
     $move->type = $type;
     $move->qty = $request->qty;
     $move->bordereau = $request->bord;
+    $citerne->stock->stock_theo = $stockQty - (intval($request->qty)*floatval($type));
+    $citerne->stock->stock_rel = $stockQty - (intval($request->qty)*floatval($type));
+    $citerne->stock->save();
     //$move->save();
     
     $article = Article::where("weight",$type)->where("state",0)->with("hasStock")->first();
