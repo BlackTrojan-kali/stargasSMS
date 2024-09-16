@@ -18,6 +18,7 @@ return new class extends Migration
             
             $table->string("qty");
             $table->text("matricule");
+            $table->string("service");
             $table->foreign("citerne_id")->references("id")->on("citernes")->onDelete("cascade");
             $table->foreign("vracstock_id")->references("id")->on("vracstocks")->onDelete("cascade");
             $table->timestamps();

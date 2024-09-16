@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("id_citerne");
             $table->double("qty");
             $table->string("receiver");
+            $table->string("provenance");
             $table->string("livraison");
             $table->string("matricule");
             $table->foreign("id_citerne")->references("id")->on("citernes")->onDelete("cascade");

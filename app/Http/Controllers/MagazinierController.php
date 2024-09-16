@@ -24,7 +24,9 @@ class MagazinierController extends Controller
         $stocks = Stock::where("region","=",Auth::user()->region)->where("category","=",$categorie)->with("article")->get();
         $accessories = Article::where("type","=","accessoire")->get("title");
         $vracstocks = Citerne::where("type","mobile")->get();
-        return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories,"vrac"=>$vracstocks]);
+        
+        $fixe  = Citerne::where("type","fixe")->get();
+        return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories,"vrac"=>$vracstocks,"fixe"=>$fixe]);
     }
     public function showmove(Request $request){
         return  view("manager.moveActions");
@@ -53,7 +55,9 @@ public function showHistory(Request $request){
     $allMoves = Movement::with("fromStock","fromArticle")->where("entree",1)->where("service",Auth::user()->role)->orderBy("created_at","DESC")->get();
     $allMovesOut = Movement::with("fromStock","fromArticle")->where("sortie",1)->where("service",Auth::user()->role)->orderBy("created_at","DESC")->get();
     $vracstocks = Citerne::where("type","mobile")->get();
-    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut,"vrac"=>$vracstocks]);
+    
+    $fixe  = Citerne::where("type","fixe")->get();
+    return view("manager.history",["accessories"=>$accessories,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut,"vrac"=>$vracstocks,"fixe"=>$fixe]);
 }
 public function showfilteredHistory(Request $request){
     $request->validate([
@@ -78,7 +82,9 @@ public function showfilteredHistory(Request $request){
    
     $allMovesOut = Movement::join("articles","movements.article_id","=","articles.id")->whereBetween("movements.created_at",[$fromdate,$todate])->where("articles.type",$type)->where("movements.entree",0)->where("articles.state",$state)->where("service",Auth::user()->role)->select("movements.*")->get();
     $vracstocks = Citerne::where("type","mobile")->get();
-    return view("manager.history",["accessories"=>$accessories,"vrac"=>$vracstocks,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut]);
+    
+    $fixe  = Citerne::where("type","fixe")->get();
+    return view("manager.history",["accessories"=>$accessories,"vrac"=>$vracstocks,"allMoves"=>$allMoves,"allMovesOut"=>$allMovesOut,"fixe"=>$fixe]);
 }
 public function saveBottleMove(Request $request, $action, $state){
     $request->validate([

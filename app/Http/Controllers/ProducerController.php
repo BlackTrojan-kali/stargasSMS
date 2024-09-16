@@ -99,13 +99,21 @@ class ProducerController extends Controller
         ]);
         $fixe= intval($request->fixe);
         $mobile = intval($request->mobile);
-        $stock = Vracstock::where("citerne_id",$fixe)->first();
+        $stock = Vracstock::where("citerne_id",$fixe)->with("citerne")->first();
+        $capacity = intval($stock->citerne->capacity);
+        $qty = intval($request->qty);
+        $total = $stock->qty + $qty;
+        if($total < $capacity){
         $stock->stock_theo += $request->qty;
         $stock->stock_rel = $stock->stock_theo;
         $stock->save();
+    }else{
+        return response()->json(["error"=>"espace citerne insuffisant"]);
+    }
         $move = new Vracmovement();
         $move->citerne_id = $fixe;
         $move->vracstock_id = $stock->id;
+        $move->service = Auth::user()->role;
         $move->qty = $request->qty;
         $move->matricule = $request->matricule;
         $move->save();
@@ -192,7 +200,7 @@ public function produceGas(Request $request){
     ]);
     $type = floatval($request->type);
     $move = new Producermove();
-    $citerne = Citerne::where("name",$request->citerne)->first();
+    $citerne = Citerne::where("name",$request->citerne)->with("Stock")->first();
     $move->id_citerne = $citerne->id;
     $move->type = $type;
     $move->qty = $request->qty;
@@ -210,6 +218,7 @@ public function produceGas(Request $request){
         $article2->hasStock[1]->qty += $request->qty;
         $article2->hasStock[1]->save();
         $move->save();
+       // $citerne->stock->stock_theo -= $request->qty*$type;
         return response()->json(["success"=>"mouvement insere avec success"]);
     }
     }else{

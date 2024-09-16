@@ -5,7 +5,7 @@
   @foreach ($stocks as $stock)
 
     <?php
-    $percent = ($stock->qty/500) *100
+    $percent = ($stock->qty/1000) *100
     ?>
   <div class="relative w-6/12">
     <div class="w-11/12 flex justify-between font-bold">

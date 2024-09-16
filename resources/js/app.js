@@ -1,4 +1,7 @@
 import './bootstrap';
 import jQuery from 'jquery';
-
-Object.assign(window, { $: jQuery, jQuery });
+import toastr from 'toastr';
+import datatable from 'datatable';
+window.$ = jQuery;
+window.toastr = toastr
+DataTable(window, window.$);

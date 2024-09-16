@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 </head>
-<body>
+<body class="mx-8">
     
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -19,13 +19,13 @@
      <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
    
      @if(session('success'))
-     <script>
+     <script type="module">
      $(document).ready(function(){
          toastr.success("{{session('success')}}")
      })
  </script>
      @elseif ($errors->has('message'))
-     <script>
+     <script type="module">
      $(document).ready(function(){
          toastr.error("{{$errors->first('message')}}")
      })
@@ -435,7 +435,7 @@
         </div>
         <p>&copy; 2024</p>
     </footer>
-    <script>
+    <script type="module">
         //form deployment
         $(function(){
             //ACTION  PRODUCE
@@ -539,9 +539,19 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".success").text(response.success);
+                        
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $(".errors").text("");
                         $("#entry-vides-form")[0].reset();
                         $("table").load(location.href + " table")
@@ -560,9 +570,19 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".success").text(response.success);
+                        
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $(".errors").text("");
                         $("#transmiting-form")[0].reset();
                         $("table").load(location.href + " table")
@@ -582,9 +602,19 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".success").text(response.success);
+                        
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $(".errors").text("");
                         $("#entry-vides-form")[0].reset();
                         $("table").load(location.href + " table")
@@ -602,6 +632,10 @@
                     data:$(this).serialize(),
                     success:function(response){
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#entry-gpl-form")[0].reset();
                         $(".text-red-500").load(location.href + " .text-red-500")
                         $("table").load(location.href + " table")
@@ -621,10 +655,19 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".errors").text("");
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#entry-accessory-form")[0].reset()
                         $("table").load(location.href + " table")
                     }

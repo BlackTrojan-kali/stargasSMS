@@ -8,6 +8,8 @@ use App\Http\Middleware\isProducer;
 use App\Http\Middleware\IsSuper;
 
 Route::group(["middleware"=>"auth"],function(){
+      
+      Route::post("/moveVrac",[Controllers\ProducerController::class,"depotage"])->name("Depotage");
       Route::middleware(IsSuper::class)->group(function(){
             Route::get("/",[Controllers\SuperAdminPageController::class,"show"])->name('dashboard');
             Route::get("/manageUsers",[Controllers\SuperAdminPageController::class,"showUsers"])->name("manageUsers");
@@ -26,6 +28,8 @@ Route::group(["middleware"=>"auth"],function(){
             Route::get("/addCiterns",[Controllers\CiternController::class,"showFormAddCitern"])->name("addCiterns");
             Route::post("/validateCiterns",[Controllers\CiternController::class,"validateFormAddCitern"])->name("validateCiterns");
             Route::delete("/deleteCitern/{id}",[Controllers\CiternController::class,"delete"])->name("deleteCiterne");
+         
+            
       });  
       Route::middleware(isManager::class)->group(function () {
           Route::get("/manager/dashboard",[Controllers\MagazinierController::class,"show"])->name("dashboard-manager");
@@ -38,13 +42,16 @@ Route::group(["middleware"=>"auth"],function(){
           //RELEVES
             Route::post("/manager/gplMove",[Controllers\CiternController::class,"moveGpl"])->name("MoveGpl");
             Route::get("/manager/releves",[Controllers\CiternController::class,"showReleve"])->name("showReleve");
+               //etats
+            Route::get("/producer/moveEntryMan/{state}/{type}/{weight}",[Controllers\ProducerController::class,"showEntry"])->name("moveEntryMan");
+
+
       });
       Route::middleware(isProducer::class)->group(function(){
             Route::get("/producer/dashboard",[Controllers\ProducerController::class,"show"])->name("dashboard-producer");
             Route::post("/producer/gplMove",[Controllers\CiternController::class,"moveGpl"])->name("MoveGplPro");
             Route::get("/producer/releves",[Controllers\CiternController::class,"showReleve"])->name("showRelevePro");
             Route::post("producer/moveActioins/save/{action}/{state}",[Controllers\ProducerController::class,"saveBottleMove"])->name("saveBottleMovePro");
-            Route::post("/producer/moveVrac",[Controllers\ProducerController::class,"depotage"])->name("Depotage");
             Route::get("/producer/citernes",[Controllers\ProducerController::class,"showCiterne"])->name("showCiterne");
             Route::get("/producer/makeRel/{id}",[Controllers\ProducerController::class,"makeRel"])->name("makeRel"); 
             Route::post("/producer/postRel/{id}",[Controllers\ProducerController::class,"postRel"])->name("postRel");

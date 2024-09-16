@@ -21,13 +21,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
      <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     @if(session('success'))
-    <script>
+    <script type="module">
     $(document).ready(function(){
         toastr.success("{{session('success')}}")
     })
 </script>
     @elseif ($errors->has('message'))
-    <script>
+    <script type="module">
     $(document).ready(function(){
         toastr.error("{{$errors->first('message')}}")
     })
@@ -68,6 +68,7 @@
                     Entree
                     <ul class="drop-items-2">
                         <li class="elem" id="activate-form-entry-gpl"><a href="">GPL Vrac</a></li>
+                        <li class="elem" id="activate-transmit-form"><a href="">Tranfert Vrac</a></li>
                         <li class="elem" id="activate-form-entry-vide"><a>Bouteilles Vides</a></li>
                         <li class="elem" id="activate-form-entry-pleine"><a>Bouteilles Pleines</a></li>
                         <li class="elem" id="activate-form-entry-accessory"><a>Accessoires</a></li>
@@ -91,18 +92,101 @@
             <a href="{{route("showReleve")}}">RECEPTION</a>
             
             <div class="dropdown cursor-pointer font-bold">    ETATS <i class="fa-solid fa-angle-down"></i>
-            <div class="drop-items">
-                <div class="elem">Mouvements Entree</div>
-                <div class="elem">Mouvements Sortie</div>
-                <div class="elem">Mouvements Global</div>
-            </div>
-            </div>
+                <div class="drop-items">
+                    <div class="drop-2 elem">
+                        MOUVEMENTS ENTREES
+                        <ul class="drop-items-2">
+                            <li class="elem" id="activate-form-entry-gpl"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>1,"weight"=>12.5]) }}">12.5 KG</a></li>
+                            <li class="elem" id="activate-form-entry-accessory"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>1,"weight"=>50]) }}">  50 KG</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>1,"weight"=>6]) }}">6 KG</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>1,"weight"=>0]) }}">ACCESSOIRES</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="drop-2 elem">
+                        MOUVEMENTS Sortie
+                        <ul class="drop-items-2">
+                            <li class="elem" id="activate-form-entry-gpl"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>12.5]) }}">12.5 KG (sortie)</a></li>
+                            <li class="elem" id="activate-form-entry-accessory"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>50]) }}">50 KG (sortie)</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>6]) }}">6 KG (sortie)</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>0]) }}">ACCESSOIRES (sortie)</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="drop-2 elem">
+                        MOUVEMENTS Global
+                        <ul class="drop-items-2">
+                            <li class="elem" id="activate-form-entry-gpl"><a href="">12.5 KG (global)</a></li>
+                            <li class="elem" id="activate-form-entry-accessory"><a>50 KG (global)</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a>6 KG (global)</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a>ACCESSOIRES (global)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
         </nav>
         
        </header>
     @yield('content')
     <br><br><br><br><br><br><br><br>
-
+<!--TRANSFERT GPL VRAC -->
+     
+    <div id="transmit-form" class="modals">
+        <center>
+        
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Depotage GPL Vrac</h1>
+                    <span class="close-modal">X   </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form id="transmit-gpl-form" method="POST" action="{{ route("Depotage") }}" >
+                   @csrf
+                    <div class="modal-champs">
+                        <label for="">Citerne Mobile:</label>
+                        <select name="mobile" id="">
+                           @foreach ($vrac as $vra )
+                               <option value="{{ $vra->id }} }}">{{ $vra->name }}-({{ $vra->type }})</option>
+                           @endforeach
+                        </select>
+                        @if ($errors->has('mobile'))
+                            <span class="text-red-500">{{$errors->first("mobile")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Citerne Fixe:</label>
+                        <select name="fixe" id="">
+                           @foreach ($fixe as $fix )
+                               <option value="{{ $fix->id }}">{{ $fix->name }}-({{ $fix->type }})</option>                            
+                           @endforeach
+                        </select>
+                        @if ($errors->has('fixe'))
+                            <span class="text-red-500">{{$errors->first("fixe")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Quantite :</label>
+                        <input type="number" name="qty">
+                    </div>
+                    @if ($errors->has('qty'))
+                        <span class="text-red-500">{{$errors->first("qty")}}</span>
+                    @endif
+                    <div class="modal-champs">
+                        <label for="">Matricule du Vehicule</label>
+                        <input type="text" name="matricule">
+                        @if ($errors->has('matricule'))
+                            <span class="text-red-500">{{$errors->first("matricule")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                    <button type="reset">annuler</button>
+                    <button type="submit" >creer</button>
+                </div>
+                </form>
+            </div>
+        </center>
+    </div>
 
 <!--ENTREE FORMULAIRES-->
     <div id="entry-gpl" class="modals">
@@ -129,13 +213,20 @@
                         @endif
                     </div>
                     <div class="modal-champs">
-                        <label for="">Quantite</label> <div>
+                        <label for="">Quantite en KG</label>
                         <input type="number" name="qty">
 
                         @if ($errors->has('qty'))
                             <span class="text-red-500">{{$errors->first("qty")}}</span>
                         @endif
-                        </div>
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Provenance</label> 
+                        <input type="text" name="provenance">
+
+                        @if ($errors->has('provenance'))
+                            <span class="text-red-500">{{$errors->first("provenance")}}</span>
+                        @endif
                     </div>
                     <div class="modal-champs">
                         <label for="">Numero Bordereau Livraison:</label>
@@ -566,7 +657,26 @@
     </footer>
 
 
-    <script>
+    <script type="module">
+        //TRANSMIT FORM
+         
+        $("#activate-transmit-form").on("click",function(e){
+                e.preventDefault()
+                if($("#transmit-form").hasClass("modals")){
+                    $("#transmit-form").addClass("modals-active");
+                    $("#transmit-form").removeClass("modals");
+                }
+
+            $(".close-modal").on("click",function(e){
+                e.preventDefault()
+                if($("#transmit-form").hasClass("modals-active")){
+                    $("#transmit-form").addClass("modals");
+                    $("#transmit-form").removeClass("modals-active");
+                }
+            })
+            })
+
+
         //form deployment
         $(function(){
             //ACTION ENTRY ON MODAL GPL
@@ -719,6 +829,10 @@
                     data:$(this).serialize(),
                     success:function(response){
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#entry-gpl-form")[0].reset();
                         $(".text-red-500").load(location.href + " .text-red-500")
                         $("table").load(location.href + " table")
@@ -737,10 +851,19 @@
                     success: function(response){
                         if(response.error){
                             $(".errors").text(response.error);
+                            
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                             $(".success").text("");
                         }else{
                             $(".errors").text("");
                             $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                             $("#entry-pleine-form")[0].reset();
                             $("table").load(location.href + " table")
                         }
@@ -758,9 +881,17 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $(".errors").text("");
                         $("#entry-vides-form")[0].reset();
                         $("table").load(location.href + " table")
@@ -779,10 +910,46 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".errors").text("");
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
+                        $("#entry-accessory-form")[0].reset()
+                        $("table").load(location.href + " table")
+                    }
+                }
+            })
+        })
+        //VALIDATION DU TRANFERT DE GPL VRAC 
+        $("#transmit-gpl-form").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:"{{route("Depotage")}}",
+                method:"POST",
+                data:$(this).serialize(),
+                success:function(response){
+                    if(response.error){
+                        $(".errors").text(response.error);
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
+                        $(".success").text("");
+                    }else{
+                        $(".errors").text("");
+                        $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#entry-accessory-form")[0].reset()
                         $("table").load(location.href + " table")
                     }
@@ -799,10 +966,18 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".errors").text("");
                         $(".success").text(response.success)
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#outcome-pleine-form")[0].reset()
                         $("table").load(location.href + " table")
                     }
@@ -819,10 +994,18 @@
                 success:function(response){
                     if(response.error){
                         $(".errors").text(response.error);
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".errors").text("");
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#outcome-vides-form")[0].reset()
                         $("table").load(location.href + " table")
                     }
@@ -838,11 +1021,21 @@
                 data:$(this).serialize(),
                 success:function(response){
                     if(response.error){
+                        
                         $(".errors").text(response.error);
+                     
+                        setTimeout(() => {
+                            $(".errors").text("");
+                            
+                        }, 1500);
                         $(".success").text("");
                     }else{
                         $(".errors").text("");
                         $(".success").text(response.success);
+                        setTimeout(() => {
+                            $(".success").text("");
+                            
+                        }, 1500);
                         $("#outcome-accessory-form")[0].reset();
                         $("table").load(location.href + " table")
                     }

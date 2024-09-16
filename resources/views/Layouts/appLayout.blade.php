@@ -18,13 +18,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      
     @if(session('success'))
-    <script>
+    <script type="module">
     $(document).ready(function(){
         toastr.success("{{session('success')}}")
     })
 </script>
     @elseif ($errors->has('message'))
-    <script>
+    <script type="module">
     $(document).ready(function(){
         toastr.error("{{$errors->first('message')}}")
     })

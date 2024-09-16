@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("state");
             $table->string("type");
+            $table->string("service");
             $table->float("qty");
             $table->string("bordereau");
             $table->timestamps();

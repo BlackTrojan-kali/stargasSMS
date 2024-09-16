@@ -22,7 +22,7 @@ public function showReleve(Request $request){
     
     $allvrackstocks = Citerne::all();
     if(Auth::user()->role == "magasin"){
-    return view("manager.reception",["accessories"=>$accessories,"vrac"=>$vracstocks,"receptions"=>$receptions,"all"=>$allvrackstocks]);
+    return view("manager.reception",["accessories"=>$accessories,"vrac"=>$vracstocks,"receptions"=>$receptions,"fixe"=>$fixe,"all"=>$allvrackstocks]);
     }else{
         return view("producer.reception",["receptions"=>$receptions,"vrac"=>$vracstocks,"fixe"=>$fixe,"all"=>$allvrackstocks]);
     }
@@ -34,6 +34,7 @@ public function showReleve(Request $request){
         $request->validate([
             "citerne"=>"string| required",
             "qty"=>"numeric| required",
+            "provenance"=>"string| required",
             "matricule"=>"string | required",
             "livraison"=>"string | required"
         ]);
@@ -43,6 +44,7 @@ public function showReleve(Request $request){
         $move->livraison =$request->livraison;
         $move->matricule = $request->matricule;
         $move->qty = $request->qty;
+        $move->provenance = $request->provenance;
         $move->receiver = Auth::user()->role;
         $move->save();
          
@@ -60,13 +62,13 @@ public function showReleve(Request $request){
         $citern->type = $request->type;
         $citern->save();
         $citern =  Citerne::where("name",$request->name)->first();
-        if($citern->type == "fixe"){
+     
                 $vracstock = new Vracstock();
                 $vracstock->citerne_id = $citern->id;
                 $vracstock->stock_theo = 0;
                 $vracstock->stock_rel = 0;
                 $vracstock->save();
-    }
+    
 
        return back()->withSuccess("citern inseree avec success");
     }
