@@ -1,6 +1,7 @@
 @extends("Layouts.ManagerLayout")
 @section("content")
 <h1 class="text-center font-bold text-2xl my-4">Accueil</h1>
+<button class="text-white bg-red-500 m-10 p-3 rounded-full font-bold" id="activate generate-pdf-form">Generer un Document</button>
 <div class="w-full mx-5  grid grid-cols-2 gap-10">
   @foreach ($stocks as $stock)
 

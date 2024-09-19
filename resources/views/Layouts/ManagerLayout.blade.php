@@ -88,7 +88,7 @@
             </div>
             </div>
             
-            <a href="{{route("manager-history")}}" >HISTORIQUE</a>
+            <a href="" >HISTORIQUE</a>
             <a href="{{route("showReleve")}}">RECEPTION</a>
             
             <div class="dropdown cursor-pointer font-bold">    ETATS <i class="fa-solid fa-angle-down"></i>
@@ -110,6 +110,7 @@
                             <li class="elem" id="activate-form-entry-accessory"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>50]) }}">50 KG (sortie)</a></li>
                             <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>6]) }}">6 KG (sortie)</a></li>
                             <li class="elem" id="activate-form-entry-vide"><a href="{{ route("moveEntryMan",["state"=>1,"type"=>0,"weight"=>0]) }}">ACCESSOIRES (sortie)</a></li>
+                            <li class="elem" id="activate-form-entry-vide"><a href="">Transferts</a></li>
                         </ul>
                     </div>
                     
@@ -120,6 +121,7 @@
                             <li class="elem" id="activate-form-entry-accessory"><a>50 KG (global)</a></li>
                             <li class="elem" id="activate-form-entry-vide"><a>6 KG (global)</a></li>
                             <li class="elem" id="activate-form-entry-vide"><a>ACCESSOIRES (global)</a></li>
+                        
                         </ul>
                     </div>
                 </div>

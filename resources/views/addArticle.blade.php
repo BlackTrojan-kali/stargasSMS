@@ -11,7 +11,7 @@ $name = "stargaz"
         <div class="champs">
             <label for="title">Nom:</label>
             <select name="title" class="w-full p-3 font-bold" id="">
-                <option value="stargaz" selected>Stargaz</option>
+                <option value="stargas" selected>Stargas</option>
             </select>
             @if ($errors->has("title"))
                 <p class="text-red-500">{{$errors->first('title')}}</p>

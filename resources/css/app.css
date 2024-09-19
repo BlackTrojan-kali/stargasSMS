@@ -44,7 +44,7 @@
      @apply block absolute -right-48 text-start  bg-blue-300 top-0  w-full rounded-md
     }
     .modals-active{
-        @apply w-full bg-black/25 fixed h-full top-0 left-0 flex justify-center;
+        @apply w-full bg-black/25 fixed z-50 h-full top-0 left-0 flex justify-center;
     }
     .modal,.modals{
         @apply hidden;
@@ -52,6 +52,7 @@
     .modal-active{
         width: 350px;
         height: auto;
+        z-index: 1000;
         @apply mt-20  bg-white text-center rounded-lg overflow-hidden border border-gray-400;
         
     }

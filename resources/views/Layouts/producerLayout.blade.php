@@ -232,6 +232,13 @@
                         
                     </div>
                     <div class="modal-champs">
+                        <label for="">Destination</label>
+                        <input type="text" name="destination">
+                        @if ($errors->has('destination'))
+                            <span class="text-red-500">{{$errors->first("destination")}}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
                         <label for="">Numero Bordereau</label>
                         <input type="text" name="bord">
                         @if ($errors->has('bord'))

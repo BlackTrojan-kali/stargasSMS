@@ -18,7 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      
     @if(session('success'))
-    <script type="module">
+    <script type="module"    
+    >
     $(document).ready(function(){
         toastr.success("{{session('success')}}")
     })

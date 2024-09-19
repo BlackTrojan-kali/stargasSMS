@@ -244,6 +244,7 @@ public function transmitGas(Request $request){
     $request->validate([
         "state"=>"required| string",
         "type"=>"required| string",
+        "destination"=>"required | string",
         "qty"=>"required| numeric",
         "bord"=>"required | string"
     ]);
@@ -252,6 +253,8 @@ public function transmitGas(Request $request){
     $move = new Transmit();
     $move->state = $state;
     $move->type = $type;
+    $move->service = Auth::user()->service;
+    $move->destination = $request->destination;
     $move->qty = $request->qty;
     $move->bordereau = $request->bord;
     

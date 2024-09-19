@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers as Controllers;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\isCommercial;
 use App\Http\Middleware\isManager;
 use App\Http\Middleware\isProducer;
 use App\Http\Middleware\IsSuper;
@@ -59,6 +60,14 @@ Route::group(["middleware"=>"auth"],function(){
             Route::post("/producer/makeTransmission",[Controllers\ProducerController::class,"transmitGas"])->name("transmitGas");
             Route::get("/producer/moveEntryPro/{state}/{type}/{weight}",[Controllers\ProducerController::class,"showEntry"])->name("moveEntryPro");
            });
+      Route::middleware(isCommercial::class)->controller(Controllers\CommercialController::class)->group(
+            function(){
+                  Route::get('/dashboardCom',"index")->name("dashboardCom");
+                  Route::post("commercial/moveActioins/save/{action}/{state}","saveBottleMove")->name("saveBottleMoveCom");  
+                  Route::post("commercial/moveActioins/save/{action}","saveAccessoryMoves")->name("saveAccessoryMoveCom");  Route::get("/manager/history",[Controllers\MagazinierController::class,"showHistory"])->name("manager-history");
+                  Route::get("/manager/history","showHistory")->name("commercial-history");
+         
+            });
       Route::post('/logout',[Controllers\LoginController::class,"logout"])->name("logout");
 });
 Route::get('/login',[Controllers\LoginController::class, 'show'])->name('login');

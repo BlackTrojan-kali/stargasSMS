@@ -31,7 +31,9 @@ class LoginController extends Controller
                     return redirect()->route("dashboard-manager")->withSuccess("You have successfully  logged in");
                     break;      
                 case "production":
-                    return redirect()->route("dashboard-producer")->withSuccess("You have successfully logged in"); 
+                    return redirect()->route("dashboard-producer")->withSuccess("You have successfully logged in");
+                case "commercial":
+                    return redirect()->route("dashboardCom")->withSuccess("You have successfully logged in");
             }
         }
         return back()->withErrors([
