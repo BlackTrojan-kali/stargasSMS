@@ -60,11 +60,13 @@
         @if(Auth::user()->role == "super")
         <nav class="mt-2 p-2 first-letter: w-full flex  gap-5 text-white bg-teal-700 rounded-md">
           <div>  <a href="{{route('dashboard')}}"><i class="fa-solid fa-home"></i> ACCEUIL</a></div>
+          <div><a href="{{route('roles')}}" >ROLES</a></div>
+          <div><a href="{{route("regions")}}" >REGIONS</a></div>
           <div><a href="{{route('manageUsers')}}" >GERER LES UTILISATEURS</a></div>
           <div><a href="{{route('manageArticles')}}" >GERER LES PRODUITS</a></div>
           <div><a href="" >ETATS</a>
         </nav>
-     =
+
         @endif
        </header>
     

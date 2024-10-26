@@ -15,23 +15,19 @@
         <div class="w-full text-start">
             <label for="">Region:</label>
             <select name="region" id="" class="w-full text-center p-2 mt-2 mb-2" >
-
-                <option value="{{$user->region}}" selected>{{$user->region}}</option>
-                <option value="centre">Centre</option>
-                <option value="ouest">Ouest</option>
-                <option value="est">Est</option>
-                <option value="nord">Nord</option>
-                <option value="littoral">Littoral</option>
-                <option value="sud">Sud</option>
+                @foreach ($regions as $region )
+                  <option value="{{ $region->region }}">{{ $region->region }}</option>
+                    
+                @endforeach
             </select>
         </div>
         <div class="w-full text-start">
             <label for="">Role:</label>
             <select name="role" id="" class="w-full text-center p-2 mt-2 mb-2" >
-                <option value="{{$user->role}}" selected>{{$user->role}}</option>
-                <option value="magasin">Magazin</option>
-                <option value="production">Production</option>
-                <option value="commercial">Commercial</option>
+                @foreach ($roles as $role )
+                    
+                <option value="{{ $role }}">{{ $role->role }}</option>
+                @endforeach
                 
             </select>
         </div>

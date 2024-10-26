@@ -105,6 +105,16 @@ Route::get("/manager/citernes/historique",[Controllers\CiternController::class,"
       Route::post("/sales-state-pdf",[Controllers\CommercialController::class,"generate_sale_state"])->name("sale_state_pdf");
       Route::post("/recieves-pdf",[Controllers\CiternController::class,"generate_receive_pdf"])->name("receives_pdf");
       Route::post("/releves-pdf",[Controllers\CiternController::class,"generate_rel_pdf"])->name("releves_pdf");
+
+      //manage roles and regions
+      Route::get("/roles",[Controllers\RoleController::class,"index"])->name("roles");
+      Route::get("/create-role",[Controllers\RoleController::class,"create"])->name("create-role");
+      Route::get("/regions",[Controllers\RegionController::class,"index"])->name("regions");
+      Route::get("/create-region",[Controllers\RegionController::class,"create"])->name("create-region");
+      Route::post("/store-role",[Controllers\RoleController::class,"store"])->name("store-role");
+      Route::post("/store-region",[Controllers\RegionController::class,"store"])->name("store-region");
+      Route::delete("/role-delete/{id}",[Controllers\RoleController::class,"delete"]);
+      Route::delete("/region-delete/{id}",[Controllers\RegionController::class,"delete"]);
 });
 Route::get('/login',[Controllers\LoginController::class, 'show'])->name('login');
 Route::post('/login',[Controllers\LoginController::class,"authenticate"])->name("authenticate");

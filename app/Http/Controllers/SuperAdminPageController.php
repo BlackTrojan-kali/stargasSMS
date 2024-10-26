@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
+use App\Models\Role;
 use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,11 +22,15 @@ class SuperAdminPageController extends Controller
     }
     
     public function addUserForm(Request $request){
-        return view("addUser");
+        $regions = Region::all();
+        $roles = Role::all();
+        return view("addUser",["regions"=>$regions,"roles"=>$roles]);
     }
     public function editUser(Request $request, $id){
         $user = User::findOrFail($id);
-        return view("editUser",["user"=>$user]);
+        $regions = Region::all();
+        $roles = Role::all();
+        return view("editUser",["user"=>$user,"regions"=>$regions,"roles"=>$roles]);
     }   
     public function updateUser(Request $request,$id){
         $request->validate([
