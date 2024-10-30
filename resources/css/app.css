@@ -6,6 +6,11 @@
 @tailwind utilities;
 
 @layer base{
+    :root{
+        --primary: #11b8a1;
+        --secondary: #026863;
+        --ternary: #17caaf;
+    }
     body{
         font-family: "Roboto";
         @apply relative  p-4 overflow-x-hidden ;
@@ -17,6 +22,18 @@
 
 }
 @layer components{
+    .primary{
+        background: var(--primary);
+    }
+    .secondary{
+        background-color: var(--secondary);
+    }
+    .ternary{
+         background-color:var(--ternary);
+    }
+    .general{
+        color: var(--primary)
+    }
     .champs{
         @apply text-start;
     
@@ -51,11 +68,13 @@
         background-color: rgba(0, 0, 0, 0.363);
     }
     .dropdown:hover>.drop-items{
-        @apply block md:absolute z-20 bg-teal-200 rounded-md text-black w-56 
+        background-color: var(--primary);
+        @apply block md:absolute z-20  rounded-md text-black w-56 
     }
     
      .drop-2:hover> .drop-items-2{
-     @apply block absolute -right-48 text-start  bg-teal-400 top-0  w-full rounded-md
+        background-color: var(--primary);
+     @apply block absolute -right-48 text-start top-0  w-full rounded-md
     }
     .modals-active{
         @apply w-full bg-black/25 fixed z-50 h-full top-0 left-0 flex justify-center;
@@ -96,7 +115,8 @@
         @apply w-full flex justify-around mt-3
     }
     .modal-validation button{
-        @apply bg-teal-400 p-2 w-24 font-bold text-white
+        background-color: var(--secondary);
+        @apply  p-2 w-24 font-bold text-white
     }
     .close-modal{
         @apply cursor-pointer

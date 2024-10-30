@@ -10,22 +10,22 @@
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
-<body class="bg-teal-800">
+<body class="secondary">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     
-    <center class="h-full relative md:mx-28 bg-teal-600">
+    <center class="h-full relative md:mx-28 primary">
         <div>
             test
         </div>
-        <div class="w-full bg-black/80  md:px-8 md:py-4 flex justify-between">
+        <div class="w-full bg-black/70    md:px-8 md:py-4 flex justify-between">
             <div class="rounded-md ">
                  <img src="/images/logo.png" class="w-24" alt="">
             </div>
         </div>
         <br><br>
-        <div class="box p-4 rounded-md font-bold w-11/12 md:w-6/12 shaodw-md shadow-white/60 text-teal-600 bg-white">
+        <div class="box p-4 rounded-md font-bold w-11/12 md:w-6/12 shaodw-md shadow-white/60 general bg-white">
             <h2>Bienvenue sur Stargas Supply Chain Management System</h2>
         </div>
         <br>
@@ -47,13 +47,13 @@
                         <p class="text-red-500">{{$errors->first('password')}}</p>
                     @endif
                 </div>
-                <button class="mt-4 bg-teal-500 p-2 w-full rounde-md text-white">S'identifier</button>
+                <button class="mt-4 primary p-2 w-full rounde-md text-white">S'identifier</button>
             </form>
         </div>
         <br>
         <br>
         <br>
-        <div class="w-full bg-teal-400 text-white p-4 text-end">
+        <div class="w-full ternary text-white p-4 text-end">
             <p>&copy; allrigths reserved to stargas </p>
         </div>
     </center>

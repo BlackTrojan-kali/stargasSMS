@@ -17,6 +17,7 @@ return new class extends Migration
             $table->double("stock_theo");
             $table->double("stock_rel");
             $table->double("ecart");
+            $table->string("region");
             $table->timestamps();
         });
     }

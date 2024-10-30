@@ -9,6 +9,8 @@ use App\Models\Stock;
 use Barryvdh\DomPDF\Facade\Pdf ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Region;
+use App\Models\Role;
 
  class ArticleController extends Controller
 {
@@ -51,7 +53,7 @@ use Illuminate\Support\Facades\Auth;
             if($request->move == "777"){
                 $data  = Movement::leftjoin("articles","movements.article_id","articles.id")->leftjoin("stocks","movements.stock_id","stocks.id")->whereBetween("movements.created_at",[$request->depart,$request->fin])->where("movements.service",$request->service)->where("stocks.region",$request->region)->where("articles.type","bouteille-gaz")->where("articles.weight",floatval($request->type))->where("articles.state",1)->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
                 $data2  = Movement::leftjoin("articles","movements.article_id","articles.id")->leftjoin("stocks","movements.stock_id","stocks.id")->whereBetween("movements.created_at",[$request->depart,$request->fin])->where("movements.service",$request->service)->where("stocks.region",$request->region)->where("articles.type","bouteille-gaz")->where("articles.weight",floatval($request->type))->where("articles.state",0)->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
-             
+           
             if(!empty($data[0])){
                 $first = $data[0]->fromArticle;
             }else{
@@ -69,7 +71,7 @@ use Illuminate\Support\Facades\Auth;
         }
         if($request->move == "777"){
             $pdf = Pdf::loadview("pdfGlobalFile",["bouteille_vides"=>$data2,"bouteille_pleines"=>$data,"service"=>$service,"region"=>$region,"first"=>$first,"fromdate"=>$fromdate,"todate"=>$todate,])->setPaper("A4",'landscape');
-             $pdf->download($service.$region.$fromdate.$todate."GLOBAL.pdf");
+            return $pdf->download($service.$region.$fromdate.$todate."GLOBAL.pdf");
       
         }else{
         $pdf = Pdf::loadview("pdfFile",["data"=>$data,"fromdate"=>$fromdate,"todate"=>$todate,"first"=>$first,"service"=>$service,"region"=>$region]);
@@ -128,8 +130,21 @@ use Illuminate\Support\Facades\Auth;
         $article->state = $state;
         $article->type = $type;
         $article->save();
-
-        
+   $regions = Region::all();
+   $roles = Role::all();
+    foreach($regions as $region){
+        foreach($roles as $role){
+            if($role->role != "boss" && $role->role != "controller"){
+                $stock = new Stock();
+                $stock->qty = 0;
+                $stock->type = $article->type;
+                $stock->region = $region->region;
+                $stock->category = $role->role;
+                $article->hasStock()->save($stock);
+            }
+        }
+    }
+     /*   
         $stock = new Stock();
         $stock->qty = 0;
         $stock->type = $article->type;
@@ -185,7 +200,7 @@ use Illuminate\Support\Facades\Auth;
         $stock7->region="nord";
         $stock7->category ="commercial";
         $article->hasStock()->save($stock7);
-        
+    */    
     
 
         return back()->withSuccess("article insere avec succes");
@@ -204,8 +219,22 @@ use Illuminate\Support\Facades\Auth;
         $article->state = $state;
         $article->type = $type;
         $article->save();
+        $regions = Region::all();
+        $roles = Role::all();
+         foreach($regions as $region){
+             foreach($roles as $role){
+                 if($role->role != "boss" && $role->role != "controller"){
+                     $stock = new Stock();
+                     $stock->qty = 0;
+                     $stock->type = $article->type;
+                     $stock->region = $region->region;
+                     $stock->category = $role->role;
+                     $article->hasStock()->save($stock);
+                 }
+             }
+         }
 
-
+/*
         $stock = new Stock();
         $stock->qty = 0;
         $stock->type = $article->type;
@@ -255,7 +284,7 @@ use Illuminate\Support\Facades\Auth;
         $stock7->category ="commercial";
         $article->hasStock()->save($stock7);
         
-    
+*/    
 
         return back()->withSuccess("article insere avec succes");
 

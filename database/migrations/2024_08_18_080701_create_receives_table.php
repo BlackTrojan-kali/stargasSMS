@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("receiver");
             $table->string("provenance");
             $table->string("livraison");
+            $table->string("region");
             $table->string("matricule");
             $table->foreign("id_citerne")->references("id")->on("citernes")->onDelete("cascade");
             $table->timestamps();

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("type");
             $table->float("qty");
             $table->string("bordereau");
+            $table->string("region");
             $table->foreign("id_citerne")->references("id")->on("citernes")->onDelete("CASCADE");
             $table->timestamps();
         });

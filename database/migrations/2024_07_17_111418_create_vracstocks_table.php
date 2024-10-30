@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign("citerne_id")->references("id")->on("citernes")->onDelete("cascade");
             $table->float("stock_theo");
             $table->float("stock_rel");
+            $table->string("region");
             $table->timestamps();
         });
     }

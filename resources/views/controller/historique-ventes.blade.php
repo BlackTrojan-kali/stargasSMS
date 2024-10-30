@@ -1,9 +1,8 @@
-@extends('Layouts.comLayout')
+@extends('Layouts.controllerLayout')
 @section('content')
     <div>
 
-        <h1 class="p-2 mt-5 font-bold text-2xl">Historique des {{ strtoupper($type) }}S
-        </h1>
+        <h1 class="p-2 mt-5 font-bold text-2xl">Historique des {{ strtoupper($type) }}S</h1>
         <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
         <table class="history scroll mt-10 w-full border-2 border-collapse border-gray-400 ">
             <thead class="p-3 bg-gray-500 text-white">

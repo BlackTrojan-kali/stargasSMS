@@ -1,7 +1,9 @@
 @extends('Layouts.comLayout')
 @section("content")
 <center>
-<h1 class="p-2 mt-5 font-bold text-2xl">Historique des Versements</h1>
+<h1 class="p-2 mt-5 font-bold text-2xl">Historique des Versements
+    
+</h1>
     <div class=" flex w-full gap-3">
     <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
     
