@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float("prix_50");
             $table->float("qty_50");
             $table->integer("prix_unitaire");
+            $table->bigInteger("prix_total")->nullable();
             $table->string("region");
             $table->string("service");
             $table->string("type");

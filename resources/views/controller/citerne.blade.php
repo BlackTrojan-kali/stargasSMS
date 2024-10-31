@@ -9,6 +9,7 @@
                     <td>Citerne</td>
                     <td>Stock Theo</td>
                     <td>Stock Releve</td>
+                    <td>Ecart</td>
                 </tr>
             </thead>
             <tbody class="bg-orange-200 text-center">
@@ -18,9 +19,17 @@
                         <td>{{ $fix->name }}-{{ $fix->type }}</td>
                         <td>{{ $fix->stock->stock_theo }}</td>
                         <td>{{ $fix->stock->stock_rel }}</td>
+
                         <?php
                         $ecart = $fix->stock->stock_rel - $fix->stock->stock_theo;
                         ?>
+                        <td>
+                            @if ($ecart > 0)
+                                <span class="text-green-500">{{ $ecart }}</span>
+                            @else
+                                <span class="text-red-500">{{ $ecart }}</span>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

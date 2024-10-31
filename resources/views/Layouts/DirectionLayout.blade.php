@@ -60,19 +60,57 @@
             </div>
         </div>
         <nav class="mt-2 p-2 first-letter: w-full flex  gap-5 text-white primary rounded-md">
-            <div> <a href="{{ route('bossDashboard') }}"><i class="fa-solid fa-home"></i> ACCUEIL</a></div>
+            <div> <a href="{{ route('director-dashboard') }}"><i class="fa-solid fa-home"></i> ACCUEIL</a></div>
 
-            <div class="font-bold cursor-pointer dropdown relative">C.A<i class="fa-solid fa-angle-down"></i>
+            <div class="font-bold cursor-pointer dropdown relative">VERSEMENTS GPL<i class="fa-solid fa-angle-down"></i>
                 <ul class="drop-items">
 
-                    <li class="elem"><a href="{{ route('globalCA') }}">C.A Global</a></li>
+                    <li class="elem"><a href="{{ route('globalCA') }}">Versements GPL Global</a></li>
                     @foreach ($region as $reg)
-                        <li class="elem"><a href="{{ route('globalCARegion', ['region' => $reg->region]) }}">C.A
+                        <li class="elem"><a
+                                href="{{ route('globalCARegion', ['region' => $reg->region]) }}">Versements GPL
                                 {{ $reg->region }}</a></li>
                     @endforeach
                 </ul>
             </div>
 
+            <div class="font-bold cursor-pointer dropdown relative">VERSEMENTS Consigne<i
+                    class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <li class="elem"><a href="{{ route('globalCA-consigne') }}">Versements Cons. Global</a></li>
+                    @foreach ($region as $reg)
+                        <li class="elem"><a
+                                href="{{ route('globalCARegion-consigne', ['region' => $reg->region]) }}">Versements
+                                Cons.
+                                {{ $reg->region }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="font-bold cursor-pointer dropdown relative">CA VENTES GPL<i class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <li class="elem"><a href="{{ route('globalSalesCA') }}">CA Ventes GPL. Global</a></li>
+                    @foreach ($region as $reg)
+                        <li class="elem"><a
+                                href="{{ route('globalCARegion-consigne', ['region' => $reg->region]) }}">CA Ventes
+                                GPL
+                                {{ $reg->region }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="font-bold cursor-pointer dropdown relative">CA CONSIGNES<i class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <li class="elem"><a href="{{ route('globalCA-consigne') }}">CA CONSIGNES. Global</a></li>
+                    @foreach ($region as $reg)
+                        <li class="elem"><a
+                                href="{{ route('globalCARegion-consigne', ['region' => $reg->region]) }}">CA CONSIGNES
+
+                                {{ $reg->region }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
         </nav>
     </header>
 

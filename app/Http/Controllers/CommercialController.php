@@ -227,6 +227,7 @@ class CommercialController extends Controller
         $vente->qty_12 = $request->qty_12;
         $vente->prix_50 = $request->prix_50;
         $vente->qty_50 = $request->qty_50;
+        $vente->prix_total = (($vente->prix_6 * $vente->qty_6) + ($vente->prix_12 * $vente->qty_12) + ($vente->prix_50 * $vente->qty_50));
         $vente->address = $request->address;
         $vente->type = $type;
         $vente->region = Auth::user()->region;

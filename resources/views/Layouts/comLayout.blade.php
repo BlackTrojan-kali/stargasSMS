@@ -68,7 +68,7 @@
 
     <nav class="mt-2 p-2 w-full text-white flex flex-col md:flex-row gap-4   primary rounded-md">
         <a href="{{ route('dashboardCom') }}"><i class="fa-solid fa-home"></i> ACCEUIL</a>
-
+        <!--
         <div class="font-bold cursor-pointer dropdown relative">STOCK <i class="fa-solid fa-angle-down"></i>
             <div class="drop-items">
                 <div class="drop-2 elem">
@@ -82,7 +82,7 @@
                 <div class="drop-2 elem">
                     Sortie
                     <ul class="drop-items-2">
-                        <!-- <li class="elem " id="activate-form-outcome-gpl"><a href="">GPL Vrac (sortie)</a></li> -->
+                         <li class="elem " id="activate-form-outcome-gpl"><a href="">GPL Vrac (sortie)</a></li>
 
                         <li class="elem" id="activate-form-outcome-vide"><a>Bouteilles Vides(sortie)</a></li>
                         <li class="elem" id="activate-form-outcome-pleine"><a>Bouteilles Pleines(sortie)</a></li>
@@ -90,7 +90,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         @if (Auth::user()->role != 'controller')
             <div class="font-bold cursor-pointer dropdown relative">VENTES <i class="fa-solid fa-angle-down"></i>
@@ -106,7 +106,7 @@
         </div>
         <div class="dropdown cursor-pointer font-bold"> ETATS <i class="fa-solid fa-angle-down"></i>
             <div class="drop-items">
-                <div class="drop-2 elem">
+                <!--   <div class="drop-2 elem">
                     MOUVEMENTS ENTREES
                     <ul class="drop-items-2">
                         <li class="elem" id="activate-form-entry-vide"><a
@@ -124,8 +124,8 @@
                         </li>
 
                     </ul>
-                </div>
-
+                </div>-->
+                <!--
                 <div class="drop-2 elem">
                     MOUVEMENTS Sortie
                     <ul class="drop-items-2">
@@ -145,9 +145,8 @@
                                 (sortie)</a></li>
 
                     </ul>
-                </div>
-
-
+                </div> -->
+                <!--
                 <div class="drop-2 elem">
                     MOUVEMENTS Global
                     <ul class="drop-items-2">
@@ -166,7 +165,7 @@
                                 (global)</a></li>
 
                     </ul>
-                </div>
+                </div> -->
                 <div class="drop-2 elem">
                     <a href="{{ route('showVentes', ['type' => 'vente']) }}"> VENTES</a>
                 </div>
@@ -182,7 +181,7 @@
                 class="fa-solid fa-angle-down"></i>
             <ul class="drop-items">
 
-                <li class="elem" id="activate-pdf-form">Etats des mouvements</li>
+                <!-- <li class="elem" id="activate-pdf-form">Etats des mouvements</li> -->
                 <li class="elem" id="activate-sales-state-pdf-form">Etats des Ventes</li>
                 <li class="elem" id="activate-versement-pdf-form">Historique des Versements</li>
             </ul>

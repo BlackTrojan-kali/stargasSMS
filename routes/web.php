@@ -112,8 +112,13 @@ Route::group(["middleware" => "auth"], function () {
       Route::middleware(IsDirector::class)->group(
             function () {
                   Route::get("/director/dashboard", [Controllers\DirectorController::class, "index"])->name("director-dashboard");
-                  Route::get("/director/CA", [Controllers\DirectorController::class, "getCAGlobal"])->name("globalCA");
-                  Route::get("/director/CA/{region}", [Controllers\DirectorController::class, "getCAGlobalRegion"])->name("globalCARegion");
+                  Route::get("/director/Versement", [Controllers\DirectorController::class, "getCAGlobal"])->name("globalCA");
+                  Route::get("/director/Consigne", [Controllers\DirectorController::class, "getCAGlobalConsigne"])->name("globalCA-consigne");
+                  Route::get("/director/Versements/{region}", [Controllers\DirectorController::class, "getCAGlobalRegion"])->name("globalCARegion");
+                  Route::get("/director/Consigne/{region}", [Controllers\DirectorController::class, "getCAGlobalRegionConsigne"])->name("globalCARegion-consigne");
+
+                  //ventes consolide
+                  Route::get("/director/CA", [Controllers\DirectorController::class, "globalSales"])->name("globalSalesCA");
             }
       );
       Route::post("/commercial/versement/pdf", [Controllers\CommercialController::class, "generate_versements_state"])->name("versementPdf");

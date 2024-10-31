@@ -24,7 +24,7 @@ class MagazinierController extends Controller
         $accessories = Article::where("type","=","accessoire")->get("title");
         $vracstocks = Citerne::where("type","mobile")->get();
         
-    $mobile = Citerne::where("type","mobile")->get();
+        $mobile = Citerne::where("type","mobile")->get();
         $fixe  = Citerne::where("type","fixe")->get();
         return view('manager.dashboard',["stocks"=>$stocks,"accessories"=>$accessories,"vrac"=>$vracstocks,"fixe"=>$fixe,"mobile"=>$mobile]);
     }
