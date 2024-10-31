@@ -119,6 +119,9 @@ Route::group(["middleware" => "auth"], function () {
 
                   //ventes consolide
                   Route::get("/director/CA", [Controllers\DirectorController::class, "globalSales"])->name("globalSalesCA");
+                  Route::get("/director/CA-consigne", [Controllers\DirectorController::class, "globalConsigne"])->name("globalConsignesCA");
+                  Route::get("/director/CA/{region}", [Controllers\DirectorController::class, "getRegionSales"])->name("globalSalesCA-region");
+                  Route::get("/director/CA-consigne/{region}", [Controllers\DirectorController::class, "getRegionConsignes"])->name("globalConsignesCA-region");
             }
       );
       Route::post("/commercial/versement/pdf", [Controllers\CommercialController::class, "generate_versements_state"])->name("versementPdf");

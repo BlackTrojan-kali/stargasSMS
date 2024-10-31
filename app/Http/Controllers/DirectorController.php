@@ -61,6 +61,34 @@ class DirectorController extends Controller
         $year = 2024;
         $region = Region::all();
         $ventes = Vente::selectRaw("YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl")->where("type", "vente")->groupBy("annee", "mois", "type")->get();
-        dd($ventes);
+        $type = "VENTE GPL";
+        return view("director.globalSales", ["ventes" => $ventes, "region" => $region, "type" => $type]);
+    }
+
+    public function getRegionSales($regionHere)
+    {
+        $year = 2024;
+        $region = Region::all();
+        $versements = Vente::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl')->where("type", "vente")->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region")->get();
+        $type = "Vente GPL";
+        return view("director.SalesPerRegion", ["ventes" => $versements, "region" => $region, "here" => $regionHere, "type" => $type]);
+    }
+    //CONSIGNE CONSOLIDES
+
+    public function globalConsigne()
+    {
+        $year = 2024;
+        $region = Region::all();
+        $ventes = Vente::selectRaw("YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl")->where("type", "consigne")->groupBy("annee", "mois", "type")->get();
+        $type = "CONSIGNES";
+        return view("director.globalSales", ["ventes" => $ventes, "region" => $region, "type" => $type]);
+    }
+    public function getRegionConsignes($regionHere)
+    {
+        $year = 2024;
+        $region = Region::all();
+        $versements = Vente::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl')->where("type", "consigne")->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region")->get();
+        $type = "CONSIGNE";
+        return view("director.SalesPerRegion", ["ventes" => $versements, "region" => $region, "here" => $regionHere, "type" => $type]);
     }
 }

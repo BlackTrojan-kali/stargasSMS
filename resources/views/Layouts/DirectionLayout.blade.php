@@ -92,8 +92,8 @@
 
                     <li class="elem"><a href="{{ route('globalSalesCA') }}">CA Ventes GPL. Global</a></li>
                     @foreach ($region as $reg)
-                        <li class="elem"><a
-                                href="{{ route('globalCARegion-consigne', ['region' => $reg->region]) }}">CA Ventes
+                        <li class="elem"><a href="{{ route('globalSalesCA-region', ['region' => $reg->region]) }}">CA
+                                Ventes
                                 GPL
                                 {{ $reg->region }}</a></li>
                     @endforeach
@@ -102,10 +102,10 @@
             <div class="font-bold cursor-pointer dropdown relative">CA CONSIGNES<i class="fa-solid fa-angle-down"></i>
                 <ul class="drop-items">
 
-                    <li class="elem"><a href="{{ route('globalCA-consigne') }}">CA CONSIGNES. Global</a></li>
+                    <li class="elem"><a href="{{ route('globalConsignesCA') }}">CA CONSIGNES. Global</a></li>
                     @foreach ($region as $reg)
                         <li class="elem"><a
-                                href="{{ route('globalCARegion-consigne', ['region' => $reg->region]) }}">CA CONSIGNES
+                                href="{{ route('globalConsignesCA-region', ['region' => $reg->region]) }}">CA CONSIGNES
 
                                 {{ $reg->region }}</a></li>
                     @endforeach

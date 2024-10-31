@@ -7,9 +7,8 @@
                 <thead class="bg-gray-500 text-white p-2 border-collapse-0">
                     <tr>
                         <th>Date</th>
-                        <th>Global</th>
+                        <th>Versements</th>
                         <th>Bank</th>
-                        <th>region</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
@@ -18,7 +17,6 @@
                             <td>{{ $versement->mois }}/{{ $versement->annee }} </td>
                             <td>{{ $versement->total_gpl }}</td>
                             <td>{{ $versement->bank }}</td>
-                            <td>{{ $versement->region }}</td>
                         </tr>
                     @endforeach
                 </tbody>
