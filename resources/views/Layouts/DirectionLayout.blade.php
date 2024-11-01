@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 </head>
 
 <body class="mx-20">
@@ -20,6 +21,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     @if (session('success'))
         <script type="module">
             $(document).ready(function() {
@@ -111,6 +113,32 @@
                     @endforeach
                 </ul>
             </div>
+            <div class="font-bold cursor-pointer dropdown relative">Reception Bouteilles<i
+                    class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <li class="elem"><a href="{{ route('globalFullBottles') }}">Reception BP Global</a></li>
+                    @foreach ($region as $reg)
+                        <li class="elem"><a
+                                href="{{ route('RegionFullBottles', ['region' => $reg->region]) }}">Reception
+                                BP
+                                {{ $reg->region }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="font-bold cursor-pointer dropdown relative">Reception Bouteilles<i
+                    class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <li class="elem"><a href="{{ route('globalEmptyBottles') }}">Reception BV Global</a></li>
+                    @foreach ($region as $reg)
+                        <li class="elem"><a
+                                href="{{ route('RegionEmptyBottles', ['region' => $reg->region]) }}">Reception
+                                BP
+                                {{ $reg->region }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
         </nav>
     </header>
 
@@ -126,6 +154,7 @@
     </footer>
     <script type="module">
         $(function() {
+            $('table').DataTable();
             //ACTION generate pdf produce
             $("#activate-produce-pdf-form").on("click", function(e) {
                 e.preventDefault()

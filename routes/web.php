@@ -122,6 +122,11 @@ Route::group(["middleware" => "auth"], function () {
                   Route::get("/director/CA-consigne", [Controllers\DirectorController::class, "globalConsigne"])->name("globalConsignesCA");
                   Route::get("/director/CA/{region}", [Controllers\DirectorController::class, "getRegionSales"])->name("globalSalesCA-region");
                   Route::get("/director/CA-consigne/{region}", [Controllers\DirectorController::class, "getRegionConsignes"])->name("globalConsignesCA-region");
+                  //entree consolide
+                  Route::get("/director/Global/entries", [Controllers\DirectorController::class, "globalFullBottles"])->name("globalFullBottles");
+                  Route::get("/director/Global/entries-vides", [Controllers\DirectorController::class, "globalEmptyBottles"])->name("globalEmptyBottles");
+                  Route::get("/director/{region}/entries", [Controllers\DirectorController::class, "RegionFullBottles"])->name("RegionFullBottles");
+                  Route::get("/director/{region}/entries-vides", [Controllers\DirectorController::class, "RegionEmptyBottles"])->name("RegionEmptyBottles");
             }
       );
       Route::post("/commercial/versement/pdf", [Controllers\CommercialController::class, "generate_versements_state"])->name("versementPdf");
