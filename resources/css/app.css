@@ -82,11 +82,21 @@
     .modal,.modals{
         @apply hidden;
     }
+    .size-2{
+        width: 500px!important;
+        background-color: white !important;
+    }
+    .size-2 form{
+        background-color: white;
+    }
+    .size-2 form textarea{
+        height: 250px;
+    }
     .modal-active{
         width: 350px;
         height: auto;
         z-index: 1000;
-        @apply mt-20  bg-white text-center rounded-lg overflow-hidden border border-gray-400;
+        @apply mt-20  bg-white text-center rounded-lg  border border-gray-400;
         
     }
     .modal-head{

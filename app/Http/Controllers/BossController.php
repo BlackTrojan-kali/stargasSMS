@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Broute;
 use App\Models\Citerne;
 use App\Models\Movement;
 use App\Models\Receive;
@@ -155,5 +156,21 @@ class BossController extends Controller
             $pdf = Pdf::loadview("pdfFile", ["data" => $data, "fromdate" => $fromdate, "todate" => $todate, "first" => $first, "service" => $service, "region" => $region]);
             return $pdf->download($service . $region . $fromdate . $todate . ".pdf");
         }
+    }
+    public function show_broute_list()
+    {
+        $broutes = Broute::all();
+
+        $stocks = Stock::with("article")->where("region", Auth::user()->region)->get();
+        $mobile = Citerne::where("type", "mobile")->get();
+        $fixe  = Citerne::where("type", "fixe")->get();
+        return view("controller.list-broute", ["broutes" => $broutes, "stocks" => $stocks, "mobile" => $mobile, "fixe" => $fixe]);
+    }
+    public function BroutePDF(Request $request, $idRoute)
+    {
+        $broute = Broute::findOrFail($idRoute);
+        $pdf = Pdf::loadView("manager.broute", ["broute" => $broute]);
+
+        return $pdf->download($broute->nom_chauffeur . $broute->created_at . ".pdf");
     }
 }

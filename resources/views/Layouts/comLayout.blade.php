@@ -508,6 +508,17 @@
                             <b class="text-red-500">{{ $errors->first('text') }}</b>
                         @endif
                     </div>
+
+                    <div class="modal-champs">
+                        <label for="">Type de Paiement</label>
+                        <select name="currency">
+                            <option value="cash">Cash</option>
+                            <option value="virement">Virement</option>
+                        </select>
+                        @if ($errors->has('currency'))
+                            <b class="text-red-500">{{ $errors->first('currency') }}</b>
+                        @endif
+                    </div>
                     <div class="modal-champs">
                         <h2>Montant : <b></b></h2>
                     </div>
@@ -580,6 +591,7 @@
                             <b class="text-red-500">{{ $errors->first('text') }}</b>
                         @endif
                     </div>
+
                     <div class="modal-champs">
                         <h2>Montant : <b></b></h2>
                     </div>
@@ -653,6 +665,16 @@
                         <input type="number" name="numero" required>
                         @if ($errors->has('numero'))
                             <b class="text-red-500">{{ $errors->first('numero') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Type de Paiement</label>
+                        <select name="currency">
+                            <option value="cash">Cash</option>
+                            <option value="virement">Virement</option>
+                        </select>
+                        @if ($errors->has('currency'))
+                            <b class="text-red-500">{{ $errors->first('currency') }}</b>
                         @endif
                     </div>
                     <div class="modal-champs">

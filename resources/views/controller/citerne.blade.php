@@ -17,11 +17,11 @@
                     <tr>
                         <td>{{ $fix->id }}</td>
                         <td>{{ $fix->name }}-{{ $fix->type }}</td>
-                        <td>{{ $fix->stock->stock_theo }}</td>
-                        <td>{{ $fix->stock->stock_rel }}</td>
+                        <td>{{ $fix->stock[0]->stock_theo }}</td>
+                        <td>{{ $fix->stock[0]->stock_rel }}</td>
 
                         <?php
-                        $ecart = $fix->stock->stock_rel - $fix->stock->stock_theo;
+                        $ecart = $fix->stock[0]->stock_rel - $fix->stock[0]->stock_theo;
                         ?>
                         <td>
                             @if ($ecart > 0)

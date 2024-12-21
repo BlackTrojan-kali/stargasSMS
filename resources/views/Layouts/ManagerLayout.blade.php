@@ -159,6 +159,8 @@
                         </ul>
                     </div>
                     <div class="text-center elem"><a href="{{ route('historique-rel') }}">Etats Releves</a></div>
+                    <div class="text-center elem"><a href="{{ route('broutes-list-man') }}">Bordereaux de Route</a>
+                    </div>
                 </div>
             </div>
             <div class="font-bold cursor-pointer dropdown relative">GENERER UN DOCUMENT<i
@@ -168,6 +170,7 @@
                     <li class="elem" id="activate-pdf-form">Etats des mouvements</li>
                     <li class="elem" id="activate-receives-pdf-form">historique des reception</li>
                     <li class="elem" id="activate-releves-pdf-form">historique des releves</li>
+                    <li class="elem" id="activate-broute-pdf-form">bordereau de route</li>
                 </ul>
             </div>
         </nav>
@@ -228,6 +231,7 @@
             </div>
         </center>
     </div>
+
     <!--FORMULAIRE DE GENERATION DE PDF RECEPTIONS-->
     <div id="recieves-pdf-form" class="modals">
         <center>
@@ -333,28 +337,11 @@
                         <label for="">Service</label>
                         <select name="service" id="">
 
-                            <option value="production">production</option>
-                            <option value="magasin">magasin</option>
-                            <option value="commercial">commmercial</option>
+                            <option value="{{ Auth::user()->role }}">{{ Auth::user()->role }}</option>
 
                         </select>
                         @if ($errors->has('service'))
                             <span class="text-red-500">{{ $errors->first('service') }}</span>
-                        @endif
-                    </div>
-                    <div class="modal-champs">
-                        <label for="">Region</label>
-                        <select name="region" id="">
-
-                            <option value="centre">Centre</option>
-                            <option value="littoral">Littoral</option>
-                            <option value="sud">Sud</option>
-                            <option value="est">Est</option>
-                            <option value="Adamaoua">Adamaoua</option>
-
-                        </select>
-                        @if ($errors->has('region'))
-                            <span class="text-red-500">{{ $errors->first('region') }}</span>
                         @endif
                     </div>
                     <div class="modal-champs">
@@ -369,6 +356,104 @@
                         </select>
                         @if ($errors->has('type'))
                             <span class="text-red-500">{{ $errors->first('type') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+    <!-- FORMULAIRE DE GENERATION DU BORDEREAU DE ROUTE-->
+    <div id="broute-form" class="modals ">
+        <center class=" overflow-y-scroll">
+
+            <div class="modal-active size-2">
+                <div class="modal-head">
+                    <h1>Generer un Bordereau de route</h1>
+                    <span class="close-modal">X </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form method="POST" action="{{ route('gen-broute') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Immatriculation du vehicule</label>
+                        <input type="text" required name="matricule">
+                        @if ($errors->has('matricule'))
+                            <span class="text-red-500">{{ $errors->first('matricule') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Ville de depart</label>
+                        <input type="text" required name="depart">
+                        @if ($errors->has('depart'))
+                            <span class="text-red-500">{{ $errors->first('depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Ville d'arrivee</label>
+                        <input type="text" required name="arrivee">
+                        @if ($errors->has('arrivee'))
+                            <span class="text-red-500">{{ $errors->first('arrivee') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Date depart:</label>
+                        <input type="date" name="date_depart" required>
+                        @if ($errors->has('date_depart'))
+                            <span class="text-red-500">{{ $errors->first('date_depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Date Arrivee:</label>
+                        <input type="date" name="date_arrivee">
+                        @if ($errors->has('date_arrivee'))
+                            <span class="text-red-500">{{ $errors->first('date_arrivee') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Nom chauffeur :</label><br>
+
+                        <input type="text" name="nom_chauffeur" required>
+                    </div>
+                    @if ($errors->has('nom_chauffeur'))
+                        <span class="text-red-500">{{ $errors->first('nom_chauffeur') }}</span>
+                    @endif
+                    <div class="modal-champs">
+                        <label for="">Permis</label>
+                        <input type="text" name="permis" required />
+                        @if ($errors->has('permis'))
+                            <span class="text-red-500">{{ $errors->first('permis') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="modal-champs">
+                        <label for="">Aide Chauffeur</label>
+                        <input type="text" name="aide_chauffeur">
+
+
+                        @if ($errors->has('aide_chauffeur'))
+                            <span class="text-red-500">{{ $errors->first('aide_chauffeur') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Contacts</label>
+                        <input type="text" name="contact" required />
+                        @if ($errors->has('contact'))
+                            <span class="text-red-500">{{ $errors->first('contact') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="modal-champs">
+
+                        <label for="">Details:</label>
+                        <textarea name="details" class="w-full border-2 border-gray-200" required>
+                        </textarea>
+                        @if ($errors->has('details'))
+                            <span class="text-red-500">{{ $errors->first('details') }}</span>
                         @endif
                     </div>
                     <div class="modal-validation">
@@ -519,6 +604,10 @@
                     <div class="modal-champs">
                         <label for="">Type d'operation:</label>
                         <select name="origin" id="">
+                            @if (Auth::user()->region != 'central')
+                                <option value="client">Client</option>
+                                <option value="magasin central">MAGASIN CENTRAL</option>
+                            @endif
                             <option value="region">region</option>
                             <option value="production">production</option>
                             <option value="stock_initial">stock initial</option>
@@ -582,7 +671,13 @@
                     <div class="modal-champs">
                         <label for="">Type d'operation:</label>
                         <select name="origin" id="">
-                            <option value="achat">achat</option>
+                            @if (Auth::user()->region != 'central')
+                                <option value="client">Client</option>
+                                <option value="magasin central">MAGASIN CENTRAL</option>
+                            @endif
+                            @if (Auth::user()->region == 'central')
+                                <option value="achat">achat</option>
+                            @endif
                             <option value="region">region</option>
                             <option value="production">production</option>
                             <option value="stock_initial">stock initial</option>
@@ -657,6 +752,10 @@
                         <label for="">Type d'operation:</label>
                         <select name="operation" id="">
 
+                            @if (Auth::user()->region != 'central')
+                                <option value="client">Client</option>
+                                <option value="magasin central">MAGASIN CENTRAL</option>
+                            @endif
                             <option value="stock_initial">stock initial</option>
                         </select>
                         @if ($errors->has('operation'))
@@ -772,6 +871,10 @@
                         <label for="">Type d'operation:</label>
                         <select name="origin" id="">
                             <option value="region">region</option>
+                            @if (Auth::user()->region != 'central')
+                                <option value="magasin central">MAGASIN CENTRAL</option>
+                                <option value="client">Client</option>
+                            @endif
                         </select>
                         @if ($errors->has('origin'))
                             <span class="text-red-500">{{ $errors->first('origin') }}</span>
@@ -833,6 +936,9 @@
                     <div class="modal-champs">
                         <label for="">Type d'operation:</label>
                         <select name="origin" id="">
+                            @if (Auth::user()->region != 'central')
+                                <option value="magasin central">MAGASIN CENTRAL</option>
+                            @endif
                             <option value="production">production</option>
                             <option value="reepreuve">reepreuve</option>
                         </select>
@@ -907,6 +1013,10 @@
                         <label for="">Type d'accessiore:</label>
                         <select name="operation" id="">
 
+                            @if (Auth::user()->region != 'central')
+                                <option value="client">Client</option>
+                                <option value="magasin central">MAGASIN CENTRAL</option>
+                            @endif
                             <option value="stock_initial">stock initial</option>
                         </select>
                         @if ($errors->has('operation'))
@@ -978,6 +1088,23 @@
 
         //form deployment
         $(function() {
+            //ACTION generate broute form 
+            $("#activate-broute-pdf-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#broute-form").hasClass("modals")) {
+                    $("#broute-form").addClass("modals-active")
+
+                    $("#broute-form").removeClass("modals")
+                }
+            })
+
+            $(".close-modal").on("click", function(e) {
+                e.preventDefault()
+                if ($("#broute-form").hasClass("modals-active")) {
+                    $("#broute-form").addClass("modals")
+                    $("#broute-form").removeClass("modals-active")
+                }
+            })
             //ACTION generate pdf releves 
             $("#activate-releves-pdf-form").on("click", function(e) {
                 e.preventDefault()

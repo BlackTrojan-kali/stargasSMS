@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer("prix_unitaire");
             $table->bigInteger("prix_total")->nullable();
             $table->string("region");
+            $table->string("currency");
             $table->string("service");
             $table->string("type");
             $table->timestamps();

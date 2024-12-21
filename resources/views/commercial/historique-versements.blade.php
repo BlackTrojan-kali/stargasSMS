@@ -1,107 +1,150 @@
 @extends('Layouts.comLayout')
-@section("content")
-<center>
-<h1 class="p-2 mt-5 font-bold text-2xl">Historique des Versements
-    
-</h1>
-    <div class=" flex w-full gap-3">
-    <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
-    
-    <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
-        <thead  class="p-3 bg-gray-500 text-white">
-            <td colspan="6" class="text-center">
-        AFB
-            </td>
-            <tr>
-                <td>
-                    date
-                </td>
-            <td>
-            GPL
-            </td>
-            <td>
-            Consigne
-            </td>
-            <td>
-                Montant Versee
-            </td>
-            <td>
-                Numerode bordereau
-            </td>
-            <td>commentaire</td>
-        </tr>
-        </thead>
-        
-    <tbody>
-        @foreach ($ventes as $vente )
-        <tr class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
-            <td>{{ $vente->created_at }}</td>
-            <td>
-                {{ $vente->montant_gpl }}
-            </td>
-            <td>
-                {{ $vente->montant_consigne }}
-            </td>
-            <td>
-                {{ $vente->montant_gpl + $vente->montant_consigne }}
-            </td>
-            <td>
-                {{ $vente->bordereau }}
-            </td>
-            <td> {{  $vente->commentaire}}</td>
-        </tr>
-        @endforeach
-    </tbody>
-    </table>   <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
-        <thead  class="p-3 bg-gray-500 text-white">
-            <td colspan="6" class="text-center">
-        CCA
-            </td>
-            <tr>
-                <td>date</td>
-            <td>
-            GPL
-            </td>
-            <td>
-            Consigne
-            
-        </td>
-            <td>
-                Montant Versee
-            </td>
-            
-            <td>
-                Numerode bordereau
-            </td>
-            <td>
-                commentaire
-            </td>
-        </tr>
-        </thead>
-        
-    <tbody>
-        @foreach ($ventes2 as $vente )
-        <tr class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
-            <td>{{ $vente->created_at }}</td>
-            <td>
-                {{ $vente->montant_gpl }}
-            </td>
-            <td>
-                {{ $vente->montant_consigne }}
-            </td>
-            <td>
-                {{ $vente->montant_gpl + $vente->montant_consigne }}
-            </td>
-            <td> 
-                {{ $vente->bordereau }}
-            </td>
-            <td>
-                {{ $vente->commentaire }}
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-    </table>
-</div></center>
+@section('content')
+    <center>
+        <h1 class="p-2 mt-5 font-bold text-2xl">Historique des Versements
 
+        </h1>
+        <div class=" flex w-full gap-3">
+            <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
+
+            <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
+                <thead class="p-3 bg-gray-500 text-white">
+                    <td colspan="7" class="text-center">
+                        AFB
+                    </td>
+                    <tr>
+                        <td>
+                            date
+                        </td>
+                        <td>
+                            GPL
+                        </td>
+                        <td>
+                            Consigne
+                        </td>
+                        <td>
+                            Montant Versee
+                        </td>
+                        <td>
+                            Numerode bordereau
+                        </td>
+                        <td>commentaire</td>
+                        <td>action</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($ventes as $vente)
+                        <tr id="{{ $vente->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
+                            <td>{{ $vente->created_at }}</td>
+                            <td>
+                                {{ $vente->montant_gpl }}
+                            </td>
+                            <td>
+                                {{ $vente->montant_consigne }}
+                            </td>
+                            <td>
+                                {{ $vente->montant_gpl + $vente->montant_consigne }}
+                            </td>
+                            <td>
+                                {{ $vente->bordereau }}
+                            </td>
+                            <td> {{ $vente->commentaire }}</td>
+                            <td><i class="text-red-500 delete">delete</i></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
+                <thead class="p-3 bg-gray-500 text-white">
+                    <td colspan="7" class="text-center">
+                        CCA
+                    </td>
+                    <tr>
+                        <td>date</td>
+                        <td>
+                            GPL
+                        </td>
+                        <td>
+                            Consigne
+
+                        </td>
+                        <td>
+                            Montant Versee
+                        </td>
+
+                        <td>
+                            Numerode bordereau
+                        </td>
+                        <td>
+                            commentaire
+                        </td>
+                        <td>action</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($ventes2 as $vente)
+                        <tr id="{{ $vente->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
+                            <td>{{ $vente->created_at }}</td>
+                            <td>
+                                {{ $vente->montant_gpl }}
+                            </td>
+                            <td>
+                                {{ $vente->montant_consigne }}
+                            </td>
+                            <td>
+                                {{ $vente->montant_gpl + $vente->montant_consigne }}
+                            </td>
+                            <td>
+                                {{ $vente->bordereau }}
+                            </td>
+                            <td>
+                                {{ $vente->commentaire }}
+                            </td>
+                            <td> <i class="text-red-500 delete">delete</i></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </center>
+    <script type="module">
+        $(function() {
+            $(".delete").on("click", function() {
+                var id = $(this).parent().parent().attr("id");
+                var token = $("meta[name='csrf-token']").attr("content");
+                Swal.fire({
+                    title: "Etes vous sures ? cette operation est irreversible",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Supprimer",
+                    denyButtonText: `Annuler`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/commercial/deleteVersemment/" + id,
+                            dataType: "json",
+                            data: {
+                                "id": id,
+                                "_token": token,
+                            },
+                            method: "DELETE",
+                            success: function(res) {
+                                toastr.warning(res.message)
+                                $("#" + id).load(location.href + " #" + id)
+                            },
+                            error: function(xhr, status, err) {
+                                console.log(xhr)
+                                console.log(err)
+                            }
+                        })
+                    } else if (result.isDenied) {
+                        Swal.fire("Changement non enregistre", "", "info");
+                    }
+                })
+            })
+        })
+    </script>
 @endsection

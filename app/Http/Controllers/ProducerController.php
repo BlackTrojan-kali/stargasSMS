@@ -17,7 +17,7 @@ use App\Models\Vracstock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use function Ramsey\Uuid\v1;
 
 class ProducerController extends Controller
@@ -75,7 +75,9 @@ class ProducerController extends Controller
         $stocks = Stock::where("category", "production")->where("region", Auth::user()->region)->get();
         $allvrackstocks = Citerne::all();
         $vracstocks = Citerne::where("type", "mobile")->get();
-        $fixe  = Citerne::where("type", "fixe")->get();
+        $fixe  = Citerne::with(["Stock" => function ($query) {
+            $query->where("region", Auth::user()->region);
+        }])->where("type", "fixe")->get();
         if ($weight > 0) {
             $moves = Movement::join("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->where("stocks.region", Auth::user()->region)->where("movements.entree", $type)->where("movements.service", Auth::user()->role)->where("articles.state", $state)->where("articles.weight", $weight)->select("movements.*")->with("fromArticle")->get();
 
@@ -103,8 +105,9 @@ class ProducerController extends Controller
 
         $stocks = Stock::where("category", Auth::user()->role)->where("region", Auth::user()->region)->get();
         $vracstocks = Citerne::where("type", "mobile")->get();
-        $fixe  = Citerne::where("type", "fixe")->with("Stock")->get();
-
+        $fixe  =  Citerne::with(array('Stock' => function (Builder $query) {
+            $query->where("region", Auth::user()->region);
+        }))->where("type", "fixe")->get();
         $accessories = Article::where("type", "accessoire")->get("title");
 
         $allvrackstocks = Citerne::all();
@@ -119,8 +122,12 @@ class ProducerController extends Controller
 
         $stocks = Stock::where("category", "production")->get();
         $vracstocks = Citerne::where("type", "mobile")->get();
-        $fixe  = Citerne::where("type", "fixe")->with("Stock")->get();
-        $fixer = Citerne::where("id", $id)->with("Stock")->first();
+        $fixe  = Citerne::with(["Stock" => function ($query) {
+            $query->where("region", Auth::user()->region);
+        }])->where("type", "fixe")->get();
+        $fixer = Citerne::where("id", $id)->with(["Stock" => function ($query) {
+            $query->where("region", Auth::user()->region);
+        }])->first();
 
         $accessories = Article::where("type", "accessoire")->get("title");
         $mobile = Citerne::where("type", "mobile")->get();
@@ -139,12 +146,12 @@ class ProducerController extends Controller
         $fixe->save();
         $move = new Relhistorie();
         $move->citerne = $fixe->name;
-        $move->stock_theo = $fixe->stock->stock_theo;
-        $move->stock_rel = $fixe->stock->stock_rel;
-        $move->ecart = $fixe->stock->stock_rel - $fixe->stock->stock_theo;
+        $move->stock_theo = $fixe->stock[0]->stock_theo;
+        $move->stock_rel = $fixe->stock[0]->stock_rel;
+        $move->ecart = $fixe->stock[0]->stock_rel - $fixe->stock[0]->stock_theo;
         $move->region = Auth::user()->region;
         $move->save();
-        $stock = Vracstock::where("id", $fixe->stock->id)->first();
+        $stock = Vracstock::where("id", $fixe->stock[0]->id)->first();
         $stock->stock_rel = $request->qty;
 
         $stock->save();
@@ -267,7 +274,7 @@ class ProducerController extends Controller
         $citerne = Citerne::with(['Stock' => function ($query) {
             $query->where('region', Auth::user()->region);
         }])->where("name", $request->citerne)->first();
-        $stockQty = intval($citerne->stock->stock_rel);
+        $stockQty = intval($citerne->stock[0]->stock_rel);
 
         $article = Article::where("weight", $type)->where("state", 0)->with("hasStock")->first();
         $article2 = Article::where("weight", $type)->where("state", 1)->with("hasStock")->first();
@@ -277,17 +284,18 @@ class ProducerController extends Controller
             $move->type = $type;
             $move->qty = $request->qty;
             $move->bordereau = $request->bord;
-            $citerne->stock->stock_theo = 30000;
-            $citerne->stock->stock_rel = 30000;
-            $citerne->stock->save();
-            $article->hasStock[1]->qty -= $request->qty;
-            $article->hasStock[1]->save();
-            $article2->hasStock[1]->qty += $request->qty;
-            $article2->hasStock[1]->save();
+            $move->region = Auth::user()->region;
+            $citerne->stock[0]->stock_theo = 30000;
+            $citerne->stock[0]->stock_rel = 30000;
+            $citerne->stock[0]->save();
+            $article->hasStock[0]->qty -= $request->qty;
+            $article->hasStock[0]->save();
+            $article2->hasStock[0]->qty += $request->qty;
+            $article2->hasStock[0]->save();
             $move->save();
             $move2 = new Movement();
             $move2->article_id = $article2->id;
-            $move2->stock_id = $article2->hasStock[1]->id;
+            $move2->stock_id = $article2->hasStock[0]->id;
             $move2->origin = "production";
             $move2->label = "production de bouteille gaz a partir de citern mobile";
             $move2->entree = 1;
@@ -295,7 +303,7 @@ class ProducerController extends Controller
             $move2->qty = $request->qty;
             $move2->service = Auth::user()->role;
             $move2->bordereau = $request->bord;
-            $move2->stock = $article2->hasStock[1]->qty;
+            $move2->stock = $article2->hasStock[0]->qty;
             $move2->id_citerne = $request->citerne;
             $move2->save();
             // $citerne->stock->stock_theo -= $request->qty*$type;
@@ -310,23 +318,23 @@ class ProducerController extends Controller
         $move->qty = $request->qty;
         $move->bordereau = $request->bord;
         $move->region = Auth::user()->region;
-        $citerne->stock->stock_theo = $stockQty - (intval($request->qty) * floatval($type));
-        $citerne->stock->stock_rel = $stockQty - (intval($request->qty) * floatval($type));
-        $citerne->stock->save();
+        $citerne->stock[0]->stock_theo = $stockQty - (intval($request->qty) * floatval($type));
+        $citerne->stock[0]->stock_rel = $stockQty - (intval($request->qty) * floatval($type));
+        $citerne->stock[0]->save();
         //$move->save();
 
         if ($article) {
-            if ($article->hasStock[1]->qty < $request->qty) {
+            if ($article->hasStock[0]->qty < $request->qty) {
                 return response()->json(["error" => "stock insufisant bouteilles vides"]);
             } else {
-                $article->hasStock[1]->qty -= $request->qty;
-                $article->hasStock[1]->save();
-                $article2->hasStock[1]->qty += $request->qty;
-                $article2->hasStock[1]->save();
+                $article->hasStock[0]->qty -= $request->qty;
+                $article->hasStock[0]->save();
+                $article2->hasStock[0]->qty += $request->qty;
+                $article2->hasStock[0]->save();
                 $move->save();
                 $move2 = new Movement();
                 $move2->article_id = $article2->id;
-                $move2->stock_id = $article2->hasStock[1]->id;
+                $move2->stock_id = $article2->hasStock[0]->id;
                 $move2->origin = "production";
                 $move2->label = "production de bouteille gaz";
                 $move2->entree = 1;
@@ -334,7 +342,7 @@ class ProducerController extends Controller
                 $move2->qty = $request->qty;
                 $move2->service = Auth::user()->role;
                 $move2->bordereau = $request->bord;
-                $move2->stock = $article2->hasStock[1]->qty;
+                $move2->stock = $article2->hasStock[0]->qty;
                 $move2->id_citerne = $request->citerne;
                 $move2->save();
                 // $citerne->stock->stock_theo -= $request->qty*$type;

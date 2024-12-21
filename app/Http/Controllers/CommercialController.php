@@ -208,6 +208,7 @@ class CommercialController extends Controller
             "qty_12" => "numeric | required",
             "prix_50" => "numeric | required",
             "qty_50" => "numeric | required",
+            "currency" => "string | required",
 
         ]);
         $article = Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 12.5)->where("stocks.region", Auth::user()->region)->where("stocks.category", Auth::user()->role)->select("stocks.*")->first();
@@ -233,6 +234,7 @@ class CommercialController extends Controller
         $vente->region = Auth::user()->region;
         $vente->service = Auth::user()->role;
         $vente->prix_unitaire = 0;
+        $vente->currency = $request->currency;
         $vente->save();
         $pdf = Pdf::loadView("commercial.invoice", ["vente" => $vente, "article" => $article, "type" => $type]);
         return $pdf->download($vente->customer . $vente->created_at . ".pdf");
@@ -349,5 +351,11 @@ class CommercialController extends Controller
             $pdf = Pdf::loadview("versementPdf", ["fromDate" => $fromDate, "toDate" => $toDate, "deposit" => $deposit, "bank" => $request->bank]);
             return $pdf->download(Auth::user()->role . "versements" . Auth::user()->region . $fromDate . $toDate . $request->bank . ".pdf");
         }
+    }
+    public function deleteVersement($id)
+    {
+        $versement = Versement::findOrFail($id);
+        $versement->delete();
+        return response()->json(["message" => "versement supprime avec success"]);
     }
 }

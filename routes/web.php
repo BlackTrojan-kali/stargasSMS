@@ -53,6 +53,11 @@ Route::group(["middleware" => "auth"], function () {
             //citernes etat
             Route::get("/manager/citernes", [Controllers\ProducerController::class, "showCiterne"])->name("showCiterneMan");
             Route::get("/manager/citernes/historique", [Controllers\CiternController::class, "show"])->name("historique-rel");
+            //bordereau de route
+            Route::post("/manager/broute-post/", [Controllers\MagazinierController::class, "generateBroutePDF"])->name("gen-broute");
+            Route::get("/manager/broute-list", [Controllers\MagazinierController::class, "show_broute_list"])->name("broutes-list-man");
+            Route::get("/manager/broute-list-gen/{id}", [Controllers\MagazinierController::class, "BroutePDF"])->name("gen-broute-2");
+            Route::delete("/manager/broute-list-del/{id}", [Controllers\MagazinierController::class, "deleteBroute"])->name("del-broute");
       });
       Route::middleware(isProducer::class)->group(function () {
             Route::get("/producer/dashboard", [Controllers\ProducerController::class, "show"])->name("dashboard-producer");
@@ -88,6 +93,7 @@ Route::group(["middleware" => "auth"], function () {
                   Route::get("/commercial/printInvoice/{id}", "print_invoice")->name("printInvoice");
                   Route::get("/commercial/moveGlobalPro/{type}/{weight}", [Controllers\ArticleController::class, "MoveGlobal"])->name("moveGlobalCom");
                   Route::post("/commercial/createAccessoriePDf/{type}", "makeAcSales")->name("makeAcSales");
+                  Route::delete("/commercial/deleteVersemment/{id}", "deleteVersement")->name("deleteVersement");
             }
       );
       Route::middleware(isCommercial::class)->group(function () {
@@ -107,6 +113,8 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/commercial/ventesCon/{type}", [Controllers\CommercialController::class, "ventes"])->name("showVentesCon");
             Route::get("/controller/citernes/historique", [Controllers\CiternController::class, "show"])->name("historique-rel-con");
             Route::get("/controller/produceHistory/", [Controllers\ProducerController::class, "showProdHist"])->name("showConHist");
+            Route::get("/controller/broute-list", [Controllers\BossController::class, "show_broute_list"])->name("broutes-list-con");
+            Route::get("/controller/broute-list-gen/{id}", [Controllers\BossController::class, "BroutePDF"])->name("gen-broute-3");
       });
       //DIRECTOR INTERFACES
       Route::middleware(IsDirector::class)->group(

@@ -70,7 +70,7 @@
                 <div class="drop-items">
 
 
-                    <div class="text-center elem"><a href="{{ route('historique-rel-con') }}">Etats Releves</a></div>
+                    <div class="text-center elem"><a href="{{ route('historique-rel-con') }}">ETAT DES RELEVES</a></div>
                     <div class="drop-2 elem"><a href="{{ route('showConHist') }}">ETAT DES PRODUCTION</a></div>
                     <div class="drop-2 elem">
                         <a href="{{ route('showVentesCon', ['type' => 'vente']) }}"> VENTES</a>
@@ -78,9 +78,13 @@
                     <div class="drop-2 elem">
                         <a href="{{ route('showVentesCon', ['type' => 'consigne']) }}"> CONSIGNES</a>
                     </div>
+                    
+                    <div class="drop-2 elem"><a href="{{ route('broutes-list-con') }}">Bordereaux de Route</a>
+                    </div>
                     <div class="drop-2 elem">
                         <a href="{{ route('showVentesCon', ['type' => 'versements']) }}"> VERSEMENTS</a>
                     </div>
+                    
                 </div>
             </div>
             <div class="font-bold cursor-pointer dropdown relative">GENERER UN DOCUMENT<i
@@ -88,11 +92,11 @@
                 <ul class="drop-items">
 
                     <li class="elem" id="activate-pdf-form">Etats des mouvements</li>
-                    <li class="elem" id="activate-receives-pdf-form">historique des reception</li>
+                    <li class="elem" id="activate-receives-pdf-form">Historique des receptions</li>
                     <li class="elem" id="activate-sales-state-pdf-form">Etats des Ventes</li>
                     <li class="elem" id="activate-versement-pdf-form">Historique des Versements</li>
-                    <li class="elem" id="activate-releves-pdf-form">historique des releves</li>
-                    <li class="elem" id="activate-produce-pdf-form">Etats des Production</li>
+                    <li class="elem" id="activate-releves-pdf-form">Historique des releves</li>
+                    <li class="elem" id="activate-produce-pdf-form">Etats des ProductionS</li>
 
                 </ul>
             </div>

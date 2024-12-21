@@ -38,24 +38,23 @@ class ArticleController extends Controller
             "move" => "string| required",
             "type" => "string | required",
             "service" => "required | string",
-            "region" => "required | string"
         ]);
         $fromdate = $request->depart;
         $todate = $request->fin;
         $first = null;
-        $region = $request->region;
+        $region = Auth::user()->region;
         $service = $request->service;
         if ($request->type == "777") {
             if ($request->move == "777") {
-                $data  = Movement::join("articles", "movements.article_id", "articles.id")->where("movements.service", $request->service)->where("stocks.region", $request->region)->where("article.type", "accessoire")->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
-                $data2  = Movement::join("articles", "movements.article_id", "articles.id")->join("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", $request->region)->where("article.type", "accessoire")->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
+                $data  = Movement::join("articles", "movements.article_id", "articles.id")->where("movements.service", $request->service)->where("stocks.region", Auth::user()->region)->where("article.type", "accessoire")->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
+                $data2  = Movement::join("articles", "movements.article_id", "articles.id")->join("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", Auth::user()->region)->where("article.type", "accessoire")->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
             } else {
-                $data  = Movement::join("articles", "movements.article_id", "articles.id")->join("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.entree", $request->move)->where("movements.service", $request->service)->where("stocks.region", $request->region)->where("article.type", "accessoire")->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
+                $data  = Movement::join("articles", "movements.article_id", "articles.id")->join("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.entree", $request->move)->where("movements.service", $request->service)->where("stocks.region", Auth::user()->region)->where("article.type", "accessoire")->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
             }
         } else {
             if ($request->move == "777") {
-                $data  = Movement::leftjoin("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", $request->region)->where("articles.type", "bouteille-gaz")->where("articles.weight", floatval($request->type))->where("articles.state", 1)->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
-                $data2  = Movement::leftjoin("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", $request->region)->where("articles.type", "bouteille-gaz")->where("articles.weight", floatval($request->type))->where("articles.state", 0)->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
+                $data  = Movement::leftjoin("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", Auth::user()->region)->where("articles.type", "bouteille-gaz")->where("articles.weight", floatval($request->type))->where("articles.state", 1)->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
+                $data2  = Movement::leftjoin("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", Auth::user()->region)->where("articles.type", "bouteille-gaz")->where("articles.weight", floatval($request->type))->where("articles.state", 0)->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
 
                 if (!empty($data[0])) {
                     $first = $data[0]->fromArticle;
@@ -63,7 +62,7 @@ class ArticleController extends Controller
                     return back()->withErrors("aucune donnee disponible");
                 }
             } else {
-                $data  = Movement::leftjoin("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", $request->region)->where("articles.type", "bouteille-gaz")->where("articles.state", $request->state)->where("articles.weight", floatval($request->type))->where("movements.entree", intval($request->move))->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
+                $data  = Movement::leftjoin("articles", "movements.article_id", "articles.id")->leftjoin("stocks", "movements.stock_id", "stocks.id")->whereBetween("movements.created_at", [$request->depart, $request->fin])->where("movements.service", $request->service)->where("stocks.region", Auth::user()->region)->where("articles.type", "bouteille-gaz")->where("articles.state", $request->state)->where("articles.weight", floatval($request->type))->where("movements.entree", intval($request->move))->with("fromArticle")->select("movements.*")->orderBy("created_at")->get();
 
                 if (!empty($data[0])) {
                     $first = $data[0]->fromArticle;
@@ -311,8 +310,8 @@ class ArticleController extends Controller
             "qty" => "numeric | required",
         ]);
         $citerne = Citerne::where("id", $id)->with("stock")->first();
-        $citerne->stock->stock_theo = $request->qty;
-        $citerne->stock->save();
+        $citerne->stock[0]->stock_theo = $request->qty;
+        $citerne->stock[0]->save();
         return back()->withSuccess("stock theorique modifie avec succes");
     }
 }

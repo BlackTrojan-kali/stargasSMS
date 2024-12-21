@@ -12,7 +12,6 @@
     <div class="w-11/12 flex justify-between font-bold">
       <p>{{$stock->article->title}} <span class="genera;">{{$stock->article->weight>0? $stock->article->weight."kg":""}} </span>
         @if ($stock->type == "bouteille-gaz")
-            
         <span class="text-green-500">{{$stock->article->state? "pleine":"vide"}}</span>
         @endif  <span class="text-orange-500">{{$stock->region}} {{$stock->category}}</span></p>
       <p>{{$stock->qty}}</p>

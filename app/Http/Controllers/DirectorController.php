@@ -97,7 +97,7 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $entrees = Movement::join("articles", "articles.id", "movements.article_id")->where("movements.service", "magasin")->selectRaw("YEAR(movements.created_at) as annee, MONTH(movements.created_at) as mois, weight,SUM(qty) as total_qty")->where("entree", 1)->groupBy("annee", "mois", "weight")->get();
+        $entrees = Movement::join("articles", "articles.id", "movements.article_id")->leftjoin("stocks", "stocks.id", "movements.stock_id")->where("stocks.region", "!=", "central")->where("movements.service", "magasin")->selectRaw("YEAR(movements.created_at) as annee, MONTH(movements.created_at) as mois, weight,SUM(movements.qty) as total_qty")->where("entree", 1)->groupBy("annee", "mois", "weight")->get();
         $type = "ENTREES BOUTEILLES PLEINES";
         return view("director.fullBottles", ["entrees" => $entrees, "region" => $region, "type" => $type]);
     }
@@ -106,7 +106,7 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $entrees = Movement::join("articles", "articles.id", "movements.article_id")->where("movements.service", "magasin")->where("articles.state", 0)->selectRaw("YEAR(movements.created_at) as annee, MONTH(movements.created_at) as mois, weight,SUM(qty) as total_qty")->where("entree", 1)->groupBy("annee", "mois", "weight")->get();
+        $entrees = Movement::join("articles", "articles.id", "movements.article_id")->leftjoin("stocks", "stocks.id", "movements.stock_id")->where("stocks.region", "!=", "central")->where("movements.service", "magasin")->selectRaw("YEAR(movements.created_at) as annee, MONTH(movements.created_at) as mois, weight,SUM(movements.qty) as total_qty")->where("entree", 0)->groupBy("annee", "mois", "weight")->get();
 
         $type = "ENTREES BOUTEILLES VIDES";
         return view("director.fullBottles", ["entrees" => $entrees, "region" => $region, "type" => $type]);

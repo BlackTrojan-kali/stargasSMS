@@ -134,7 +134,7 @@
                     @foreach ($region as $reg)
                         <li class="elem"><a
                                 href="{{ route('RegionEmptyBottles', ['region' => $reg->region]) }}">Reception
-                                BP
+                                BV
                                 {{ $reg->region }}</a></li>
                     @endforeach
                 </ul>
