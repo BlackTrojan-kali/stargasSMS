@@ -159,7 +159,7 @@ class BossController extends Controller
     }
     public function show_broute_list()
     {
-        $broutes = Broute::all();
+        $broutes = Broute::where("region", Auth::user()->region)->get();
 
         $stocks = Stock::with("article")->where("region", Auth::user()->region)->get();
         $mobile = Citerne::where("type", "mobile")->get();

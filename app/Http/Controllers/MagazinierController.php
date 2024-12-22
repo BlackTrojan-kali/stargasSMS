@@ -278,6 +278,7 @@ class MagazinierController extends Controller
         $broute->matricule = $request->matricule;
         $broute->depart = $request->depart;
         $broute->arrivee = $request->arrivee;
+        $broute->region = Auth::user()->region;
         $broute->date_depart = $request->date_depart;
         $broute->date_arrivee = $request->date_arrivee;
         $broute->nom_chauffeur = $request->nom_chauffeur;
@@ -289,11 +290,11 @@ class MagazinierController extends Controller
 
         $pdf = Pdf::loadview("manager.broute", ["broute" => $broute]);
 
-        return $pdf->download($broute->nom_chauffeur . $broute->created_at . ".pdf");
+        return $pdf->download($broute->nom_chauffeur . $broute->region . $broute->created_at . ".pdf");
     }
     public function show_broute_list()
     {
-        $broutes = Broute::all();
+        $broutes = Broute::where("region", Auth::user()->region)->get();
         $categorie = Auth::user()->role;
 
         $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "=", $categorie)->with("article")->get();
