@@ -93,7 +93,7 @@
                 </div>
             </div>
             <div><a href="{{ route('showCiterneMan') }}">CITERNES</a></div>
-            <div> <a href="{{ route('manager-histories') }}">HISTORIQUE</a></div>
+            <!--  <div> <a href="{{ route('manager-histories') }}">HISTORIQUE</a></div> -->
             <div> <a href="{{ route('showReleve') }}">RECEPTION</a></div>
 
             <div class="dropdown cursor-pointer font-bold relative"> ETATS <i class="fa-solid fa-angle-down"></i>

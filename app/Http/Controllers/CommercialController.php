@@ -211,10 +211,10 @@ class CommercialController extends Controller
             "currency" => "string | required",
 
         ]);
-        $article = Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 12.5)->where("stocks.region", Auth::user()->region)->where("stocks.category", Auth::user()->role)->select("stocks.*")->first();
-        $article2 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 6)->where("stocks.region", Auth::user()->region)->where("stocks.category", Auth::user()->role)->select("stocks.*", "articles.weight")->first();
+        $article = Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 12.5)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*")->first();
+        $article2 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 6)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*", "articles.weight")->first();
 
-        $article3 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 50)->where("stocks.region", Auth::user()->region)->where("stocks.category", Auth::user()->role)->select("stocks.*")->first();
+        $article3 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 50)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*")->first();
 
 
 
@@ -248,9 +248,9 @@ class CommercialController extends Controller
             "prix" => "numeric | required",
             "qty" => "numeric | required",
             "accessoire" => "string | required",
+            "currency" => "string | required",
         ]);
-
-        $article = Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.title", $request->accessoire)->where("articles.type", "accessoire")->where("stocks.region", Auth::user()->region)->where("stocks.category", Auth::user()->role)->select("stocks.*", "articles.title")->first();
+        $article = Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "accessoire")->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*")->first();
 
 
         $vente = new Vente();
@@ -268,6 +268,7 @@ class CommercialController extends Controller
         $vente->region = Auth::user()->region;
         $vente->service = Auth::user()->role;
         $vente->prix_unitaire = 0;
+        $vente->currency = $request->currency;
         $vente->save();
         $pdf = Pdf::loadview("commercial.invoice2", ["vente" => $vente, "article" => $article, "type" => $type]);
         return  $pdf->download($vente->customer . $vente->created_at . ".pdf");

@@ -1,4 +1,4 @@
-@extends('Layouts.ControllerLayout')
+@extends('Layouts.controllerLayout')
 @section('content')
     <center>
         <h1 class="text-2xl font-bold ">Liste des bordereaux de route</h1>

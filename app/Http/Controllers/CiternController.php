@@ -127,7 +127,8 @@ class CiternController extends Controller
             $pdf = Pdf::loadview("RecievePdf", ["receive" => $receive, "fromDate" => $fromDate, "toDate" => $toDate]);
             return  $pdf->download("historique des releves.pdf");
         }
-        $receive = Receive::where("id_citerne", $idCitern)->where("receiver", Auth::user()->role)->whereBetween("created_at", [$request->depart, $request->fin])->with("citerne")->get();
+        $receive = Receive::where("id_citerne", $idCitern)->where("region", Auth::user()->region)->whereBetween("created_at", [$request->depart, $request->fin])->with("citerne")->get();
+
         $pdf = Pdf::loadview("RecievePdf", ["receive" => $receive, "fromDate" => $fromDate, "toDate" => $toDate]);
         return  $pdf->download("historique des receptions.pdf");
     }

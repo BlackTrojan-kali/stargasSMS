@@ -11,6 +11,6 @@ class Citerne extends Model
     use HasFactory;
     public function stock()
     {
-        return $this->hasMany(Vracstock::class, "citerne_id")->where("region",Auth::user()->region);
+        return $this->hasMany(Vracstock::class, "citerne_id")->where("region", Auth::user()->region);
     }
 }

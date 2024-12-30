@@ -188,8 +188,8 @@
                 <div class="signature-2 ">
                     <table>
                         <tr>
-                            <td class="bold" style="padding:2px; text-align:center;">Nom date et visa
-                                Chauffeur
+                            <td class="bold" style="padding:2px; text-align:center;">Nom date et Visa
+                                Responsable
                             </td>
                         </tr>
                         <tr>

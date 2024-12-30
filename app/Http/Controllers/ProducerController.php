@@ -38,11 +38,19 @@ class ProducerController extends Controller
         $stock = Stock::where("id", $move->stock_id)->with("article")->first();
         if ($move->id_citerne) {
             $weight = $stock->article->weight;
+
+            $citerne = Citerne::where("name", $move->id_citerne)->first();
+            /*
+            all method not more working
             $citerne = Citerne::where("name", $move->id_citerne)->with("stock")->first();
 
             $citerne->stock->stock_theo += ($move->qty * $weight);
             $citerne->stock->stock_rel = $citerne->stock->stock_theo;
-            $citerne->stock->save();
+            $citerne->stock->save();*/
+            $citStock = Vracstock::where("citerne_id", $citerne->id)->where("region", Auth::user()->region)->first();
+            $citStock->stock_theo += ($move->qty * $weight);
+            $citStock->stock_rel = $citStock->stock_theo;
+            $citStock->save();
         }
         if ($move->entree == 1) {
             $stock->qty -= $move->qty;
@@ -50,10 +58,11 @@ class ProducerController extends Controller
                 return response()->json(["message" => "stock negatif operation impossible"]);
             }
             if ($stock->article->state == 1) {
-                $stock2 = Article::where("weight", $stock->article->weight)->where("state", 0)->with("hasStock")->first();
+                $article2 = Article::where("weight", $stock->article->weight)->where("state", 0)->first();
+                $stock2 = Stock::where("article_id", $article2->id)->where("region", Auth::user()->region)->where("category", Auth::user()->role)->first();
 
-                $stock2->hasStock[1]->qty += $move->qty;
-                $stock2->hasStock[1]->save();
+                $stock2->qty += $move->qty;
+                $stock2->save();
             }
             $stock->save();
         } else if ($move->sortie == 1) {
