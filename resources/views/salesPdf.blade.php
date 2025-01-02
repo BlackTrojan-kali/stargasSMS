@@ -119,6 +119,9 @@
             <tbody>
                 <?php
                 $total = 0;
+                $total_qty_6 =0;
+                $total_qty_12 =0;
+                $total_qty_50 =0;
                 ?>
                 @foreach ($sales as $vente)
                     <tr id="{{ $vente->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
@@ -134,6 +137,9 @@
                             <?php
                             $UnitTotal = $vente->prix_6 * $vente->qty_6 + $vente->prix_12 * $vente->qty_12 + $vente->prix_50 * $vente->qty_50;
                             $total += $UnitTotal;
+                            $total_qty_6 += $vente->qty_6;
+                            $total_qty_12 += $vente->qty_12;
+                            $total_qty_50 += $vente->qty_50;
                             ?>
                         </td>
                         <td class="border  border-black">{{ $vente->created_at }}</td>
@@ -142,8 +148,11 @@
                 @endforeach
 
                 <tr>
-                    <td colspan="6"><b>total</b></td>
-                    <td colspan="3">{{ $total }} XAF</td>
+                    <td><b>TOTAL</b></td>
+                    <td colspan="2"><b>{{$total_qty_50}}</b></td>
+                    <td colspan="2"><b>{{$total_qty_12}}</b></td>
+                    <td colspan="2"><b>{{$total_qty_6}} </b></td>
+                    <td colspan="2"><b>{{ $total }} XAF</b></td>
                 </tr>
             </tbody>
         </table>
