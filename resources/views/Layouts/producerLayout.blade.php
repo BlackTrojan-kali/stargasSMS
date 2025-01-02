@@ -218,6 +218,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -277,6 +279,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -346,6 +350,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -413,6 +419,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -477,6 +485,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -536,6 +546,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -672,6 +684,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('produceGas') }}",
                     method: "POST",
@@ -681,6 +694,7 @@
                             $(".errors").text(response.error);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -691,6 +705,7 @@
                             $(".success").text(response.success);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".success").text("");
 
@@ -712,6 +727,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('transmitGas') }}",
                     method: "POST",
@@ -721,6 +737,7 @@
                             $(".errors").text(response.error);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -732,6 +749,7 @@
                             $(".success").text(response.success);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".success").text("");
 
@@ -759,6 +777,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveBottleMovePro', ['action' => 'entry', 'state' => 0]) }}",
                     method: "POST",
@@ -768,6 +787,7 @@
                             $(".errors").text(response.error);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -778,6 +798,7 @@
                             $(".success").text(response.success);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".success").text("");
 
@@ -798,6 +819,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('MoveGplPro') }}",
                     method: "POST",
@@ -806,6 +828,7 @@
                         $(".success").text(response.success);
 
                         $("#submitForm").prop("disabled", false);
+                        $('#loading').hide();
                         setTimeout(() => {
                             $(".success").text("");
 
@@ -826,6 +849,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('Depotage') }}",
                     method: "POST",
@@ -835,6 +859,7 @@
                             $(".errors").text(response.error);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -843,6 +868,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");

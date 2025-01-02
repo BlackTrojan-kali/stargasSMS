@@ -345,6 +345,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -1575,6 +1577,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('makeVersement') }}",
                     method: "POST",
@@ -1584,6 +1587,7 @@
 
                             $(".errors").text(response.error);
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1593,6 +1597,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");

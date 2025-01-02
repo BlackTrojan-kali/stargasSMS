@@ -520,6 +520,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -583,6 +585,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -648,6 +652,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -719,6 +725,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -787,6 +795,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -850,6 +860,8 @@
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
                     </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
+                    </div>
                 </form>
             </div>
         </center>
@@ -912,6 +924,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -978,6 +992,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -1047,6 +1063,8 @@
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit" id="submitForm">creer</button>
+                    </div>
+                    <div id="loading" style="display:none;" class=" text-yellow-500">enregistrement...
                     </div>
                 </form>
             </div>
@@ -1306,6 +1324,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('MoveGpl') }}",
                     method: "POST",
@@ -1313,6 +1332,7 @@
                     success: function(response) {
                         $(".success").text(response.success);
                         $("#submitForm").prop("disabled", false);
+                        $('#loading').hide();
                         setTimeout(() => {
                             $(".success").text("");
 
@@ -1333,6 +1353,7 @@
                 }
                 $("#submitForm").prop("disabled", true);
 
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveBottleMove', ['action' => 'entry', 'state' => 1]) }}",
                     method: "POST",
@@ -1342,6 +1363,8 @@
                             $(".errors").text(response.error);
 
                             $("#submitForm").prop("disabled", false);
+
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1351,6 +1374,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");
@@ -1372,6 +1396,7 @@
                 }
                 $("#submitForm").prop("disabled", true);
 
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveBottleMove', ['action' => 'entry', 'state' => 0]) }}",
                     method: "POST",
@@ -1381,6 +1406,7 @@
                             $(".errors").text(response.error);
                             $("#submitForm").prop("disabled", false);
 
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1391,6 +1417,7 @@
                             $(".success").text(response.success);
                             $("#submitForm").prop("disabled", false);
 
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".success").text("");
 
@@ -1417,6 +1444,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveAccessoryMove', ['action' => 'entry']) }}",
                     method: "POST",
@@ -1425,6 +1453,7 @@
                         if (response.error) {
                             $(".errors").text(response.error);
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1433,6 +1462,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");
@@ -1457,6 +1487,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('Depotage') }}",
                     method: "POST",
@@ -1474,6 +1505,8 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");
@@ -1493,6 +1526,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveBottleMove', ['action' => 'outcome', 'state' => 1]) }}",
                     method: "POST",
@@ -1501,6 +1535,7 @@
                         if (response.error) {
                             $(".errors").text(response.error);
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1510,6 +1545,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success)
                             setTimeout(() => {
                                 $(".success").text("");
@@ -1529,6 +1565,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveBottleMove', ['action' => 'outcome', 'state' => 0]) }}",
                     method: "POST",
@@ -1537,6 +1574,7 @@
                         if (response.error) {
                             $(".errors").text(response.error);
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1546,6 +1584,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");
@@ -1565,6 +1604,7 @@
                     return;
                 }
                 $("#submitForm").prop("disabled", true);
+                $('#loading').show();
                 $.ajax({
                     url: "{{ route('saveAccessoryMove', ['action' => 'outcome']) }}",
                     method: "POST",
@@ -1575,6 +1615,7 @@
                             $(".errors").text(response.error);
 
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             setTimeout(() => {
                                 $(".errors").text("");
 
@@ -1584,6 +1625,7 @@
                         } else {
                             $(".errors").text("");
                             $("#submitForm").prop("disabled", false);
+                            $('#loading').hide();
                             $(".success").text(response.success);
                             setTimeout(() => {
                                 $(".success").text("");

@@ -115,7 +115,8 @@
         </p>
     </div>
     <div class="date">
-        {{ $broute->depart }},{{ $broute->created_at }}
+        {{ $broute->depart }},{{ $broute->created_at }} <br>
+        No:{{ $broute->id }}
     </div>
     <center>
 

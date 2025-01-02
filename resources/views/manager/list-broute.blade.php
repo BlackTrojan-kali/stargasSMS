@@ -2,7 +2,7 @@
 @section('content')
     <center>
         <h1 class="text-2xl font-bold ">Liste des bordereaux de route</h1>
-        <table class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
+        <table id="table-broute" class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
             <thead class="bg-gray-500 text-white p-2 border-collapse-0">
                 <tr>
                     <td>N/S</td>
@@ -40,7 +40,7 @@
 
     <script type="module">
         $(function() {
-            $(".delete").on("click", function() {
+            $("#table-broute").on("click",".delete", function() {
                 var id = $(this).parent().parent().attr("id");
                 var token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({
