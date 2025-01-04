@@ -31,17 +31,33 @@
                                 {{ $move->origin == 'achat' ? $move->qty : 0 }}</td>
                             <td>
                                 {{ $move->origin == 'pertes' ? $move->qty : 0 }}</td>
-                            <td>{{ $move->created_at }}</td>
+                            <td>
+
+                                {{ $move->created_at }}</td>
                             <td>{{ $move->label }}</td>
                             <td>{{ $move->entree ? $move->qty : 0 }}</td>
                             <td>{{ $move->sortie ? $move->qty : 0 }}</td>
                             <td>{{ $move->stock }}</td>
 
-                            <td><span class="text-red-500 delete"> supprimer</span></td>
-                        </tr>
-                    @endforeach
-                @else
-                    <p> aucun resultat</p>
+                            <td><span class="text-blue-500" title="modifier"><a
+                                        href="{{ route('modify-move-pro', $move->id) }}"> <i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+
+                                    <?php
+                                    //calculate date time
+                                    $now = now()->format('Y-m-d H:i:s');
+                                    $date2 = $move->created_at;
+                                    $interval = $date2->diff($now);
+                                    $days = $interval->format('%a');
+                                    ?>
+                                    @if ($days <= 3)
+                                        <span class="text-red-500 delete" title="supprimer"><i
+                                                class="fa-solid fa-trash"></i></span></td>
+                    @endif
+                    </tr>
+                @endforeach
+            @else
+                <p> aucun resultat</p>
                 @endif
             </tbody>
         </table>
@@ -73,12 +89,25 @@
                                 {{ $move->origin == 'achat' ? $move->qty : 0 }}</td>
                             <td>
                                 {{ $move->origin == 'pertes' ? $move->qty : 0 }}</td>
-                            <td>{{ $move->created_at }}</td>
+                            <td>
+                                {{ $move->created_at }}</td>
                             <td>{{ $move->label }}</td>
                             <td>{{ $move->entree ? $move->qty : 0 }}</td>
                             <td>{{ $move->sortie ? $move->qty : 0 }}</td>
                             <td>{{ $move->stock }}</td>
-                            <td><span class="text-red-500 delete"> supprimer</span></td>
+                            <td>
+                                <?php
+                                //calculate date time
+                                $now = now()->format('Y-m-d H:i:s');
+                                $date2 = $move->created_at;
+                                $interval = $date2->diff($now);
+                                $days = $interval->format('%a');
+                                ?>
+                                @if ($days <= 3)
+                                    <span class="text-red-500 delete" title="supprimer"><i
+                                            class="fa-solid fa-trash"></i></span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 @else
@@ -90,9 +119,9 @@
     <script>
         $(function() {
             //evement sur les historiques
-        //supprimer ligne table 1
-        $("#table-vides").on("click", ".delete", function() {
-                id = $(this).parent().parent().attr("id");
+            //supprimer ligne table 1
+            $("#table-vides").on("click", ".delete", function() {
+                id = $(this).parent().parent().parent().attr("id");
                 var token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({
                     title: "Etes vous sures ? cette operation est irreversible",

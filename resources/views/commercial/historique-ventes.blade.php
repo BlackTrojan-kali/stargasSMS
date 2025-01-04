@@ -45,7 +45,7 @@
                 </tr>
             </thead>
             <tbody>
-            
+
                 @foreach ($ventes as $vente)
                     <tr id="{{ $vente->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
                         <td class="border  border-black">{{ $vente->customer }}</td>
@@ -60,8 +60,20 @@
                         </td>
                         <td class="border  border-black">{{ $vente->created_at }}</td>
                         <td class="border  border-black"><a href="{{ route('printInvoice', ['id' => $vente->id]) }}"><i
-                                    class="text-teal-900">print</i></a>
-                            <i class="text-red-500 delete">delete</i>
+                                    class="text-teal-900 fa-solid fa-download" title="generer pdf"></i></a>
+                            <a href="{{ route('modifySale', $vente->id) }}"><i
+                                    class="text-blue-500 fa-solid fa-pen-to-square" title="modifier"></i></a>
+
+                            <?php
+                            //calculate date time
+                            $now = now()->format('Y-m-d H:i:s');
+                            $date2 = $vente->created_at;
+                            $interval = $date2->diff($now);
+                            $days = $interval->format('%a');
+                            ?>
+                            @if ($days <= 3)
+                                <i class="text-red-500 delete fa-solid fa-trash" title="supprimer"></i>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

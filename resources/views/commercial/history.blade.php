@@ -79,7 +79,19 @@
                         <td>{{ $move->bordereau }}</td>
                         <td>{{ $move->stock }}</td>
                         <td>{{ $move->fromArticle->state ? 'plein' : 'vide' }}</td>
-                        <td>{{ $move->label }} <span class="text-red-500 delete"> supprimer</span></td>
+
+                        <td>
+                            <?php
+                            //calculate date time
+                            $now = now()->format('Y-m-d H:i:s');
+                            $date2 = $move->created_at;
+                            $interval = $date2->diff($now);
+                            $days = $interval->format('%a');
+                            ?>
+                            @if ($days <= 3)
+                                {{ $move->label }} <span class="text-red-500 delete"> supprimer</span>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

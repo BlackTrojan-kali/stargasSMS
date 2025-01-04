@@ -125,11 +125,21 @@ class CiternController extends Controller
         if ($request->citerne == "global") {
             $receive = Receive::whereBetween("created_at", [$request->depart, $request->fin])->where("region", Auth::user()->region)->get();
             $pdf = Pdf::loadview("RecievePdf", ["receive" => $receive, "fromDate" => $fromDate, "toDate" => $toDate]);
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf->get_canvas();
+            $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
             return  $pdf->download("historique des releves.pdf");
         }
         $receive = Receive::where("id_citerne", $idCitern)->where("region", Auth::user()->region)->whereBetween("created_at", [$request->depart, $request->fin])->with("citerne")->get();
 
         $pdf = Pdf::loadview("RecievePdf", ["receive" => $receive, "fromDate" => $fromDate, "toDate" => $toDate]);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
         return  $pdf->download("historique des receptions.pdf");
     }
     public function generate_rel_pdf(Request $request)
@@ -145,10 +155,20 @@ class CiternController extends Controller
         if ($request->citerne == "global") {
             $receive = Relhistorie::whereBetween("created_at", [$request->depart, $request->fin])->where("region", Auth::user()->region)->get();
             $pdf = Pdf::loadview("RelevePdf", ["releve" => $receive, "fromDate" => $fromDate, "toDate" => $toDate]);
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf->get_canvas();
+            $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
             return  $pdf->download("historique des releves.pdf");
         }
         $receive = Relhistorie::where("citerne", $idCitern)->whereBetween("created_at", [$request->depart, $request->fin])->get();
         $pdf = Pdf::loadview("RelevePdf", ["releve" => $receive, "fromDate" => $fromDate, "toDate" => $toDate]);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
         return  $pdf->download("historique des releves.pdf");
     }
 }

@@ -59,8 +59,9 @@
                             {{ $vente->prix_6 * $vente->qty_6 + $vente->prix_12 * $vente->qty_12 + $vente->prix_50 * $vente->qty_50 }}
                         </td>
                         <td class="border  border-black">{{ $vente->created_at }}</td>
-                        <td class="border  border-black"><a href="{{ route('printInvoice', ['id' => $vente->id]) }}"><i
-                                    class="text-teal-900">print</i></a>
+                        <td class="border  border-black"><a
+                                href="{{ route('printInvoiceController', ['id' => $vente->id]) }}"><i
+                                    class="text-teal-900 fa-solid fa-download" title="generer pdf"></i></a>
                         </td>
                     </tr>
                 @endforeach

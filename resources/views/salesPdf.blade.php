@@ -119,21 +119,21 @@
             <tbody>
                 <?php
                 $total = 0;
-                $total_qty_6 =0;
-                $total_qty_12 =0;
-                $total_qty_50 =0;
+                $total_qty_6 = 0;
+                $total_qty_12 = 0;
+                $total_qty_50 = 0;
                 ?>
                 @foreach ($sales as $vente)
                     <tr id="{{ $vente->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
                         <td class="border  border-black">{{ $vente->customer }}</td>
-                        <td class="border  border-black">{{ $vente->prix_50 }}</td>
+                        <td class="border  border-black">{{ number_format($vente->prix_50, 2, ',', ' ') }}</td>
                         <td class="border  border-black">{{ $vente->qty_50 }}</td>
-                        <td class="border  border-black">{{ $vente->prix_12 }}</td>
+                        <td class="border  border-black">{{ number_format($vente->prix_12, 2, ',', ' ') }}</td>
                         <td class="border  border-black">{{ $vente->qty_12 }}</td>
-                        <td class="border  border-black">{{ $vente->prix_6 }}</td>
+                        <td class="border  border-black">{{ number_format($vente->prix_6, 2, ',', ' ') }}</td>
                         <td class="border  border-black">{{ $vente->qty_6 }}</td>
                         <td class="border  border-black">
-                            {{ $vente->prix_6 * $vente->qty_6 + $vente->prix_12 * $vente->qty_12 + $vente->prix_50 * $vente->qty_50 }}
+                            {{ number_format($vente->prix_6 * $vente->qty_6 + $vente->prix_12 * $vente->qty_12 + $vente->prix_50 * $vente->qty_50, 2, ',', ' ') }}
                             <?php
                             $UnitTotal = $vente->prix_6 * $vente->qty_6 + $vente->prix_12 * $vente->qty_12 + $vente->prix_50 * $vente->qty_50;
                             $total += $UnitTotal;
@@ -149,10 +149,11 @@
 
                 <tr>
                     <td><b>TOTAL</b></td>
-                    <td colspan="2"><b>{{$total_qty_50}}</b></td>
-                    <td colspan="2"><b>{{$total_qty_12}}</b></td>
-                    <td colspan="2"><b>{{$total_qty_6}} </b></td>
-                    <td colspan="2"><b>{{ $total }} XAF</b></td>
+                    <td colspan="2" style="text-align: right;"><b>{{ $total_qty_50 }}</b></td>
+                    <td colspan="2" style="text-align: right;"><b>{{ $total_qty_12 }}</b></td>
+                    <td colspan="2" style="text-align: right;"><b>{{ $total_qty_6 }} </b></td>
+                    <td colspan="2" style="text-align: center"><b>{{ number_format($total, 2, ',', ' ') }} XAF</b>
+                    </td>
                 </tr>
             </tbody>
         </table>

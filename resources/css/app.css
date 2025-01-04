@@ -86,6 +86,9 @@
         width: 500px!important;
         background-color: white !important;
     }
+    .fa-download,.fa-trash, .fa-pen-to-square{
+        @apply text-2xl;
+    }
     .size-2 form{
         background-color: white;
     }

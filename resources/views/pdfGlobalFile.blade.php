@@ -92,7 +92,9 @@
 
     </center>
 
-
+    <center>
+        <h1><u> Bouteilles Vides</u></h1>
+    </center>
     <table class="table-1">
         <thead>
             <tr>
@@ -148,7 +150,9 @@
     </table>
 
     <!--second table-->
-    <h1>bouteilles pleines</h1>
+    <center>
+        <h1><u> Bouteilles Pleines</u></h1>
+    </center>
 
     <table class="table-1">
         <thead>

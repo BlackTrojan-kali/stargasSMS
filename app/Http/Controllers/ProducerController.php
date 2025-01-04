@@ -430,11 +430,51 @@ class ProducerController extends Controller
         if ($request->citerne == "global") {
             $datas = Producermove::whereBetween("created_at", [$request->depart, $request->fin])->where("region", Auth::user()->region)->get();
             $pdf = Pdf::loadview("ProductionPdf", ["datas" => $datas, "fromDate" => $fromDate, "toDate" => $toDate]);
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf->get_canvas();
+            $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
             return  $pdf->download("historique des production.pdf");
         }
         $datas =  Producermove::where("id_citerne", $idCitern)->whereBetween("created_at", [$request->depart, $request->fin])->get();
         $pdf = Pdf::loadview("ProductionPdf", ["datas" => $datas, "fromDate" => $fromDate, "toDate" => $toDate]);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
         return  $pdf->download("historique des production.pdf");
         $datas = Producermove::where("region", Auth::user()->region)->get();
+    }
+    //modify movements
+    public function modifyMove($idMove, Request $request)
+    {
+
+
+        $stocks = Stock::where("category", "production")->where("region", Auth::user()->region)->get();
+        $allvrackstocks = Citerne::all();
+        $vracstocks = Citerne::where("type", "mobile")->get();
+        $fixe  = Citerne::where("type", "fixe")->get();
+        $move = Movement::findOrFail($idMove);
+        return view("producer.modifMove", ["vrac" => $vracstocks, "stocks" => $stocks, "fixe" => $fixe, "all" => $allvrackstocks, "move" => $move]);
+    }
+    public function updateMove($idMove, Request $request)
+    {
+        $request->validate([
+            "origin" => "string | required",
+            "qty" => "numeric | required",
+            "label" => "string | required",
+            "bord" => "string | required",
+            "stock_qty" => "string | required",
+        ]);
+        $move = Movement::findOrFail($idMove);
+        $move->origin = $request->origin;
+        $move->qty = $request->qty;
+        $move->label = $request->label;
+        $move->bordereau = $request->bord;
+        $move->stock = $request->stock_qty;
+        $move->save();
+        return back()->withSuccess("movement modifié avec succès");
     }
 }

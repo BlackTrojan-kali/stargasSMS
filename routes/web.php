@@ -58,6 +58,9 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/manager/broute-list", [Controllers\MagazinierController::class, "show_broute_list"])->name("broutes-list-man");
             Route::get("/manager/broute-list-gen/{id}", [Controllers\MagazinierController::class, "BroutePDF"])->name("gen-broute-2");
             Route::delete("/manager/broute-list-del/{id}", [Controllers\MagazinierController::class, "deleteBroute"])->name("del-broute");
+            //modification de mouvement
+            Route::get("/manager/modifmove/{id}", [Controllers\MagazinierController::class, "modifyMove"])->name("modify-move");
+            Route::post("/manager/modifmove/post/{id}", [Controllers\MagazinierController::class, "updateMove"])->name("update-move-man");
       });
       Route::middleware(isProducer::class)->group(function () {
             Route::get("/producer/dashboard", [Controllers\ProducerController::class, "show"])->name("dashboard-producer");
@@ -76,6 +79,9 @@ Route::group(["middleware" => "auth"], function () {
             //historique production
             Route::get("/producer/produceHistory/", [Controllers\ProducerController::class, "showProdHist"])->name("showProdHist");
             Route::post("/producer/genProdHist", [Controllers\ProducerController::class, "ProdHistPDF"])->name("genProdHist");
+            //modification de mouvement
+            Route::get("/producer/modifmove/{id}", [Controllers\ProducerController::class, "modifyMove"])->name("modify-move-pro");
+            Route::post("/producer/modifmove/post/{id}", [Controllers\ProducerController::class, "updateMove"])->name("update-move-pro");
       });
       Route::middleware(isCommercial::class)->controller(Controllers\CommercialController::class)->group(
             function () {
@@ -94,6 +100,12 @@ Route::group(["middleware" => "auth"], function () {
                   Route::get("/commercial/moveGlobalPro/{type}/{weight}", [Controllers\ArticleController::class, "MoveGlobal"])->name("moveGlobalCom");
                   Route::post("/commercial/createAccessoriePDf/{type}", "makeAcSales")->name("makeAcSales");
                   Route::delete("/commercial/deleteVersemment/{id}", "deleteVersement")->name("deleteVersement");
+                  //modifier les ventes
+                  Route::get("/commercial/modify/{id}", "modifySales")->name("modifySale");
+                  Route::post("/commercial/modify/post/{id}", "updateSales")->name("updateSale");
+                  //modifier les versements
+                  Route::get("/commercial/modifyversement/{id}", "modifyVersement")->name("modifyVersement");
+                  Route::post("/commercial/modifyversement/post/{id}", "updateVersement")->name("updateVersement");
             }
       );
       Route::middleware(isCommercial::class)->group(function () {
@@ -115,6 +127,7 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/controller/produceHistory/", [Controllers\ProducerController::class, "showProdHist"])->name("showConHist");
             Route::get("/controller/broute-list", [Controllers\BossController::class, "show_broute_list"])->name("broutes-list-con");
             Route::get("/controller/broute-list-gen/{id}", [Controllers\BossController::class, "BroutePDF"])->name("gen-broute-3");
+            Route::get("/Controller/printInvoice/{id}", [Controllers\CommercialController::class, "print_invoice"])->name("printInvoiceController");
       });
       //DIRECTOR INTERFACES
       Route::middleware(IsDirector::class)->group(

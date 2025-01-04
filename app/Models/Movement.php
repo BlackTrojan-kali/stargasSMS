@@ -15,8 +15,4 @@ class Movement extends Model
     public function fromArticle(){
         return $this->belongsTo(Article::class,"article_id");
     }
-    public $dates = [
-        "created_at", "updated_at"
-    ];
-    public $dateFormat = "Y-m-d";
 }

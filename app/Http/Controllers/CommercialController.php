@@ -285,7 +285,7 @@ class CommercialController extends Controller
         $sale = Vente::findOrFail($id);
 
         $sale->delete();
-        return response()->json(["message" => "movement supprime avec success"]);
+        return response()->json(["message" => "element supprime avec success"]);
     }
     public function makeVersement(Request $request)
     {
@@ -328,6 +328,11 @@ class CommercialController extends Controller
             $sales = Vente::whereBetween("created_at", [$request->depart, $request->fin])->where("type", $request->sale)->where("region", Auth::user()->region)->get();
         }
         $pdf = Pdf::loadview("salesPdf", ["fromDate" => $fromDate, "toDate" => $toDate, "sales" => $sales, "type" => $request->sale]);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
         return $pdf->download(Auth::user()->role . "" . Auth::user()->region . $fromDate . $toDate . ".pdf");
     }
 
@@ -346,10 +351,22 @@ class CommercialController extends Controller
             $afb = Versement::where("bank", "AFB")->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
             $cca = Versement::where("bank", "CCA")->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
             $pdf = Pdf::loadview("versementPdfAll", ["fromDate" => $fromDate, "toDate" => $toDate, "afb" => $afb, "cca" => $cca, "bank" => $request->bank])->setPaper("A4", 'landscape');
+
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf->get_canvas();
+            $canvas->page_text(720, 550, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
             return $pdf->download(Auth::user()->role . "versementsglobal" . Auth::user()->region . $fromDate . $toDate . $request->bank . ".pdf");
         } else {
             $deposit = Versement::where("bank", $request->bank)->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
             $pdf = Pdf::loadview("versementPdf", ["fromDate" => $fromDate, "toDate" => $toDate, "deposit" => $deposit, "bank" => $request->bank]);
+
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+
+            $canvas = $dom_pdf->get_canvas();
+            $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
             return $pdf->download(Auth::user()->role . "versements" . Auth::user()->region . $fromDate . $toDate . $request->bank . ".pdf");
         }
     }
@@ -358,5 +375,70 @@ class CommercialController extends Controller
         $versement = Versement::findOrFail($id);
         $versement->delete();
         return response()->json(["message" => "versement supprime avec success"]);
+    }
+    public function modifySales($idSale)
+    {
+
+        $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
+        $accessories = Article::where("type", "=", "accessoire")->get("title");
+        $sale = Vente::findOrFail($idSale);
+        return view("commercial.ModifSale", ["stocks" => $stocks, "accessories" => $accessories, "sale" => $sale]);
+    }
+    public function updateSales(Request $request, $idSale)
+    {
+        $request->validate([
+            "costumer" => "string | required",
+            "address" => "string | required",
+            "numero" => "numeric |required",
+            "prix_6" => "numeric | required",
+            "qty_6" => "numeric | required",
+            "prix_12" => "numeric | required",
+            "qty_12" => "numeric | required",
+            "prix_50" => "numeric | required",
+            "qty_50" => "numeric | required",
+            "currency" => "string | required",
+
+        ]);
+
+        $vente = Vente::findOrFail($idSale);
+
+        $vente->customer = $request->costumer;
+        $vente->prix_6 = $request->prix_6;
+        $vente->number = $request->numero;
+        $vente->qty_6 = $request->qty_6;
+        $vente->prix_12 = $request->prix_12;
+        $vente->qty_12 = $request->qty_12;
+        $vente->prix_50 = $request->prix_50;
+        $vente->qty_50 = $request->qty_50;
+        $vente->address = $request->address;
+        $vente->currency = $request->currency;
+        $vente->save();
+        return back()->withSuccess("element modifie avec succes");
+    }
+    public function modifyVersement($idVers)
+    {
+
+        $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
+        $accessories = Article::where("type", "=", "accessoire")->get("title");
+        $versement = Versement::findOrFail($idVers);
+        return view("commercial.modifVersement", ["stocks" => $stocks, "accessories" => $accessories, "versement" => $versement]);
+    }
+    public function updateVersement(Request $request, $idVers)
+    {
+        $request->validate([
+            "montant_gpl" => "numeric | required",
+            "montant_consigne" => "numeric | required",
+            "commentaire" => "string | nullable",
+            "bordereau" => "string | required",
+            "bank" => "string | required",
+        ]);
+        $versement = Versement::findOrFail($idVers);
+        $versement->montant_gpl = $request->montant_gpl;
+        $versement->montant_consigne = $request->montant_consigne;
+        $versement->commentaire = $request->commentaire;
+        $versement->bordereau = $request->bordereau;
+        $versement->bank = $request->bank;
+        $versement->save();
+        return back()->withSuccess("element modifie avec succes");
     }
 }

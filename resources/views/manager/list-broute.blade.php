@@ -26,8 +26,20 @@
                         <td>{{ $broute->date_arrivee }}</td>
                         <td>{{ $broute->aide_chauffeur }}</td>
                         <td><a href="{{ route('gen-broute-2', ['id' => $broute->id]) }}"><i
-                                    class="text-teal-900 cursor-pointer">print</i></a> <i
-                                class="text-red-500 delete cursor-pointer">delete</i></td>
+                                    class="text-teal-900 cursor-pointer fa-solid fa-download " title="generer le pdf"></i></a>
+
+                            <?php
+                            //calculate date time
+                            $now = now()->format('Y-m-d H:i:s');
+                            $date2 = $broute->created_at;
+                            $interval = $date2->diff($now);
+                            $days = $interval->format('%a');
+                            ?>
+                            @if ($days <= 3)
+                                <i class="text-red-500 delete cursor-pointer fa-solid fa-trash"
+                                    title="supprimer l'entree"></i>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -40,7 +52,7 @@
 
     <script type="module">
         $(function() {
-            $("#table-broute").on("click",".delete", function() {
+            $("#table-broute").on("click", ".delete", function() {
                 var id = $(this).parent().parent().attr("id");
                 var token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({

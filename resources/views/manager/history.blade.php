@@ -84,7 +84,7 @@
                         <td>{{$move->stock}}</td>
                         <td>{{$move->fromArticle->state? "plein":"vide"}}</td>
                         <td>{{$move->label}} </td>
-                        <td><span class="text-red-500 delete"> supprimer</span></td>
+                        <td><span class="text-red-500 delete"> <i class="fa-solid fa-trash"></i></span></td>
                     </tr>
                 @endforeach
             </tbody>

@@ -26,7 +26,7 @@
                         <td>{{ $broute->date_arrivee }}</td>
                         <td>{{ $broute->aide_chauffeur }}</td>
                         <td><a href="{{ route('gen-broute-3', ['id' => $broute->id]) }}"><i
-                                    class="text-teal-900 cursor-pointer">print</i></a> <i </tr>
+                                    class="text-teal-900 cursor-pointer fa-solid fa-download" title="generer pdf"></i></a> <i </tr>
                 @endforeach
             </tbody>
         </table>

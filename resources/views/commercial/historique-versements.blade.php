@@ -50,7 +50,21 @@
                                 {{ $vente->bordereau }}
                             </td>
                             <td> {{ $vente->commentaire }}</td>
-                            <td><i class="text-red-500 delete">delete</i></td>
+                            <td>
+                                <a href="{{ route('modifyVersement', $vente->id) }}"> <i
+                                        class="text-blue-500 fa-solid fa-pen-to-square" title="modifier"></i>
+                                </a>
+                                <?php
+                                //calculate date time
+                                $now = now()->format('Y-m-d H:i:s');
+                                $date2 = $vente->created_at;
+                                $interval = $date2->diff($now);
+                                $days = $interval->format('%a');
+                                ?>
+                                @if ($days <= 3)
+                                    <i class="text-red-500 delete fa-solid fa-trash" title="supprimer"></i>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -102,7 +116,20 @@
                             <td>
                                 {{ $vente->commentaire }}
                             </td>
-                            <td> <i class="text-red-500 delete">delete</i></td>
+                            <td>
+                                <a href="{{ route('modifyVersement', $vente->id) }}"> <i
+                                        class="text-blue-500 fa-solid fa-pen-to-square" title="modifier"></i></a>
+                                <?php
+                                //calculate date time
+                                $now = now()->format('Y-m-d H:i:s');
+                                $date2 = $move->created_at;
+                                $interval = $date2->diff($now);
+                                $days = $interval->format('%a');
+                                ?>
+                                @if ($days <= 3)
+                                    <i class="text-red-500 delete">delete</i>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

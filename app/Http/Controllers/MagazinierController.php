@@ -289,6 +289,11 @@ class MagazinierController extends Controller
         $broute->save();
 
         $pdf = Pdf::loadview("manager.broute", ["broute" => $broute]);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
 
         return $pdf->download($broute->nom_chauffeur . $broute->region . $broute->created_at . ".pdf");
     }
@@ -310,6 +315,11 @@ class MagazinierController extends Controller
         $broute = Broute::findOrFail($idRoute);
         $pdf = Pdf::loadView("manager.broute", ["broute" => $broute]);
 
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
         return $pdf->download($broute->nom_chauffeur . $broute->created_at . ".pdf");
     }
     public function deleteBroute($idRoute)
@@ -317,5 +327,39 @@ class MagazinierController extends Controller
         $broute = Broute::findOrFail($idRoute);
         $broute->delete();
         return response()->json(["message" => "element supprime avec succes"]);
+    }
+    //modify movements
+    public function modifyMove($idMove, Request $request)
+    {
+
+
+        $categorie = Auth::user()->role;
+
+        $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "=", $categorie)->with("article")->get();
+        $accessories = Article::where("type", "=", "accessoire")->get("title");
+        $vracstocks = Citerne::where("type", "mobile")->get();
+
+        $mobile = Citerne::where("type", "mobile")->get();
+        $fixe  = Citerne::where("type", "fixe")->get();
+        $move = Movement::findOrFail($idMove);
+        return view("manager.modifMove", ["stocks" => $stocks, "accessories" => $accessories, "vrac" => $vracstocks, "fixe" => $fixe, "mobile" => $mobile, "move" => $move]);
+    }
+    public function updateMove($idMove, Request $request)
+    {
+        $request->validate([
+            "origin" => "string | required",
+            "qty" => "numeric | required",
+            "label" => "string | required",
+            "bord" => "string | required",
+            "stock_qty" => "string | required",
+        ]);
+        $move = Movement::findOrFail($idMove);
+        $move->origin = $request->origin;
+        $move->qty = $request->qty;
+        $move->label = $request->label;
+        $move->bordereau = $request->bord;
+        $move->stock = $request->stock_qty;
+        $move->save();
+        return back()->withSuccess("movement modifié avec succès");
     }
 }

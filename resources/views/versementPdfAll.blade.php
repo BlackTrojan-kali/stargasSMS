@@ -91,73 +91,92 @@
         GLOBAL</h4>
 
     </center>
-    <table>
-        <tbody>
-
+    <center><u>
+            <h1>AFB BANK</h1>
+        </u></center>
+    <table class="table-1">
+        <thead>
+            <th colspan="5">VERSEMENTS AFB</th>
             <tr>
-                <td>
-                    <table class="table-1">
-                        <thead>
-                            <th colspan="5">VERSEMENTS AFB</th>
-                            <tr>
-                                <th><b>DATES</b></th>
-                                <th><b>GPL</b></th>
-                                <th><b>Consigne</b></th>
-                                <th><b>Total</b></th>
-                                <th><b>Commentaire</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($afb as $data)
-                                <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
-                                    <td>
-                                        {{ $data->created_at }}
-                                    </td>
+                <th><b>DATES</b></th>
+                <th><b>GPL</b></th>
+                <th><b>Consigne</b></th>
+                <th><b>Total</b></th>
+                <th><b>Commentaire</b></th>
+            </tr>
+        </thead>
 
-                                    <td>
-                                        {{ $data->montant_gpl }}
-                                    </td>
-                                    <td>{{ $data->montant_consigne }}</td>
-                                    <td>{{ $data->montant_gpl + $data->montant_consigne }}</td>
-                                    <td>{{ $data->commentaire }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </td>
-                <td>
+        <?php $total1 = 0; ?>
+        <tbody>
+            @foreach ($afb as $data)
+                <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
+                    <td>
+                        {{ $data->created_at }}
+                    </td>
 
-                    <table class="table-2">
-                        <thead>
-                            <th colspan="5">VERSEMENTS CCA</th>
-                            <tr>
-                                <th><b>DATES</b></th>
-                                <th><b>GPL</b></th>
-                                <th><b>Consigne</b></th>
-                                <th><b>Total</b></th>
-                                <th><b>Commentaire</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cca as $data)
-                                <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
-                                    <td>
-                                        {{ $data->created_at }}
-                                    </td>
+                    <td>
+                        {{ $data->montant_gpl }}
+                    </td>
+                    <td>{{ $data->montant_consigne }}</td>
 
-                                    <td>
-                                        {{ $data->montant_gpl }}
-                                    </td>
-                                    <td>{{ $data->montant_consigne }}</td>
-                                    <td>{{ $data->montant_gpl + $data->montant_consigne }}</td>
-                                    <td>{{ $data->commentaire }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        </tabl </td>
+                    <?php
+                    $total1 += $data->montant_gpl + $data->montant_consigne;
+                    ?>
+                    <td>{{ $data->montant_gpl + $data->montant_consigne }}</td>
+                    <td>{{ $data->commentaire }}</td>
+                </tr>
+            @endforeach
+            <tr style="font-weight: bold;">
+                <td colspan="3">Somme total versement</td>
+                <td colspan="2">{{ number_format($total1, 2, ',', ' ') }}</td>
             </tr>
         </tbody>
     </table>
+    <br>
+    <center>
+        <u>
+            <h1>CCA BANK</h1>
+        </u>
+    </center>
+
+    <table class="table-2">
+        <thead>
+            <th colspan="5">VERSEMENTS CCA</th>
+            <tr>
+                <th><b>DATES</b></th>
+                <th><b>GPL</b></th>
+                <th><b>Consigne</b></th>
+                <th><b>Total</b></th>
+                <th><b>Commentaire</b></th>
+            </tr>
+        </thead>
+        <?php $total = 0; ?>
+        <tbody>
+            @foreach ($cca as $data)
+                <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
+                    <td>
+                        {{ $data->created_at }}
+                    </td>
+
+                    <td>
+                        {{ $data->montant_gpl }}
+                    </td>
+                    <td>{{ $data->montant_consigne }}</td>
+                    <td>
+                        <?php
+                        $total += $data->montant_gpl + $data->montant_consigne;
+                        ?>
+                        {{ $data->montant_gpl + $data->montant_consigne }}</td>
+                    <td>{{ $data->commentaire }}</td>
+                </tr>
+            @endforeach
+            <tr style="font-weight: bold;">
+                <td colspan="3">Somme total versement</td>
+                <td colspan="2">{{ number_format($total, 2, ',', ' ') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 
 </html>
