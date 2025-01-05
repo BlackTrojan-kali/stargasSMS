@@ -116,7 +116,7 @@
     </div>
     <div class="date">
         {{ $broute->depart }},{{ $broute->created_at }} <br>
-        No:{{ $broute->id }}
+        No:{{ strtoupper(substr($broute->region, 0, 2)) }}{{ $broute->id }}
     </div>
     <center>
 

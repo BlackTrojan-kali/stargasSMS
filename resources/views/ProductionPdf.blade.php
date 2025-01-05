@@ -90,6 +90,7 @@
                     <td>date</td>
                 </tr>
             </thead>
+            <?php $total = 0; ?>
             <tbody>
                 @foreach ($datas as $data)
                     <tr id={{ $data->id }} class="hover:bg-blue-400 hover:text-white cursor-pointer">
@@ -97,10 +98,15 @@
                         <td>{{ $data->citerne->name }} ({{ $data->citerne->type }})</td>
                         <td>{{ $data->type }}</td>
                         <td>{{ $data->qty }}</td>
+                        <?php $total += $data->qty; ?>
                         <td>{{ $data->bordereau }}</td>
                         <td>{{ $data->created_at }}</td>
                     </tr>
                 @endforeach
+                <tr style="font-weight: bold">
+                    <td colspan="3">Total des bouteilles prises</td>
+                    <td colspan="3">{{ $total }}</td>
+                </tr>
             </tbody>
         </table>
     </center>

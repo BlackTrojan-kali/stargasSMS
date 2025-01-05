@@ -301,7 +301,6 @@ class ProducerController extends Controller
             $article->hasStock[0]->save();
             $article2->hasStock[0]->qty += $request->qty;
             $article2->hasStock[0]->save();
-            $move->save();
             $move2 = new Movement();
             $move2->article_id = $article2->id;
             $move2->stock_id = $article2->hasStock[0]->id;
@@ -315,6 +314,8 @@ class ProducerController extends Controller
             $move2->stock = $article2->hasStock[0]->qty;
             $move2->id_citerne = $request->citerne;
             $move2->save();
+            $move->idmove = $move2->id;
+            $move->save();
             // $citerne->stock->stock_theo -= $request->qty*$type;
             return response()->json(["success" => "mouvement insere avec success"]);
         }
@@ -340,7 +341,6 @@ class ProducerController extends Controller
                 $article->hasStock[0]->save();
                 $article2->hasStock[0]->qty += $request->qty;
                 $article2->hasStock[0]->save();
-                $move->save();
                 $move2 = new Movement();
                 $move2->article_id = $article2->id;
                 $move2->stock_id = $article2->hasStock[0]->id;
@@ -354,6 +354,8 @@ class ProducerController extends Controller
                 $move2->stock = $article2->hasStock[0]->qty;
                 $move2->id_citerne = $request->citerne;
                 $move2->save();
+                $move2->idmove = $move2->id;
+                $move->save();
                 // $citerne->stock->stock_theo -= $request->qty*$type;
                 return response()->json(["success" => "mouvement insere avec success"]);
             }
