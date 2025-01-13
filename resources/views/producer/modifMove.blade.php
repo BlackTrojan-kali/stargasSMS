@@ -1,4 +1,4 @@
-@extends('Layouts.ProducerLayout')
+@extends('Layouts.producerLayout')
 @section('content')
     <div>
         <center>

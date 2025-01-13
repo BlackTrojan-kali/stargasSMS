@@ -122,7 +122,7 @@
                                 <?php
                                 //calculate date time
                                 $now = now()->format('Y-m-d H:i:s');
-                                $date2 = $move->created_at;
+                                $date2 = $vente->created_at;
                                 $interval = $date2->diff($now);
                                 $days = $interval->format('%a');
                                 ?>

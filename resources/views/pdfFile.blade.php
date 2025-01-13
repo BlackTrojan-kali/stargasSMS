@@ -113,6 +113,8 @@
                 <td></td>
                 <td></td>
             </tr>
+            <?php $sommeEntry = 0;
+            $sommeOutcome = 0; ?>
             <tbody>
                 @foreach ($data as $data)
                     <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
@@ -125,11 +127,24 @@
                             {{ $data->origin == 'pertes' ? $data->qty : 0 }}</td>
                         <td>{{ $data->created_at }}</td>
                         <td>{{ $data->label }}</td>
+                        <?php
+                        if ($data->entree) {
+                            $sommeEntry += $data->qty;
+                        } else {
+                            $sommeOutcome += $data->qty;
+                        }
+                        ?>
                         <td>{{ $data->entree ? $data->qty : 0 }}</td>
                         <td>{{ $data->sortie ? $data->qty : 0 }}</td>
                         <td>{{ $data->stock }}</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="5"> <b>Total Mouvements</b></td>
+                    <td><b>{{ $sommeEntry }}</b></td>
+                    <td><b>{{ $sommeOutcome }}</b></td>
+                    <td>/</td>
+                </tr>
             </tbody>
         </table>
     </center>

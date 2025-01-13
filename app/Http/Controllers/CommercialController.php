@@ -421,7 +421,7 @@ class CommercialController extends Controller
         $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
         $accessories = Article::where("type", "=", "accessoire")->get("title");
         $versement = Versement::findOrFail($idVers);
-        return view("commercial.modifVersement", ["stocks" => $stocks, "accessories" => $accessories, "versement" => $versement]);
+        return view("commercial.ModifVersement", ["stocks" => $stocks, "accessories" => $accessories, "versement" => $versement]);
     }
     public function updateVersement(Request $request, $idVers)
     {

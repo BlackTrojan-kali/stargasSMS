@@ -39,20 +39,22 @@
                             <td>{{ $move->sortie ? $move->qty : 0 }}</td>
                             <td>{{ $move->stock }}</td>
 
-                            <td><span class="text-blue-500" title="modifier"><a
-                                        href="{{ route('modify-move-pro', $move->id) }}"> <i
-                                            class="fa-solid fa-pen-to-square"></i></a>
-
-                                    <?php
-                                    //calculate date time
-                                    $now = now()->format('Y-m-d H:i:s');
-                                    $date2 = $move->created_at;
-                                    $interval = $date2->diff($now);
-                                    $days = $interval->format('%a');
-                                    ?>
-                                    @if ($days <= 3)
-                                        <span class="text-red-500 delete" title="supprimer"><i
-                                                class="fa-solid fa-trash"></i></span></td>
+                            <td>
+                                <!-- <span class="text-blue-500" title="modifier"><a
+                                                    href=" route('modify-move-pro', $move->id) "> <i
+                                                        class="fa-solid fa-pen-to-square"></i></a>
+                                            </span>-->
+                                <?php
+                                //calculate date time
+                                $now = now()->format('Y-m-d H:i:s');
+                                $date2 = $move->created_at;
+                                $interval = $date2->diff($now);
+                                $days = $interval->format('%a');
+                                ?>
+                                @if ($days <= 2)
+                                    <span class="text-red-500 delete" title="supprimer"><i
+                                            class="fa-solid fa-trash"></i></span>
+                            </td>
                     @endif
                     </tr>
                 @endforeach
@@ -103,7 +105,7 @@
                                 $interval = $date2->diff($now);
                                 $days = $interval->format('%a');
                                 ?>
-                                @if ($days <= 3)
+                                @if ($days <= 2)
                                     <span class="text-red-500 delete" title="supprimer"><i
                                             class="fa-solid fa-trash"></i></span>
                                 @endif
@@ -121,7 +123,7 @@
             //evement sur les historiques
             //supprimer ligne table 1
             $("#table-vides").on("click", ".delete", function() {
-                id = $(this).parent().parent().parent().attr("id");
+                id = $(this).parent().parent().attr("id");
                 var token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({
                     title: "Etes vous sures ? cette operation est irreversible",

@@ -683,10 +683,12 @@
                             @endif
                             @if (Auth::user()->region == 'central')
                                 <option value="achat">achat</option>
+                                <option value="retour reepreuve">Retour sur reepreuve</option>
                             @endif
                             <option value="region">region</option>
                             <option value="production">production</option>
                             <option value="stock_initial">stock initial</option>
+
                         </select>
                         @if ($errors->has('origin'))
                             <span class="text-red-500">{{ $errors->first('origin') }}</span>
@@ -883,6 +885,7 @@
                         <label for="">Type d'operation:</label>
                         <select name="origin" id="">
                             <option value="region">region</option>
+                            <option value="pertes">Pertes</option>
                             @if (Auth::user()->region != 'central')
                                 <option value="magasin central">MAGASIN CENTRAL</option>
                                 <option value="client">Client</option>
@@ -953,8 +956,10 @@
                             @if (Auth::user()->region != 'central')
                                 <option value="magasin central">MAGASIN CENTRAL</option>
                             @endif
-                            <option value="production">production</option>
-                            <option value="reepreuve">reepreuve</option>
+                            <option value="production">Production</option>
+                            <option value="reepreuve">Reepreuve</option>
+                            <option value="consigne">Consigne</option>
+                            <option value="pertes">Pertes</option>
                         </select>
                         @if ($errors->has('origin'))
                             <span class="text-red-500">{{ $errors->first('origin') }}</span>

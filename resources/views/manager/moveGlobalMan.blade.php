@@ -77,7 +77,7 @@
                     </tr>
                     <tr class="border border-black">
                         <th>Achats</th>
-                        <th>Ventes</th>
+                        <th>Consigne</th>
                         <th>Pertes</th>
                         <th>
 
@@ -102,12 +102,13 @@
                 </tr>
                 <tbody>
                     @foreach ($bouteille_pleines as $data)
-                        <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
+                        <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">]
+
+                            <td>
+                                {{ $data->origin == 'achat' ? $data->qty : 0 }}</td>
                             <td>
                                 {{ $data->origin == 'ventes' ? $data->qty : 0 }}
                             </td>
-                            <td>
-                                {{ $data->origin == 'achat' ? $data->qty : 0 }}</td>
                             <td>
                                 {{ $data->origin == 'pertes' ? $data->qty : 0 }}</td>
                             <td>{{ $data->created_at }}</td>

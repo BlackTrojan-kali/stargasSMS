@@ -78,13 +78,13 @@
                     <div class="drop-2 elem">
                         <a href="{{ route('showVentesCon', ['type' => 'consigne']) }}"> CONSIGNES</a>
                     </div>
-                    
+
                     <div class="drop-2 elem"><a href="{{ route('broutes-list-con') }}">Bordereaux de Route</a>
                     </div>
                     <div class="drop-2 elem">
                         <a href="{{ route('showVentesCon', ['type' => 'versements']) }}"> VERSEMENTS</a>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="font-bold cursor-pointer dropdown relative">GENERER UN DOCUMENT<i
@@ -470,7 +470,9 @@
             </div>
         </center>
     </div>
-    @yield('content')
+    <div class=" overflow-x-scroll">
+        @yield('content')
+    </div>
     <footer class="mt-10 w-full secondary flex justify-between p-4 text-white rounded-md">
         <div>
             <a href="">Contacter</a>
