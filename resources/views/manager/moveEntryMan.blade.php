@@ -9,7 +9,7 @@
         <table id="table-vides" class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
             <thead class="bg-gray-500 text-white p-2 border-collapse-0">
                 <tr>
-                    <td>VENTES</td>
+                    <td>ACHATS</td>
                     <td>CONSIGNES</td>
                     <td>PERTES</td>
                     <td>DATES</td>
@@ -25,7 +25,7 @@
                     @foreach ($moves2 as $move)
                         <tr id="{{ $move->id }}" class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
                             <td>
-                                {{ $move->origin == 'ventes' ? $move->qty : 0 }}
+                                {{ $move->origin == 'achat' ? $move->qty : 0 }}
                             </td>
                             <td>
                                 {{ $move->origin == 'consigne' ? $move->qty : 0 }}</td>
@@ -67,8 +67,8 @@
         <table id="table-pleines" class=" scroll mt-10 w-full border-2 border-gray-400 border-collapse-0">
             <thead class="bg-gray-500 text-white p-2 border-collapse-0">
                 <tr>
-                    <td>VENTES</td>
                     <td>ACHATS</td>
+                    <td>CONSIGNES</td>
                     <td>PERTES</td>
                     <td>DATES</td>
                     <td>LIBELLE</td>
@@ -83,10 +83,10 @@
                     @foreach ($moves as $move)
                         <tr id="{{ $move->id }}" class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
                             <td>
-                                {{ $move->origin == 'ventes' ? $move->qty : 0 }}
+                                {{ $move->origin == 'achat' ? $move->qty : 0 }}
                             </td>
                             <td>
-                                {{ $move->origin == 'achat' ? $move->qty : 0 }}</td>
+                                {{ $move->origin == 'consigne' ? $move->qty : 0 }}</td>
                             <td>
                                 {{ $move->origin == 'pertes' ? $move->qty : 0 }}</td>
                             <td>{{ $move->created_at }}</td>

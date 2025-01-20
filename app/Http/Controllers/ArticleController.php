@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Region;
 use App\Models\Role;
+use App\Models\Vracstock;
+use App\Models\Relhistorie;
 
 class ArticleController extends Controller
 {
@@ -321,9 +323,18 @@ class ArticleController extends Controller
         $request->validate([
             "qty" => "numeric | required",
         ]);
-        $citerne = Citerne::where("id", $id)->with("stock")->first();
-        $citerne->stock[0]->stock_theo = $request->qty;
-        $citerne->stock[0]->save();
+        $citerne = Vracstock::join("citernes", "citernes.id", "vracstocks.citerne_id")->where("citernes.id", $id)->where("vracstocks.region", Auth::user()->region)->select("vracstocks.*", "citernes.name")->first();
+
+        $citerne->stock_theo = $request->qty;
+        $citerne->save();
+
+        $move = new Relhistorie();
+        $move->citerne = $citerne->name;
+        $move->stock_theo = $request->qty;
+        $move->stock_rel = $citerne->stock_rel;
+        $move->ecart = $request->qty - $citerne->stock_theo;
+        $move->region = Auth::user()->region;
+        $move->save();
         return back()->withSuccess("stock theorique modifie avec succes");
     }
 }

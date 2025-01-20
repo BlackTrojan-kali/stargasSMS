@@ -222,6 +222,7 @@
                         <select name="bank" id="">
                             <option value="AFB">AFB</option>
                             <option value="CCA">CCA</option>
+                            <option value="CAISSE">CAISSE</option>
                             <option value="all">Tous</option>
                         </select>
                     </div>
@@ -325,6 +326,7 @@
                         <select name="bank" id="">
                             <option value="AFB">AFB</option>
                             <option value="CCA">CCA</option>
+                            <option value="CAISSE">CAISSE</option>
                         </select>
                         @if ($errors->has('bank'))
                             <b class="text-red-500">{{ $errors->first('bank') }}</b>

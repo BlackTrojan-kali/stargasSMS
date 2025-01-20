@@ -128,6 +128,8 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/controller/broute-list", [Controllers\BossController::class, "show_broute_list"])->name("broutes-list-con");
             Route::get("/controller/broute-list-gen/{id}", [Controllers\BossController::class, "BroutePDF"])->name("gen-broute-3");
             Route::get("/Controller/printInvoice/{id}", [Controllers\CommercialController::class, "print_invoice"])->name("printInvoiceController");
+            //Excels files
+            Route::post("/constroller/excels", [Controllers\ExcelController::class, "export"])->name("export-excelts");
       });
       //DIRECTOR INTERFACES
       Route::middleware(IsDirector::class)->group(

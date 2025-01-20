@@ -135,6 +135,74 @@
                 </tbody>
             </table>
         </div>
+        <div>
+
+            <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
+                <thead class="p-3 bg-gray-500 text-white">
+                    <td colspan="7" class="text-center">
+                        CAISSE
+                    </td>
+                    <tr>
+                        <td>date</td>
+                        <td>
+                            GPL
+                        </td>
+                        <td>
+                            Consigne
+
+                        </td>
+                        <td>
+                            Montant Versee
+                        </td>
+
+                        <td>
+                            Numerode bordereau
+                        </td>
+                        <td>
+                            commentaire
+                        </td>
+                        <td>action</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($ventes3 as $vente)
+                        <tr id="{{ $vente->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
+                            <td>{{ $vente->created_at }}</td>
+                            <td>
+                                {{ $vente->montant_gpl }}
+                            </td>
+                            <td>
+                                {{ $vente->montant_consigne }}
+                            </td>
+                            <td>
+                                {{ $vente->montant_gpl + $vente->montant_consigne }}
+                            </td>
+                            <td>
+                                {{ $vente->bordereau }}
+                            </td>
+                            <td>
+                                {{ $vente->commentaire }}
+                            </td>
+                            <td>
+                                <a href="{{ route('modifyVersement', $vente->id) }}"> <i
+                                        class="text-blue-500 fa-solid fa-pen-to-square" title="modifier"></i></a>
+                                <?php
+                                //calculate date time
+                                $now = now()->format('Y-m-d H:i:s');
+                                $date2 = $vente->created_at;
+                                $interval = $date2->diff($now);
+                                $days = $interval->format('%a');
+                                ?>
+                                @if ($days <= 3)
+                                    <i class="text-red-500 delete">delete</i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </center>
     <script type="module">
         $(function() {

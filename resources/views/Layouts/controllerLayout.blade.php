@@ -87,7 +87,7 @@
 
                 </div>
             </div>
-            <div class="font-bold cursor-pointer dropdown relative">GENERER UN DOCUMENT<i
+            <div class="font-bold cursor-pointer dropdown relative">GENERER UN DOCUMENT PDF<i
                     class="fa-solid fa-angle-down"></i>
                 <ul class="drop-items">
 
@@ -100,10 +100,103 @@
 
                 </ul>
             </div>
+            <div class="font-bold cursor-pointer dropdown relative">GENERER UN DOCUMENT EXCEL<i
+                    class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <li class="elem" id="activate-move-excels-form">Etats des
+                        mouvements
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
 
 
+    <!--FORMULAIRE DE GENERATION DE PDF-->
+    <div id="move-excel-form" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un Fichier Excel</h1>
+                    <span class="close-modal">X </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form method="POST" action="{{ route('export-excelts') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart" required>
+                        @if ($errors->has('depart'))
+                            <span class="text-red-500">{{ $errors->first('depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin" required>
+                        @if ($errors->has('fin'))
+                            <span class="text-red-500">{{ $errors->first('fin') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">etat :</label><br>
+
+                        <input type="radio" value="1" name="state"> GLOBAL
+                    </div>
+                    @if ($errors->has('state'))
+                        <span class="text-red-500">{{ $errors->first('state') }}</span>
+                    @endif
+                    <div class="modal-champs">
+                        <label for="">Type de Movement</label>
+                        <select name="move" id="">
+
+                            <option value="1">entree</option>
+                            <option value="0">sortie</option>
+                            <option value="777">Global</option>
+
+                        </select>
+                        @if ($errors->has('move'))
+                            <span class="text-red-500">{{ $errors->first('move') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="modal-champs">
+                        <label for="">Service</label>
+                        <select name="service" id="">
+
+                            <option value="production">production</option>
+                            <option value="magasin">magasin</option>
+                            <option value="commercial">commmercial</option>
+
+                        </select>
+                        @if ($errors->has('service'))
+                            <span class="text-red-500">{{ $errors->first('service') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Type de bouteille</label>
+                        <select name="type" id="">
+
+                            <option value="50">50KG</option>
+                            <option value="12.5">12.5KG</option>
+                            <option value="6">6KG</option>
+                            <option value="777">accessiore</option>
+
+                        </select>
+                        @if ($errors->has('type'))
+                            <span class="text-red-500">{{ $errors->first('type') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
 
     <!--FORMULAIRE DE GENERATION DE PDF PRODUCTION-->
     <div id="produce-pdf-form" class="modals">
@@ -388,6 +481,7 @@
                         <select name="bank" id="">
                             <option value="AFB">AFB</option>
                             <option value="CCA">CCA</option>
+                            <option value="CAISSE">CAISSE</option>
                             <option value="all">Tous</option>
                         </select>
                     </div>
@@ -484,6 +578,15 @@
     <script type="module">
         $(function() {
             $('table').DataTable();
+            //ACTION generate excel movements
+            $("#activate-move-excels-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#move-excel-form").hasClass("modals")) {
+                    $("#move-excel-form").addClass("modals-active")
+
+                    $("#move-excel-form").removeClass("modals")
+                }
+            })
             //ACTION generate pdf produce
             $("#activate-produce-pdf-form").on("click", function(e) {
                 e.preventDefault()

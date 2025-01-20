@@ -10,6 +10,7 @@ use App\Models\Vente;
 use App\Models\Versement;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DirectorController extends Controller
 {
@@ -25,7 +26,22 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $versements = Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,bank,SUM(montant_gpl) as total_gpl')->whereYear("created_at", $year)->groupBy("annee", "mois", "bank",)->get();
+        $versements =  DB::table('versements')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                'bank',
+                DB::raw('SUM(montant_gpl) as total_gpl')
+            )
+            ->groupBy('annee', 'mois', 'bank')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->orderBy('bank')
+            ->get();
+
+
+        //Versement::
+        //selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,bank,SUM(montant_gpl) as total_gpl')->whereYear("created_at", $year)->groupBy("annee", "mois", "bank",)->get();
         $type = "GPL";
         return view("director.globalCA", ["versements" => $versements, "region" => $region, "type" => $type]);
     }
@@ -34,7 +50,19 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $versements = Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,bank,SUM(montant_consigne) as total_gpl')->whereYear("created_at", $year)->groupBy("annee", "mois", "bank",)->get();
+        $versements =  DB::table('versements')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                'bank',
+                DB::raw('SUM(montant_consigne) as total_gpl')
+            )
+            ->groupBy('annee', 'mois', 'bank')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->orderBy('bank')
+            ->get();
+        //Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,bank,SUM(montant_consigne) as total_gpl')->whereYear("created_at", $year)->groupBy("annee", "mois", "bank",)->get();
         $type = "Consigne";
         return view("director.globalCA", ["versements" => $versements, "region" => $region, "type" => $type]);
     }
@@ -42,7 +70,19 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $versements = Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,region,bank,SUM(montant_gpl) as total_gpl')->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region", "bank")->get();
+        $versements = DB::table('versements')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                'bank',
+                DB::raw('SUM(montant_gpl) as total_gpl')
+            )->where("region", $regionHere)
+            ->groupBy('annee', 'mois', 'bank')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->orderBy('bank')
+            ->get();
+        // Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,region,bank,SUM(montant_gpl) as total_gpl')->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region", "bank")->get();
         $type = "GPL";
         return view("director.CAPerRegion", ["versements" => $versements, "region" => $region, "here" => $regionHere, "type" => $type]);
     }
@@ -51,7 +91,19 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $versements = Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,region,bank,SUM(montant_consigne) as total_gpl')->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region", "bank")->get();
+        $versements = DB::table('versements')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                'bank',
+                DB::raw('SUM(montant_consigne) as total_gpl')
+            )->where("region", $regionHere)
+            ->groupBy('annee', 'mois', 'bank')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->orderBy('bank')
+            ->get();
+        //Versement::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,region,bank,SUM(montant_consigne) as total_gpl')->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region", "bank")->get();
         $type = "consigne";
         return view("director.CAPerRegion", ["versements" => $versements, "region" => $region, "here" => $regionHere, "type" => $type]);
     }
@@ -61,7 +113,17 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $ventes = Vente::selectRaw("YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl")->where("type", "vente")->groupBy("annee", "mois", "type")->get();
+        $ventes =  DB::table('ventes')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                DB::raw('SUM(prix_total) as total_gpl')
+            )->where("type", "vente")
+            ->groupBy('annee', 'mois')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->get();
+        //Vente::selectRaw("YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl")->where("type", "vente")->groupBy("annee", "mois", "type")->get();
         $type = "VENTE GPL";
         return view("director.globalSales", ["ventes" => $ventes, "region" => $region, "type" => $type]);
     }
@@ -70,7 +132,18 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $versements = Vente::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl')->where("type", "vente")->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region")->get();
+        $versements = DB::table('ventes')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                DB::raw('SUM(prix_total) as total_gpl')
+            )->where("type", "vente")
+            ->where("region", $regionHere)
+            ->groupBy('annee', 'mois')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->get();
+        //Vente::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl')->where("type", "vente")->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region")->get();
         $type = "Vente GPL";
         return view("director.SalesPerRegion", ["ventes" => $versements, "region" => $region, "here" => $regionHere, "type" => $type]);
     }
@@ -80,7 +153,17 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $ventes = Vente::selectRaw("YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl")->where("type", "consigne")->groupBy("annee", "mois", "type")->get();
+        $ventes = DB::table('ventes')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                DB::raw('SUM(prix_total) as total_gpl')
+            )->where("type", "consigne")
+            ->groupBy('annee', 'mois')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->get();
+        //Vente::selectRaw("YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl")->where("type", "consigne")->groupBy("annee", "mois", "type")->get();
         $type = "CONSIGNES";
         return view("director.globalSales", ["ventes" => $ventes, "region" => $region, "type" => $type]);
     }
@@ -88,7 +171,19 @@ class DirectorController extends Controller
     {
         $year = 2024;
         $region = Region::all();
-        $versements = Vente::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl')->where("type", "consigne")->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region")->get();
+        $versements = DB::table('ventes')
+            ->select(
+                DB::raw('YEAR(created_at) as annee'),
+                DB::raw('MONTH(created_at) as mois'),
+                DB::raw('SUM(prix_total) as total_gpl')
+            )->where("type", "consigne")
+            ->where("region", $regionHere)
+            ->groupBy('annee', 'mois')
+            ->orderBy('annee')
+            ->orderBy('mois')
+            ->get();
+
+        //Vente::selectRaw('YEAR(created_at) as annee, MONTH(created_at) as mois,SUM(prix_total) as total_gpl')->where("type", "consigne")->where("region", $regionHere)->whereYear("created_at", $year)->groupBy("annee", "mois", "region")->get();
         $type = "CONSIGNE";
         return view("director.SalesPerRegion", ["ventes" => $versements, "region" => $region, "here" => $regionHere, "type" => $type]);
     }

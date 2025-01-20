@@ -106,7 +106,9 @@
             </tr>
         </thead>
 
-        <?php $total1 = 0; ?>
+        <?php $total1 = 0;
+        $total_gpl1 = 0;
+        $total_consigne1 = 0; ?>
         <tbody>
             @foreach ($afb as $data)
                 <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
@@ -121,14 +123,19 @@
 
                     <?php
                     $total1 += $data->montant_gpl + $data->montant_consigne;
+                    $total_gpl1 += $data->montant_gpl;
+                    $total_consigne1 += $data->montant_consigne;
                     ?>
                     <td>{{ $data->montant_gpl + $data->montant_consigne }}</td>
                     <td>{{ $data->commentaire }}</td>
                 </tr>
             @endforeach
             <tr style="font-weight: bold;">
-                <td colspan="3">Somme total versement</td>
-                <td colspan="2">{{ number_format($total1, 2, ',', ' ') }}</td>
+                <td>/</td>
+                <td>{{ $total_gpl1 }}</td>
+                <td>{{ $total_consigne1 }}</td>
+                <td >{{ number_format($total1, 2, ',', ' ') }}</td>
+                <td>/</td>
             </tr>
         </tbody>
     </table>
@@ -150,7 +157,9 @@
                 <th><b>Commentaire</b></th>
             </tr>
         </thead>
-        <?php $total = 0; ?>
+        <?php $total = 0;
+        $total_gpl = 0;
+        $total_consigne = 0; ?>
         <tbody>
             @foreach ($cca as $data)
                 <tr class="hover:bg-blue-400 hover:text-white hover:cursor-pointer">
@@ -165,14 +174,19 @@
                     <td>
                         <?php
                         $total += $data->montant_gpl + $data->montant_consigne;
+                        $total_gpl += $data->montant_gpl;
+                        $total_consigne += $data->montant_consigne;
                         ?>
                         {{ $data->montant_gpl + $data->montant_consigne }}</td>
                     <td>{{ $data->commentaire }}</td>
                 </tr>
             @endforeach
             <tr style="font-weight: bold;">
-                <td colspan="3">Somme total versement</td>
-                <td colspan="2">{{ number_format($total, 2, ',', ' ') }}</td>
+                <td>/</td>
+                <td>{{ $total_gpl }}</td>
+                <td>{{ $total_consigne }}</td>
+                <td>{{ number_format($total, 2, ',', ' ') }}</td>
+                <td>/</td>
             </tr>
         </tbody>
     </table>

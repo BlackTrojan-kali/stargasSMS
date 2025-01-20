@@ -148,19 +148,19 @@ class ProducerController extends Controller
         $request->validate([
             "qty" => "numeric|required"
         ]);
-        $fixe = Citerne::with(["Stock" => function ($query) {
+        $fixe = Vracstock::join("citernes", "vracstocks.citerne_id", "citernes.id")->where("citernes.id", $id)->where("vracstocks.region", Auth::user()->region)->where("citernes.type", "fixe")->select("vracstocks.*", "citernes.name")->first();
+        /*Citerne::with(["Stock" => function ($query) {
             $query->where("region", Auth::user()->region);
-        }])->where("id", $id)->first();
-
-        $fixe->save();
+        }])->where("id", $id)->first();*/
         $move = new Relhistorie();
         $move->citerne = $fixe->name;
-        $move->stock_theo = $fixe->stock[0]->stock_theo;
-        $move->stock_rel = $fixe->stock[0]->stock_rel;
-        $move->ecart = $fixe->stock[0]->stock_rel - $fixe->stock[0]->stock_theo;
+        $move->stock_theo = $fixe->stock_theo;
+        $move->stock_rel = $request->qty;
+        $move->ecart = $request->qty - $fixe->stock_theo;
         $move->region = Auth::user()->region;
+
         $move->save();
-        $stock = Vracstock::where("id", $fixe->stock[0]->id)->first();
+        $stock = Vracstock::where("id", $fixe->id)->first();
         $stock->stock_rel = $request->qty;
 
         $stock->save();
@@ -354,7 +354,7 @@ class ProducerController extends Controller
                 $move2->stock = $article2->hasStock[0]->qty;
                 $move2->id_citerne = $request->citerne;
                 $move2->save();
-                $move2->idmove = $move2->id;
+                $move->idmove = $move2->id;
                 $move->save();
                 // $citerne->stock->stock_theo -= $request->qty*$type;
                 return response()->json(["success" => "mouvement insere avec success"]);
