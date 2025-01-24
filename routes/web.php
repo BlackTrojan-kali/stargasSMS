@@ -130,6 +130,7 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/Controller/printInvoice/{id}", [Controllers\CommercialController::class, "print_invoice"])->name("printInvoiceController");
             //Excels files
             Route::post("/constroller/excels", [Controllers\ExcelController::class, "export"])->name("export-excelts");
+            Route::post("/controller/recieves-excel", [Controllers\ExcelController::class, "exportReceives"])->name("receives_boss_excel");
       });
       //DIRECTOR INTERFACES
       Route::middleware(IsDirector::class)->group(

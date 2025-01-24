@@ -7,7 +7,7 @@
         <div class=" flex w-full gap-3">
             <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
 
-            <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
+            <table id="table1" class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
                 <thead class="p-3 bg-gray-500 text-white">
                     <td colspan="7" class="text-center">
                         AFB
@@ -69,7 +69,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
+            <table id="table2" class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
                 <thead class="p-3 bg-gray-500 text-white">
                     <td colspan="7" class="text-center">
                         CCA
@@ -127,17 +127,15 @@
                                 $days = $interval->format('%a');
                                 ?>
                                 @if ($days <= 3)
-                                    <i class="text-red-500 delete">delete</i>
+                                    <i class="text-red-500 delete fa-solid fa-trash" title="supprimer"></i>
                                 @endif
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-        <div>
 
-            <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
+            <table id="table3" class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
                 <thead class="p-3 bg-gray-500 text-white">
                     <td colspan="7" class="text-center">
                         CAISSE
@@ -195,7 +193,7 @@
                                 $days = $interval->format('%a');
                                 ?>
                                 @if ($days <= 3)
-                                    <i class="text-red-500 delete">delete</i>
+                                    <i class="text-red-500 delete fa-solid fa-trash" title="supprimer"></i>
                                 @endif
                             </td>
                         </tr>
@@ -203,10 +201,81 @@
                 </tbody>
             </table>
         </div>
+        <div>
+
+        </div>
     </center>
     <script type="module">
         $(function() {
-            $(".delete").on("click", function() {
+            $("#table1").on("click", ".delete", function() {
+                var id = $(this).parent().parent().attr("id");
+                var token = $("meta[name='csrf-token']").attr("content");
+                Swal.fire({
+                    title: "Etes vous sures ? cette operation est irreversible",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Supprimer",
+                    denyButtonText: `Annuler`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/commercial/deleteVersemment/" + id,
+                            dataType: "json",
+                            data: {
+                                "id": id,
+                                "_token": token,
+                            },
+                            method: "DELETE",
+                            success: function(res) {
+                                toastr.warning(res.message)
+                                $("#" + id).load(location.href + " #" + id)
+                            },
+                            error: function(xhr, status, err) {
+                                console.log(xhr)
+                                console.log(err)
+                            }
+                        })
+                    } else if (result.isDenied) {
+                        Swal.fire("Changement non enregistre", "", "info");
+                    }
+                })
+            })
+            $("#table2").on("click", ".delete", function() {
+                var id = $(this).parent().parent().attr("id");
+                var token = $("meta[name='csrf-token']").attr("content");
+                Swal.fire({
+                    title: "Etes vous sures ? cette operation est irreversible",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Supprimer",
+                    denyButtonText: `Annuler`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/commercial/deleteVersemment/" + id,
+                            dataType: "json",
+                            data: {
+                                "id": id,
+                                "_token": token,
+                            },
+                            method: "DELETE",
+                            success: function(res) {
+                                toastr.warning(res.message)
+                                $("#" + id).load(location.href + " #" + id)
+                            },
+                            error: function(xhr, status, err) {
+                                console.log(xhr)
+                                console.log(err)
+                            }
+                        })
+                    } else if (result.isDenied) {
+                        Swal.fire("Changement non enregistre", "", "info");
+                    }
+                })
+            })
+            $("#table3").on("click", ".delete", function() {
                 var id = $(this).parent().parent().attr("id");
                 var token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({

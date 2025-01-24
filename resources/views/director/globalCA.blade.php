@@ -15,7 +15,7 @@
                     @foreach ($versements as $versement)
                         <tr>
                             <td>{{ $versement->mois }}/{{ $versement->annee }} </td>
-                            <td>{{ $versement->total_gpl }}</td>
+                            <td>{{ number_format($versement->total_gpl, 2, ',', ' ') }}</td>
                             <td>{{ $versement->bank }}</td>
                         </tr>
                     @endforeach

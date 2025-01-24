@@ -107,6 +107,7 @@
                     <li class="elem" id="activate-move-excels-form">Etats des
                         mouvements
                     </li>
+                    <li class="elem" id="activate-receives-excel-form">Historique des receptions</li>
                 </ul>
             </div>
         </nav>
@@ -197,7 +198,67 @@
             </div>
         </center>
     </div>
+    <!--FORMULAIRE DE GENERATION DE EXCEL RECEPTIONS-->
+    <div id="recieves-excel-form" class="modals">
+        <center>
 
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un PDF RECEPTIONS</h1>
+                    <span class="close-modal">X </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form method="POST" action="{{ route('receives_boss_excel') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart" required>
+                        @if ($errors->has('depart'))
+                            <span class="text-red-500">{{ $errors->first('depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin" required>
+                        @if ($errors->has('fin'))
+                            <span class="text-red-500">{{ $errors->first('fin') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Service:</label>
+                        <select name="service" required>
+                            <option value="magasin">Magasin</option>
+                            <option value="production">Production</option>
+                        </select>
+                        @if ($errors->has('service'))
+                            <span class="text-red-500">{{ $errors->first('service') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Citerne</label>
+                        <select name="citerne" id="">
+                            @foreach ($mobile as $fix)
+                                <option value="{{ $fix->id }}">{{ $fix->name }}</option>
+                            @endforeach
+
+                            <option value="global"> Global</option>
+                        </select>
+                        @if ($errors->has('citerne'))
+                            <span class="text-red-500">{{ $errors->first('citerne') }}</span>
+                        @endif
+                    </div>
+
+
+
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
     <!--FORMULAIRE DE GENERATION DE PDF PRODUCTION-->
     <div id="produce-pdf-form" class="modals">
         <center>
@@ -585,6 +646,31 @@
                     $("#move-excel-form").addClass("modals-active")
 
                     $("#move-excel-form").removeClass("modals")
+                }
+            })
+
+            $(".close-modal").on("click", function(e) {
+                e.preventDefault()
+                if ($("#move-excel-form").hasClass("modals-active")) {
+                    $("#move-excel-form").addClass("modals")
+                    $("#move-excel-form").removeClass("modals-active")
+                }
+            })
+            //ACTION generate excel receives 
+            $("#activate-receives-excel-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#recieves-excel-form").hasClass("modals")) {
+                    $("#recieves-excel-form").addClass("modals-active")
+
+                    $("#recieves-excel-form").removeClass("modals")
+                }
+            })
+
+            $(".close-modal").on("click", function(e) {
+                e.preventDefault()
+                if ($("#recieves-excel-form").hasClass("modals-active")) {
+                    $("#recieves-excel-form").addClass("modals")
+                    $("#recieves-excel-form").removeClass("modals-active")
                 }
             })
             //ACTION generate pdf produce

@@ -92,7 +92,7 @@
             <?php
             $total_gpl = 0;
             $total_consigne = 0;
-            $otal_total = 0;
+            $total_total = 0;
             ?>
             <tbody>
                 @foreach ($deposit as $data)
@@ -103,23 +103,23 @@
                         $total_consigne += $data->montant_consigne;
                         $total_total += $data->montant_gpl + $data->montant_consigne;
                         ?>
-                        <td>{{ $data->montant_gpl }}</td>
-                        <td>{{ $data->montant_consigne }}</td>
-                        <td>{{ $data->montant_gpl + $data->montant_consigne }}</td>
+                        <td>{{ number_format($data->montant_gpl, 2, ',', ' ') }}</td>
+                        <td>{{ number_format($data->montant_consigne, 2, ',', ' ') }}</td>
+                        <td>{{ number_format($data->montant_gpl + $data->montant_consigne, 2, ',', ' ') }}</td>
                         <td>{{ $data->commentaire }}</td>
                         <td>{{ $data->bordereau }}</td>
                         <td>{{ $data->created_at }}</td>
                     </tr>
                 @endforeach
-                <tr><b>
+                <tr>
+                    <td>/</td>
+                        <td><b>{{ number_format($total_gpl, 2, ',', ' ') }}</b></td>
+                        <td><b>{{ number_format($total_consigne, 2, ',', ' ') }}</b></td>
+                        <td><b>{{ number_format($total_total, 2, ',', ' ') }}</b></td>
                         <td>/</td>
-                        <td>{{ $total_gpl }}</td>
-                        <td>{{ $total_consigne }}</td>
-                        <td>{{ $total_total }}</td>
                         <td>/</td>
                         <td>/</td>
-                        <td>/</td>
-                    </b></tr>
+                   </tr>
             </tbody>
         </table>
     </center>

@@ -117,7 +117,10 @@ class DirectorController extends Controller
             ->select(
                 DB::raw('YEAR(created_at) as annee'),
                 DB::raw('MONTH(created_at) as mois'),
-                DB::raw('SUM(prix_total) as total_gpl')
+                DB::raw('SUM(prix_total) as total_gpl'),
+                DB::raw("SUM(qty_6) as somme_qty_6"),
+                DB::raw("SUM(qty_12) as somme_qty_12"),
+                DB::raw("SUM(qty_50) as somme_qty_50"),
             )->where("type", "vente")
             ->groupBy('annee', 'mois')
             ->orderBy('annee')
@@ -136,7 +139,10 @@ class DirectorController extends Controller
             ->select(
                 DB::raw('YEAR(created_at) as annee'),
                 DB::raw('MONTH(created_at) as mois'),
-                DB::raw('SUM(prix_total) as total_gpl')
+                DB::raw('SUM(prix_total) as total_gpl'),
+                DB::raw("SUM(qty_6) as somme_qty_6"),
+                DB::raw("SUM(qty_12) as somme_qty_12"),
+                DB::raw("SUM(qty_50) as somme_qty_50"),
             )->where("type", "vente")
             ->where("region", $regionHere)
             ->groupBy('annee', 'mois')
@@ -157,7 +163,10 @@ class DirectorController extends Controller
             ->select(
                 DB::raw('YEAR(created_at) as annee'),
                 DB::raw('MONTH(created_at) as mois'),
-                DB::raw('SUM(prix_total) as total_gpl')
+                DB::raw('SUM(prix_total) as total_gpl'),
+                DB::raw("SUM(qty_6) as somme_qty_6"),
+                DB::raw("SUM(qty_12) as somme_qty_12"),
+                DB::raw("SUM(qty_50) as somme_qty_50"),
             )->where("type", "consigne")
             ->groupBy('annee', 'mois')
             ->orderBy('annee')
@@ -175,7 +184,10 @@ class DirectorController extends Controller
             ->select(
                 DB::raw('YEAR(created_at) as annee'),
                 DB::raw('MONTH(created_at) as mois'),
-                DB::raw('SUM(prix_total) as total_gpl')
+                DB::raw('SUM(prix_total) as total_gpl'),
+                DB::raw("SUM(qty_6) as somme_qty_6"),
+                DB::raw("SUM(qty_12) as somme_qty_12"),
+                DB::raw("SUM(qty_50) as somme_qty_50"),
             )->where("type", "consigne")
             ->where("region", $regionHere)
             ->groupBy('annee', 'mois')
