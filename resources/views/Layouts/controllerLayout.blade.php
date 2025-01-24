@@ -108,13 +108,18 @@
                         mouvements
                     </li>
                     <li class="elem" id="activate-receives-excel-form">Historique des receptions</li>
+                    <li class="elem" id="activate-sales-state-excel-form">Etats des Ventes</li>
+                    <li class="elem" id="activate-versement-excel-form">Historique des Versements</li>
+                    <li class="elem" id="activate-releves-excel-form">Historique des releves</li>
+                    <li class="elem" id="activate-produce-excel-form">Etats des ProductionS</li>
+
                 </ul>
             </div>
         </nav>
     </header>
 
 
-    <!--FORMULAIRE DE GENERATION DE PDF-->
+    <!--FORMULAIRE DE GENERATION DE EXCEL-->
     <div id="move-excel-form" class="modals">
         <center>
 
@@ -259,6 +264,286 @@
             </div>
         </center>
     </div>
+    <!--FORMULAIRE GENERATION ETAT DES VENTES EN EXCEL-->
+
+    <div id="sales-state-excel-form" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un EXCEL etats des ventes/consignes</h1>
+                    <b class="close-modal">X </b>
+                </div>
+                <b class="success text-green-500"></b>
+                <b class="errors text-red-500"></b>
+                <form method="POST" action="{{ route('boss_sale_state_excel') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart">
+                        @if ($errors->has('depart'))
+                            <b class="text-red-500">{{ $errors->first('depart') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin">
+                        @if ($errors->has('fin'))
+                            <b class="text-red-500">{{ $errors->first('fin') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Client :</label><br>
+
+                        <input type="text" name="name">
+                    </div>
+                    @if ($errors->has('state'))
+                        <b class="text-red-500">{{ $errors->first('state') }}</b>
+                    @endif
+
+                    <div class="modal-champs">
+                        <label for="">Type de Action</label>
+                        <select name="sale" id="">
+
+                            <option value="vente">vente</option>
+                            <option value="consigne">consigne</option>
+                            <option value="accessoire">accessoire</option>
+
+                        </select>
+                        @if ($errors->has('move'))
+                            <b class="text-red-500">{{ $errors->first('move') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+    <!--FORMULAIRE DE GENERATION PDF-->
+    <div id="recieves-excel-form" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un PDF RECEPTIONS</h1>
+                    <span class="close-modal">X </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form method="POST" action="{{ route('receives_boss_pdf') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart" required>
+                        @if ($errors->has('depart'))
+                            <span class="text-red-500">{{ $errors->first('depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin" required>
+                        @if ($errors->has('fin'))
+                            <span class="text-red-500">{{ $errors->first('fin') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Service:</label>
+                        <select name="service" required>
+                            <option value="magasin">Magasin</option>
+                            <option value="production">Production</option>
+                        </select>
+                        @if ($errors->has('service'))
+                            <span class="text-red-500">{{ $errors->first('service') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Citerne</label>
+                        <select name="citerne" id="">
+                            @foreach ($mobile as $fix)
+                                <option value="{{ $fix->id }}">{{ $fix->name }}</option>
+                            @endforeach
+
+                            <option value="global"> Global</option>
+                        </select>
+                        @if ($errors->has('citerne'))
+                            <span class="text-red-500">{{ $errors->first('citerne') }}</span>
+                        @endif
+                    </div>
+
+
+
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+    <!--FORMULAIRE GENERATION ETAT DES VERSEMENTS-->
+
+    <div id="versement-excel-form" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un EXCEL historique des versements</h1>
+                    <b class="close-modal">X </b>
+                </div>
+                <b class="success text-green-500"></b>
+                <b class="errors text-red-500"></b>
+                <form method="POST" action="{{ route('boss_versementexcel') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart">
+                        @if ($errors->has('depart'))
+                            <b class="text-red-500">{{ $errors->first('depart') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin">
+                        @if ($errors->has('fin'))
+                            <b class="text-red-500">{{ $errors->first('fin') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">BANQUE :</label><br>
+
+                        <select name="bank" id="">
+                            <option value="AFB">AFB</option>
+                            <option value="CCA">CCA</option>
+                            <option value="CAISSE">CAISSE</option>
+                            <option value="all">Tous</option>
+                        </select>
+                    </div>
+                    @if ($errors->has('bank'))
+                        <b class="text-red-500">{{ $errors->first('bank') }}</b>
+                    @endif
+                    <div class="modal-champs">
+                        <label for="">service</label>
+                        <select name="service" id="">
+                            <option value="commercial">Commercial</option>
+
+                        </select>
+                        @if ($errors->has('region'))
+                            <span class="text-red-500">{{ $errors->first('region') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+    <!--FORMULAIRE DE GENERATION DE PDF RElEVEES-->
+    <div id="releves-excel-form" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un Excel RELEVES</h1>
+                    <span class="close-modal">X </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form method="POST" action="{{ route('releves_excel') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart" required>
+                        @if ($errors->has('depart'))
+                            <span class="text-red-500">{{ $errors->first('depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin" required>
+                        @if ($errors->has('fin'))
+                            <span class="text-red-500">{{ $errors->first('fin') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Citerne</label>
+                        <select name="citerne" id="">
+                            @foreach ($fixe as $fix)
+                                <option value="{{ $fix->name }}">{{ $fix->name }}</option>
+                            @endforeach
+                            <option value="global"> Global</option>
+                        </select>
+                        @if ($errors->has('citerne'))
+                            <span class="text-red-500">{{ $errors->first('citerne') }}</span>
+                        @endif
+                    </div>
+
+
+
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+
+    <!--FORMULAIRE DE GENERATION DE EXCEL PRODUCTION-->
+    <div id="produce-excel-form" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Generer un Excel Production</h1>
+                    <span class="close-modal">X </span>
+                </div>
+                <span class="success text-green-500"></span>
+                <span class="errors text-red-500"></span>
+                <form method="POST" action="{{ route('genProdHistConExcel') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Du:</label>
+                        <input type="date" name="depart" required>
+                        @if ($errors->has('depart'))
+                            <span class="text-red-500">{{ $errors->first('depart') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Au:</label>
+                        <input type="date" name="fin" required>
+                        @if ($errors->has('fin'))
+                            <span class="text-red-500">{{ $errors->first('fin') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Citerne</label>
+                        <select name="citerne" id="">
+                            @foreach ($fixe as $fix)
+                                <option value="{{ $fix->id }}">{{ $fix->name }}</option>
+                            @endforeach
+                            <option value="global"> Global</option>
+                        </select>
+                        @if ($errors->has('citerne'))
+                            <span class="text-red-500">{{ $errors->first('citerne') }}</span>
+                        @endif
+                    </div>
+
+
+
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+
     <!--FORMULAIRE DE GENERATION DE PDF PRODUCTION-->
     <div id="produce-pdf-form" class="modals">
         <center>
@@ -671,6 +956,74 @@
                 if ($("#recieves-excel-form").hasClass("modals-active")) {
                     $("#recieves-excel-form").addClass("modals")
                     $("#recieves-excel-form").removeClass("modals-active")
+                }
+            })
+            //ACTION GENERER EXCEL VENTES
+
+            $("#activate-sales-state-excel-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#sales-state-excel-form").hasClass("modals")) {
+                    $("#sales-state-excel-form").addClass("modals-active")
+
+                    $("#sales-state-excel-form").removeClass("modals")
+                }
+            })
+
+            $(".close-modal").on("click", function(e) {
+                e.preventDefault()
+                if ($("#sales-state-excel-form").hasClass("modals-active")) {
+                    $("#sales-state-excel-form").addClass("modals")
+                    $("#sales-state-excel-form").removeClass("modals-active")
+                }
+            })
+            //ACTION versement historique Excel
+            $("#activate-versement-excel-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#versement-excel-form").hasClass("modals")) {
+                    $("#versement-excel-form").addClass("modals-active");
+                    $("#versement-excel-form").removeClass("modals");
+                }
+
+                $(".close-modal").on("click", function(e) {
+                    e.preventDefault()
+                    if ($("#versement-excel-form").hasClass("modals-active")) {
+                        $("#versement-excel-form").addClass("modals");
+                        $("#versement-excel-form").removeClass("modals-active");
+                    }
+                })
+            })
+            //ACTION generate excel releves 
+            $("#activate-releves-excel-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#releves-excel-form").hasClass("modals")) {
+                    $("#releves-excel-form").addClass("modals-active")
+
+                    $("#releves-excel-form").removeClass("modals")
+                }
+            })
+
+            $(".close-modal").on("click", function(e) {
+                e.preventDefault()
+                if ($("#releves-excel-form").hasClass("modals-active")) {
+                    $("#releves-excel-form").addClass("modals")
+                    $("#releves-excel-form").removeClass("modals-active")
+                }
+            })
+            //ACTION generate pdf produce
+            $("#activate-produce-excel-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#produce-excel-form").hasClass("modals")) {
+                    $("#produce-excel-form").addClass("modals-active")
+
+                    $("#produce-excel-form").removeClass("modals")
+                }
+            })
+
+            $(".close-modal").on("click", function(e) {
+                e.preventDefault()
+                if ($("#produce-excel-form").hasClass("modals-active")) {
+                    $("#produce-excel-form").addClass("modals")
+                    $("#produce-excel-form").removeClass("modals-active")
                 }
             })
             //ACTION generate pdf produce

@@ -131,6 +131,10 @@ Route::group(["middleware" => "auth"], function () {
             //Excels files
             Route::post("/constroller/excels", [Controllers\ExcelController::class, "export"])->name("export-excelts");
             Route::post("/controller/recieves-excel", [Controllers\ExcelController::class, "exportReceives"])->name("receives_boss_excel");
+            Route::post("/controller/sales-state-excel", [Controllers\ExcelController::class, "exportVentes"])->name("boss_sale_state_excel");
+            Route::post("/controller/versement/excel", [Controllers\ExcelController::class, "exportVersement"])->name("boss_versementexcel");
+            Route::post("/releves-excel", [Controllers\ExcelController::class, "exportReleves"])->name("releves_excel");
+            Route::post("/producer/genProdHistConExcel", [Controllers\ExcelController::class, "exportProduction"])->name("genProdHistConExcel");
       });
       //DIRECTOR INTERFACES
       Route::middleware(IsDirector::class)->group(
