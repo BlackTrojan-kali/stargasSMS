@@ -21,15 +21,15 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
         $citerns = Citerne::all();
-        return view("manageArticles", ["articles" => $articles, "citernes" => $citerns]);
+        return view("super.manageArticles", ["articles" => $articles, "citernes" => $citerns]);
     }
     public function insert(Request $request)
     {
-        return view("addArticle");
+        return view("super.addArticle");
     }
     public function insertAcc(Request $request)
     {
-        return view("addAccessory");
+        return view("super.addAccessory");
     }
     public function generatePdf(Request $request)
     {

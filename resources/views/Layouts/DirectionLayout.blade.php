@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stargas SCMS</title>
+    <title>{{ env("COMPANIE_NAME") }} SCMS</title>
     <link rel="icon" href="/images/logo.png">
     <link href="toastr.css" rel="stylesheet" />
     @vite('resources/css/app.css')
@@ -43,7 +43,7 @@
                     <i class="fa-solid fa-user"></i>
                     {{ Auth::user()->email }}
                 </p>
-                <h2 class="text-large">Stargas Supply Chain Management System</h2>
+                <h2 class="text-large">{{env("COMPANIE_NAME")}} Supply Chain Management System</h2>
                 <h2 class="text-large">
                     Region: {{ strtoupper(Auth::user()->region) }}
                 </h2>

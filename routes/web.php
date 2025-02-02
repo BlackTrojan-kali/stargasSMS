@@ -31,6 +31,19 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/addCiterns", [Controllers\CiternController::class, "showFormAddCitern"])->name("addCiterns");
             Route::post("/validateCiterns", [Controllers\CiternController::class, "validateFormAddCitern"])->name("validateCiterns");
             Route::delete("/deleteCitern/{id}", [Controllers\CiternController::class, "delete"])->name("deleteCiterne");
+            //gestion des clients
+            Route::get("/list-clients-cats", [Controllers\ClientController::class, "showCats"])->name("client-cats");
+            Route::get("/create-client-cat", [Controllers\ClientController::class, "createCat"])->name("create-client-cat");
+            Route::post("/post-client-cat", [Controllers\ClientController::class, "storeCat"])->name("store-client-cat");
+            Route::get("/modify-client-cat/{id}", [Controllers\ClientController::class, "modifCat"])->name("modify-client-cat");
+            Route::post("/update-client-cat/{id}", [Controllers\ClientController::class, "updateCat"])->name("update-client-cat");
+            Route::delete("/delete-client-cat/{id}", [Controllers\ClientController::class, "deleteCat"])->name("delete-client-cat");
+            Route::get("/list-clients", [Controllers\ClientController::class, "showClients"])->name("list-clients");
+            Route::get("/create-client", [Controllers\ClientController::class, "createClient"])->name("create-client");
+            Route::post("/post-client", [Controllers\ClientController::class, "storeClient"])->name("store-client");
+            Route::get("/modify-client/{id}", [Controllers\ClientController::class, "modifClient"])->name("modify-client");
+            Route::post("/update-client/{id}", [Controllers\ClientController::class, "updateClient"])->name("update-client");
+            Route::delete("/delete-client/{id}", [Controllers\ClientController::class, "deleteClient"])->name("delete-client");
       });
       Route::middleware(isManager::class)->group(function () {
             Route::get("/manager/dashboard", [Controllers\MagazinierController::class, "show"])->name("dashboard-manager");

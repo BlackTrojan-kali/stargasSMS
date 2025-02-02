@@ -10,7 +10,7 @@
             <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
                 <thead class="p-3 bg-gray-500 text-white">
                     <td colspan="6" class="text-center">
-                        AFB
+                        {{ env('COMPANIE_BANK_1') }}
                     </td>
                     <tr>
                         <td>
@@ -56,7 +56,7 @@
             <table class="history scroll mt-10 w-1/2 border-2 border-collapse border-gray-400 text-center ">
                 <thead class="p-3 bg-gray-500 text-white">
                     <td colspan="6" class="text-center">
-                        CCA
+                        {{ env('COMPANIE_BANK_2') }}
                     </td>
                     <tr>
                         <td>date</td>

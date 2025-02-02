@@ -69,10 +69,10 @@
         <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('images/logo.png'))) }}"
             width="100px">
         <p>
-            <b>StarGas S.A</b><br>
-            <b>B.P:</b>17159 Yaoundé-Cameroun <br>
-            <b>Tél:</b>222 22 49 36 <br>
-            <b>Email:</b> stargas@stargas.cm <br>
+            <b>{{ env('COMPANIE_NAME') }}</b><br>
+            <b>B.P:</b>{{ env('COMPANIE_ADDRESS') }} <br>
+            <b>Tél:</b>{{ env('COMPANIE_CANTACT_1') }} <br>
+            <b>Email:</b> {{ env('COMPANIE_EMAIL_1') }} <br>
         </p>
     </div>
     <center>

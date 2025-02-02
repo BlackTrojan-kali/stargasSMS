@@ -11,7 +11,7 @@
                 @if ($stock->region == $reg->region)
                     <div class="relative w-7/12">
                         <div class="w-11/12 flex justify-between font-bold">
-                            <p>{{ $stock->article->title }} <span
+                            <p>{{ env('COMPANIE_NAME') }} <span
                                     class="genera;">{{ $stock->article->weight > 0 ? $stock->article->weight . 'kg' : '' }}
                                 </span>
                                 @if ($stock->type == 'bouteille-gaz')

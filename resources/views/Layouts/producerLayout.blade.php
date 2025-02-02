@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Document</title>
+    <title>{{ env('COMPANIE_NAME') }}</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -45,7 +45,7 @@
                     <i class="fa-solid fa-user"></i>
                     {{ Auth::user()->email }}
                 </p>
-                <h2 class="text-large">Stargas Supply Chain Management System</h2>
+                <h2 class="text-large">{{ env('COMPANIE_NAME') }} Supply Chain Management System</h2>
                 <h2 class="text-large">
                     Region: {{ strtoupper(Auth::user()->region) }}
                 </h2>

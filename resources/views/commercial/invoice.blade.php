@@ -251,7 +251,6 @@
             <span class="english">SalesMan</span>
         </div>
     </div>
-
     <div class="comptes">
         <center>
             <h4>STARGAS S.A</h4>
@@ -271,35 +270,37 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Afriland first bank</td>
-                        <td>StarGas S.A</td>
-                        <td>10005</td>
-                        <td>00001</td>
-                        <td>04711891001</td>
+                        <td>{{ env('COMPANIE_BANK_2') }} bank</td>
+                        <td>{{ env('COMPANIE_NAME') }}</td>
+                        <td>{{ env('COMPANIE_BANK_2_bank_code') }}</td>
+                        <td>{{ env('COMPANIE_BANK_2_guichet') }}</td>
+                        <td>{{ env('COMPANIE_BANK_2_ACCOUNT') }}</td>
                         <td>
-                            33
+                            {{ env('COMPANIE_BANK_2_RIB') }}
                         </td>
                     </tr>
                     <tr>
 
-                        <td>CCA Bank</td>
-                        <td>StarGas S.A</td>
-                        <td>10039</td>
-                        <td>10005</td>
-                        <td>00256023301</td>
+                        <td>{{ env('COMPANIE_BANK_1') }} bank</td>
+                        <td>{{ env('COMPANIE_NAME') }}</td>
+                        <td>{{ env('COMPANIE_BANK_1_bank_code') }}</td>
+                        <td>{{ env('COMPANIE_BANK_1_guichet') }}</td>
+                        <td>{{ env('COMPANIE_BANK_1_ACCOUNT') }}</td>
                         <td>
-                            36
+                            {{ env('COMPANIE_BANK_1_RIB') }}
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <p class="contri"><i><b>Siège: Zone Industrielle MAGZI Adresse:6792 Yaoundé Tél:+237 691 50 03 05/ 691 50 03
+            <p class="contri"><i><b>Siège: {{ env('COMPANIE_LOCATION') }}Adresse:6792 Yaoundé Tél:+237
+                        {{ env('COMPANIE_CONTACT_1') }}/
+                        {{ env('COMPANIE_CANTACT_2') }}
                         08 Mail: <br>
-                        sales@stargascameroun.com/info@stargascameroun.com Num contribuable: M051200042049E Reg
-                        Commerce: YAO/2012/5/323 <br>
-                        Site Web : www.stargascameroun.com
+                        {{ env('COMPANIE_EMAIL_2') }}/{{ env('COMPANIE_EMAIL_2') }} Num contribuable:
+                        {{ env('COMPANIE_CONTRIB') }} Reg
+                        Commerce: {{ env('COMPANIE_COMMERCE') }} <br>
+                        Site Web : {{ env('COMPANIE_SITE') }}
                     </b></i></p>
-        </center>
     </div>
 
 </body>

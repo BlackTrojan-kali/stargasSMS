@@ -11,10 +11,10 @@ class RoleController extends Controller
     //
     public function index(){
         $roles = Role::all();
-        return view("role_list", compact('roles'));
+        return view("super.role_list", compact('roles'));
     }
     public function create(){
-        return view("role_create");
+        return view("super.role_create");
     }
        //
        public function store(Request $request){

@@ -206,7 +206,7 @@
         </tr>
     </table>
     <br><br>
-    <div class="footer">
+<!--    <div class="footer">
         <p>
             Société Anonyme au Capital de 400 000 000 F CFA <br>
             Siège social à la Zone Industrielle MAGZI - Yaoundé (Mvan) · B.P. : 17159 Yaoundé <br>
@@ -214,7 +214,7 @@
             M051200042049E <br>
             E-mail : info@stargascameroun.com / stargascameroun@gmail.com /Site Web : www.stargascameroun.com
         </p>
-    </div>
+    </div>-->
 </body>
 
 </html>

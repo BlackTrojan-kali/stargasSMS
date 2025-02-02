@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stargas SCMS</title>
+    <title>{{ env('COMPANIE_NAME') }} SCMS</title>
     <link rel="icon" href="/images/logo.png">
     <link href="toastr.css" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -46,7 +46,7 @@
                     <i class="fa-solid fa-user"></i>
                     {{ Auth::user()->email }}
                 </p>
-                <h2 class="text-large">Stargas Supply Chain Management System</h2>
+                <h2 class="text-large">{{ env('COMPANIE_NAME') }} Supply Chain Management System</h2>
                 <h2 class="text-large">
                     Region: {{ strtoupper(Auth::user()->region) }}
                 </h2>
@@ -324,8 +324,8 @@
                     <div class="modal-champs">
                         <label for="">Banque:</label>
                         <select name="bank" id="">
-                            <option value="AFB">AFB</option>
-                            <option value="CCA">CCA</option>
+                            <option value="{{ env('COMPANIE_BANK_1') }}">{{ env('COMPANIE_BANK_1') }}</option>
+                            <option value="{{ env('COMPANIE_BANK_2') }}">{{ env('COMPANIE_BANK_2') }}</option>
                             <option value="CAISSE">CAISSE</option>
                         </select>
                         @if ($errors->has('bank'))

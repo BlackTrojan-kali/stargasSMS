@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stargas SCMS</title>
+    <title>{{ env('COMPANIE_NAME') }} SCMS</title>
     <link rel="icon" href="/images/logo.png">
     <link href="toastr.css" rel="stylesheet" />
     @vite('resources/css/app.css')
@@ -70,7 +70,8 @@
                 <div class="drop-items">
 
 
-                    <div class="text-center elem"><a href="{{ route('historique-rel-con') }}">ETAT DES RELEVES</a></div>
+                    <div class="text-center elem"><a href="{{ route('historique-rel-con') }}">ETAT DES RELEVES</a>
+                    </div>
                     <div class="drop-2 elem"><a href="{{ route('showConHist') }}">ETAT DES PRODUCTION</a></div>
                     <div class="drop-2 elem">
                         <a href="{{ route('showVentesCon', ['type' => 'vente']) }}"> VENTES</a>

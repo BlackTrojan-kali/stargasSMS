@@ -34,8 +34,8 @@ class CommercialController extends Controller
         $fixe  = Citerne::where("type", "fixe")->get();
 
         if ($type == "versements") {
-            $versements1 = Versement::where("bank", "AFB")->where("region", "=", Auth::user()->region)->get();
-            $versements2 = Versement::where("bank", "CCA")->where("region", "=", Auth::user()->region)->get();
+            $versements1 = Versement::where("bank", env("COMPANIE_BANK_1"))->where("region", "=", Auth::user()->region)->get();
+            $versements2 = Versement::where("bank", env("COMPANIE_BANK_2"))->where("region", "=", Auth::user()->region)->get();
             $versements3 = Versement::where("bank", "CAISSE")->where("region", "=", Auth::user()->region)->get();
             if (Auth::user()->role == 'controller') {
                 return view("controller.historique-versements", ["ventes" => $versements1, "ventes2" => $versements2, "ventes3" => $versements3, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
@@ -349,8 +349,8 @@ class CommercialController extends Controller
         $fromDate = $request->depart;
         $toDate = $request->fin;
         if ($request->bank == "all") {
-            $afb = Versement::where("bank", "AFB")->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
-            $cca = Versement::where("bank", "CCA")->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
+            $afb = Versement::where("bank", env("COMPANIE_BANK_1"))->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
+            $cca = Versement::where("bank", env("COMPANIE_BANK_2"))->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
             $caisse = Versement::where("bank", "CAISSE")->where("region", Auth::user()->region)->where("service", Auth::user()->role)->whereBetween("created_at", [$fromDate, $toDate])->get();
             $pdf = Pdf::loadview("versementPdfAll", ["fromDate" => $fromDate, "toDate" => $toDate, "afb" => $afb, "cca" => $cca, "bank" => $request->bank])->setPaper("A4", 'landscape');
 

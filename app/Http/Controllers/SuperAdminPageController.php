@@ -13,24 +13,24 @@ class SuperAdminPageController extends Controller
     //
     public function show(Request $request){
         $stocks = Stock::with("article")->get();
-        return view('dashboard',["stocks"=>$stocks]);
+        return view('super.dashboard',["stocks"=>$stocks]);
     }
 
     public function showUsers(Request $request){
         $users = User::where("role","!=","super")->get();
-        return view("manageUsers",["users"=>$users]);
+        return view("super.manageUsers",["users"=>$users]);
     }
     
     public function addUserForm(Request $request){
         $regions = Region::all();
         $roles = Role::all();
-        return view("addUser",["regions"=>$regions,"roles"=>$roles]);
+        return view("super.addUser",["regions"=>$regions,"roles"=>$roles]);
     }
     public function editUser(Request $request, $id){
         $user = User::findOrFail($id);
         $regions = Region::all();
         $roles = Role::all();
-        return view("editUser",["user"=>$user,"regions"=>$regions,"roles"=>$roles]);
+        return view("super.editUser",["user"=>$user,"regions"=>$regions,"roles"=>$roles]);
     }   
     public function updateUser(Request $request,$id){
         $request->validate([
@@ -43,7 +43,7 @@ class SuperAdminPageController extends Controller
         $user->role = $request->role;
         $user->region = $request->region;
         $user->save();
-        return redirect()->route('manageUsers')->withSuccess("utilisateur modifier avec success");
+        return redirect()->route('super.manageUsers')->withSuccess("utilisateur modifier avec success");
     }
     public function deleteUser(Request $request, $id){
         $user=  User::findOrFail($id);
