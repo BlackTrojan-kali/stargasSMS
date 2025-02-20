@@ -168,6 +168,10 @@ Route::group(["middleware" => "auth"], function () {
                   Route::get("/director/Global/entries-vides", [Controllers\DirectorController::class, "globalEmptyBottles"])->name("globalEmptyBottles");
                   Route::get("/director/{region}/entries", [Controllers\DirectorController::class, "RegionFullBottles"])->name("RegionFullBottles");
                   Route::get("/director/{region}/entries-vides", [Controllers\DirectorController::class, "RegionEmptyBottles"])->name("RegionEmptyBottles");
+                  //pdf pages
+                  Route::get("/director/PDfform", [Controllers\DirectorController::class, "generateCaPDF"])->name("CaPDFForm");
+                  Route::post("/director/PDfpostform", [Controllers\DirectorController::class, "postGeneratePDF"])->name("caGLobalPDF");
+                  Route::get("/director/PDFSalesForm", [Controllers\DirectorController::class, "GSalesPDF"])->name("GsalesPdf");
             }
       );
       Route::post("/commercial/versement/pdf", [Controllers\CommercialController::class, "generate_versements_state"])->name("versementPdf");

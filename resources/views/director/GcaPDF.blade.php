@@ -1,11 +1,32 @@
-@extends('Layouts.DirectionLayout')
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ env('COMPANIE_NAME') }} SCMC</title>
+</head>
+
+<body>
+    <style>
+        table {
+            width: 100%;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        tr,
+        th,
+        td {
+
+            border: 1px solid black;
+        }
+    </style>
     <center>
         <div class="flex flex-row justify-between p-4">
             <h1 class="text-2xl font-bold">Versements Global {{ $type }}</h1>
 
-            <button class="ternary p-2 text-white rounded-sm text-bold"><a href="{{ route('CaPDFForm') }}">generer un
-                    PDF</a></button>
         </div>
         <div>
             <table class=" scroll text-center mt-10 w-full border-2 border-gray-400 border-collapse-0">
@@ -28,4 +49,6 @@
             </table>
         </div>
     </center>
-@endsection
+</body>
+
+</html>

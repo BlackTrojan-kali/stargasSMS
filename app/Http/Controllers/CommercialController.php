@@ -34,8 +34,8 @@ class CommercialController extends Controller
         $fixe  = Citerne::where("type", "fixe")->get();
 
         if ($type == "versements") {
-            $versements1 = Versement::where("bank", env("COMPANIE_BANK_1"))->where("region", "=", Auth::user()->region)->get();
-            $versements2 = Versement::where("bank", env("COMPANIE_BANK_2"))->where("region", "=", Auth::user()->region)->get();
+            $versements1 = Versement::where("bank", "AFB")->where("region", "=", Auth::user()->region)->get();
+            $versements2 = Versement::where("bank", "CCA")->where("region", "=", Auth::user()->region)->get();
             $versements3 = Versement::where("bank", "CAISSE")->where("region", "=", Auth::user()->region)->get();
             if (Auth::user()->role == 'controller') {
                 return view("controller.historique-versements", ["ventes" => $versements1, "ventes2" => $versements2, "ventes3" => $versements3, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
@@ -213,9 +213,9 @@ class CommercialController extends Controller
 
         ]);
         $article = Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 12.5)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*")->first();
-        $article2 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 6)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*", "articles.weight")->first();
+        // $article2 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 6)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*", "articles.weight")->first();
 
-        $article3 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 50)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*")->first();
+        //$article3 =  Stock::join("articles", "stocks.article_id", "articles.id")->where("articles.type", "bouteille-gaz")->where("articles.state", 1)->where("articles.weight", 50)->where("stocks.region", Auth::user()->region)->where("stocks.category", "magasin")->select("stocks.*")->first();
 
 
 
@@ -236,8 +236,8 @@ class CommercialController extends Controller
         $vente->service = Auth::user()->role;
         $vente->prix_unitaire = 0;
         $vente->currency = $request->currency;
-        $vente->save();
         $pdf = Pdf::loadView("commercial.invoice", ["vente" => $vente, "article" => $article, "type" => $type]);
+        $vente->save();
         return $pdf->download($vente->customer . $vente->created_at . ".pdf");
     }
     public function makeAcSales(Request $request, $type)

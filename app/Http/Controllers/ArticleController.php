@@ -95,7 +95,7 @@ class ArticleController extends Controller
     }
     public function choose(Request $request)
     {
-        return view("choseProductType");
+        return view("super.choseProductType");
     }
     public function delete(Request $request, $id)
     {

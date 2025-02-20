@@ -137,7 +137,12 @@
         <div class="logo-section">
             <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('images/logo.png'))) }}"
                 width="150px">
-            <p>
+                <p>
+                    <b>{{ env('COMPANIE_NAME') }}</b><br>
+                    <b>B.P:</b>{{ env('COMPANIE_ADDRESS') }} <br>
+                    <b>Tél:</b>{{ env('COMPANIE_CANTACT_1') }} <br>
+                    <b>Email:</b> {{ env('COMPANIE_EMAIL_1') }} <br>
+                </p>
 
         </div>
         <div class="name-section">
@@ -149,6 +154,7 @@
 
     </header>
 
+    <br><br><br><br><br><br>
     <div class="head-2">
 
         <div class="customer-section">
@@ -242,24 +248,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ env("COMPANIE_BANK_2") }} bank</td>
+                        <td>{{ env('COMPANIE_BANK_2') }} bank</td>
                         <td>{{ env('COMPANIE_NAME') }}</td>
-                        <td>{{ env("COMPANIE_BANK_2_bank_code") }}</td>
-                        <td>{{ env("COMPANIE_BANK_2_guichet") }}</td>
-                        <td>{{ env("COMPANIE_BANK_2_ACCOUNT") }}</td>
+                        <td>{{ env('COMPANIE_BANK_2_bank_code') }}</td>
+                        <td>{{ env('COMPANIE_BANK_2_guichet') }}</td>
+                        <td>{{ env('COMPANIE_BANK_2_ACCOUNT') }}</td>
                         <td>
-                            {{ env("COMPANIE_BANK_2_RIB") }}
+                            {{ env('COMPANIE_BANK_2_RIB') }}
                         </td>
                     </tr>
                     <tr>
 
-                        <td>{{ env("COMPANIE_BANK_1") }} bank</td>
+                        <td>{{ env('COMPANIE_BANK_1') }} bank</td>
                         <td>{{ env('COMPANIE_NAME') }}</td>
-                        <td>{{ env("COMPANIE_BANK_1_bank_code") }}</td>
-                        <td>{{ env("COMPANIE_BANK_1_guichet") }}</td>
-                        <td>{{ env("COMPANIE_BANK_1_ACCOUNT") }}</td>
+                        <td>{{ env('COMPANIE_BANK_1_bank_code') }}</td>
+                        <td>{{ env('COMPANIE_BANK_1_guichet') }}</td>
+                        <td>{{ env('COMPANIE_BANK_1_ACCOUNT') }}</td>
                         <td>
-                            {{ env("COMPANIE_BANK_1_RIB") }}
+                            {{ env('COMPANIE_BANK_1_RIB') }}
                         </td>
                     </tr>
                 </tbody>

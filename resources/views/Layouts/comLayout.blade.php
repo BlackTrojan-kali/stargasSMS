@@ -288,7 +288,7 @@
                     </div>
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
-                        <button type="submit" id="submitForm">creer</button>
+                        <button type="submit">creer</button>
                     </div>
                 </form>
             </div>
@@ -459,7 +459,7 @@
                 </div>
                 <b class="success text-green-500"></b>
                 <b class="errors text-red-500"></b>
-                <form id="sale-gpl-for" action="{{ route('makeSales', ['type' => 'vente']) }}" method="POST">
+                <form action="{{ route('makeSales', ['type' => 'vente']) }}" method="POST">
                     @csrf
 
                     <div class="w-full text-center">
@@ -528,7 +528,7 @@
                     </div>
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
-                        <button type="submit" id="submitForm">creer</button>
+                        <button type="submit">creer</button>
                     </div>
                 </form>
             </div>
