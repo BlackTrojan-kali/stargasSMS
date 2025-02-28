@@ -9,10 +9,12 @@ use App\Models\Citerne;
 use App\Models\Movement;
 use App\Models\Stock;
 use App\Models\Vente;
+use App\Models\Invoicetrace;
 use App\Models\Versement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Invoices;
 
 class CommercialController extends Controller
 {
@@ -22,7 +24,8 @@ class CommercialController extends Controller
 
         $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
         $accessories = Article::where("type", "=", "accessoire")->get("title");
-        return view("commercial.dashboard", ["stocks" => $stocks, "accessories" => $accessories]);
+        $articles = Article::all();
+        return view("commercial.dashboard", ["articles" => $articles, "stocks" => $stocks, "accessories" => $accessories]);
     } //
     public function ventes(Request $request, $type)
     {
@@ -32,7 +35,6 @@ class CommercialController extends Controller
         $mobile = Citerne::where("type", "mobile")->get();
         $mobile = Citerne::where("type", "mobile")->get();
         $fixe  = Citerne::where("type", "fixe")->get();
-
         if ($type == "versements") {
             $versements1 = Versement::where("bank", "AFB")->where("region", "=", Auth::user()->region)->get();
             $versements2 = Versement::where("bank", "CCA")->where("region", "=", Auth::user()->region)->get();
@@ -43,10 +45,13 @@ class CommercialController extends Controller
             return view("commercial.historique-versements", ["stocks" => $stocks, "accessories" => $accessories, "ventes" => $versements1, "ventes3" => $versements3,  "ventes2" => $versements2, "type" => $type]);
         } else {
             $ventes = Vente::where("type", $type)->where("region", Auth::user()->region)->get();
+            //neo invoices
+            $sales = Invoicetrace::join("invoices", "id_invoice", "invoices.id")->leftJoin("clients", "clients.id", "invoices.id_client")->where("invoicetraces.region", Auth::user()->region)->where("invoices.type", $type)->with("invoice", "article")->get("*");
+            $articles = Article::where("type", "bouteille-gaz")->where("state", 1)->get();
             if (Auth::user()->role == 'controller') {
                 return view("controller.historique-ventes", ["ventes" => $ventes, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             } else {
-                return view("commercial.historique-ventes", ["stocks" => $stocks, "accessories" => $accessories, "ventes" => $ventes, "type" => $type]);
+                return view("commercial.historique-ventes", ["sales" => $sales, "articles" => $articles, "stocks" => $stocks, "accessories" => $accessories, "ventes" => $ventes, "type" => $type]);
             }
         }
     }

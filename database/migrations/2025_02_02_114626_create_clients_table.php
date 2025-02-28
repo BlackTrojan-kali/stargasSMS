@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string("prenom");
             $table->double("numero");
             $table->string("address")->nullable();
+            $table->string("region");
             $table->string("email")->nullable();
             $table->unsignedBigInteger("id_clientcat");
             $table->foreign("id_clientcat")->on("clientcats")->references("id")->onDelete("CASCADE");
-            $table->integer("reduction")->nullable();
             $table->timestamps();
         });
     }

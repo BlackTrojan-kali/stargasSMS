@@ -1,4 +1,4 @@
-@extends('Layouts.appLayout')
+@extends('Layouts.controllerLayout')
 @section('content')
     <div class="w-full">
         <center>

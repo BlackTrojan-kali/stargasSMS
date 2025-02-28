@@ -1,4 +1,4 @@
-@extends('Layouts.appLayout')
+@extends("Layouts.comLayout")
 @section('content')
     <div class="w-full">
         <center>
@@ -9,13 +9,20 @@
                 </div>
                 <b class="success text-green-500"></b>
                 <b class="errors text-red-500"></b>
-                <form method="POST" class="p-2" action="{{ route('store-client-cat') }}">
+                <form method="POST" class="p-2" action="{{ route('update-client-cat', ['id' => $clientCat->id]) }}">
                     @csrf
                     <div class="modal-champs">
                         <label for="">Nom:</label>
-                        <input type="text" name="name">
+                        <input type="text" value="{{ $clientCat->name }}" name="name">
                         @if ($errors->has('name'))
                             <b class="text-red-500">{{ $errors->first('name') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Reduction:</label>
+                        <input type="number" value="{{ $clientCat->reduction }}" name="redux">
+                        @if ($errors->has('redux'))
+                            <b class="text-red-500">{{ $errors->first('redux') }}</b>
                         @endif
                     </div>
                     <div class="modal-validation">

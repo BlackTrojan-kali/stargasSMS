@@ -31,19 +31,6 @@ Route::group(["middleware" => "auth"], function () {
             Route::get("/addCiterns", [Controllers\CiternController::class, "showFormAddCitern"])->name("addCiterns");
             Route::post("/validateCiterns", [Controllers\CiternController::class, "validateFormAddCitern"])->name("validateCiterns");
             Route::delete("/deleteCitern/{id}", [Controllers\CiternController::class, "delete"])->name("deleteCiterne");
-            //gestion des clients
-            Route::get("/list-clients-cats", [Controllers\ClientController::class, "showCats"])->name("client-cats");
-            Route::get("/create-client-cat", [Controllers\ClientController::class, "createCat"])->name("create-client-cat");
-            Route::post("/post-client-cat", [Controllers\ClientController::class, "storeCat"])->name("store-client-cat");
-            Route::get("/modify-client-cat/{id}", [Controllers\ClientController::class, "modifCat"])->name("modify-client-cat");
-            Route::post("/update-client-cat/{id}", [Controllers\ClientController::class, "updateCat"])->name("update-client-cat");
-            Route::delete("/delete-client-cat/{id}", [Controllers\ClientController::class, "deleteCat"])->name("delete-client-cat");
-            Route::get("/list-clients", [Controllers\ClientController::class, "showClients"])->name("list-clients");
-            Route::get("/create-client", [Controllers\ClientController::class, "createClient"])->name("create-client");
-            Route::post("/post-client", [Controllers\ClientController::class, "storeClient"])->name("store-client");
-            Route::get("/modify-client/{id}", [Controllers\ClientController::class, "modifClient"])->name("modify-client");
-            Route::post("/update-client/{id}", [Controllers\ClientController::class, "updateClient"])->name("update-client");
-            Route::delete("/delete-client/{id}", [Controllers\ClientController::class, "deleteClient"])->name("delete-client");
       });
       Route::middleware(isManager::class)->group(function () {
             Route::get("/manager/dashboard", [Controllers\MagazinierController::class, "show"])->name("dashboard-manager");
@@ -119,6 +106,13 @@ Route::group(["middleware" => "auth"], function () {
                   //modifier les versements
                   Route::get("/commercial/modifyversement/{id}", "modifyVersement")->name("modifyVersement");
                   Route::post("/commercial/modifyversement/post/{id}", "updateVersement")->name("updateVersement");
+                  //add to cart
+                  Route::get("/commercial/addToCart/{idProd}", [Controllers\cartController::class, "add"])->name("addTocart");
+                  Route::get("/commercial/CartList/", [Controllers\cartController::class, "cartlist"])->name("cartlist");
+                  Route::post("/commercial/CartList/Update/{id}", [Controllers\cartController::class, "updateCart"])->name("updateCart");
+                  Route::get("/commercial/CartList/delete/{id}", [Controllers\cartController::class, "deleteItem"])->name("deleteItem");
+                  Route::post("/commercial/CartList/validate", [Controllers\cartController::class, "validate"])->name("validateCart");
+                  Route::get("/commercial/CartList/print/{id}", [Controllers\cartController::class, "printInvoice"])->name("printNeoInvoice");
             }
       );
       Route::middleware(isCommercial::class)->group(function () {
@@ -192,6 +186,26 @@ Route::group(["middleware" => "auth"], function () {
       Route::post("/store-region", [Controllers\RegionController::class, "store"])->name("store-region");
       Route::delete("/role-delete/{id}", [Controllers\RoleController::class, "delete"]);
       Route::delete("/region-delete/{id}", [Controllers\RegionController::class, "delete"]);
+
+      //gestion des clients
+      Route::get("/list-clients-cats", [Controllers\ClientController::class, "showCats"])->name("client-cats");
+      Route::get("/create-client-cat", [Controllers\ClientController::class, "createCat"])->name("create-client-cat");
+      Route::post("/post-client-cat", [Controllers\ClientController::class, "storeCat"])->name("store-client-cat");
+      Route::get("/modify-client-cat/{id}", [Controllers\ClientController::class, "modifCat"])->name("modify-client-cat");
+      Route::post("/update-client-cat/{id}", [Controllers\ClientController::class, "updateCat"])->name("update-client-cat");
+      Route::delete("/delete-client-cat/{id}", [Controllers\ClientController::class, "deleteCat"])->name("delete-client-cat");
+      Route::get("/list-clients", [Controllers\ClientController::class, "showClients"])->name("list-clients");
+      Route::get("/create-client", [Controllers\ClientController::class, "createClient"])->name("create-client");
+      Route::post("/post-client", [Controllers\ClientController::class, "storeClient"])->name("store-client");
+      Route::get("/modify-client/{id}", [Controllers\ClientController::class, "modifClient"])->name("modify-client");
+      Route::post("/update-client/{id}", [Controllers\ClientController::class, "updateClient"])->name("update-client");
+      Route::delete("/delete-client/{id}", [Controllers\ClientController::class, "deleteClient"])->name("delete-client");
+      Route::get("/price-client", [Controllers\ClientController::class, "showPrice"])->name("client-price");
+      Route::get("/create-client-price", [Controllers\ClientController::class, "createPrice"])->name("create-client-price");
+      Route::post("/poste-client-price", [Controllers\ClientController::class, "storePrice"])->name("store-client-price");
+      Route::delete("/delete-price/{id}", [Controllers\ClientController::class, "deletePrice"])->name("delete-price");
+      Route::get("/edit-client/{id}", [Controllers\ClientController::class, "editPrice"])->name("edit-price");
+      Route::post("/update-price/{id}", [Controllers\ClientController::class, "updatePrice"])->name("update-price");
 });
 Route::get('/login', [Controllers\LoginController::class, 'show'])->name('login');
 Route::post('/login', [Controllers\LoginController::class, "authenticate"])->name("authenticate");

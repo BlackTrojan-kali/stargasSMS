@@ -4,6 +4,83 @@
 
         <h1 class="p-2 mt-5 font-bold text-2xl">Historique des {{ strtoupper($type) }}S
         </h1>
+        <!-- Neo  invoices -->
+        <table class="history scroll mt-10 w-full border-2 border-collapse border-gray-400 ">
+            <thead class="p-3 bg-gray-500 text-white">
+                <tr>
+                    <th>
+                        nom Client
+                    </th>
+                    <th class="border  border-black">Article</th>
+                    <th class="border  border-black">PU</th>
+                    <th class="border  border-black">Qte</th>
+
+                    <th>
+                        prix total
+                    </th>
+                    <th>
+                        encaissé
+                    </th>
+                    <th>
+                        ecart
+                    </th>
+                    <th>
+                        date
+                    </th>
+                    <th>actions</td>
+            </thead>
+            <tbody>
+
+                @foreach ($sales as $sale)
+                    <tr id="{{ $sale->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
+                        <?php $total_unit = 0; ?>
+                        <td class="border  border-black">{{ $sale->nom . ' ' . $sale->prenom }}</td>
+                        <td class="border  border-black">
+                            {{ $sale->article->type == 'accessoire' ? $sale->article->title : $sale->article->weight . ' KG' }}
+                        </td>
+                        <td class="border  border-black">{{ $sale->unit_price }}</td>
+                        <td class="border  border-black">{{ $sale->qty }}</td>
+                        <td class="border  border-black">
+                            <?php $total_unit = $sale->unit_price * $sale->qty; ?>
+                            {{ $total_unit }}
+                        </td>
+                        <td class="border  border-black">
+                            {{ $sale->recieved }}
+                        </td>
+                        <td class="border  border-black">
+                            <?php $ecart = $sale->recieved - $total_unit; ?>
+                            @if ($ecart >= $total_unit)
+                                <p class="text-blue-400">{{ $ecart }}</p>
+                            @else
+                                <p class="text-red-500">{{ $ecart }}</p>
+                            @endif
+                        </td>
+                        <td class="border  border-black">{{ $sale->created_at }}</td>
+                        <td class="border  border-black"><a
+                                href="{{ route('printNeoInvoice', ['id' => $sale->invoice->id]) }}"><i
+                                    class="text-teal-900 fa-solid fa-download" title="generer pdf"></i></a>
+                            <a href="{{ route('modifySale', $sale->id) }}"><i
+                                    class="text-blue-500 fa-solid fa-pen-to-square" title="modifier"></i></a>
+
+                            <?php
+                            //calculate date time
+                            $now = now()->format('Y-m-d H:i:s');
+                            $date2 = $sale->created_at;
+                            $interval = $date2->diff($now);
+                            $days = $interval->format('%a');
+                            ?>
+                            @if ($days <= 3)
+                                <i class="text-red-500 delete fa-solid fa-trash" title="supprimer"></i>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+
+
+
         <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
         <table id="table-ventes" class="history scroll mt-10 w-full border-2 border-collapse border-gray-400 ">
             <thead class="p-3 bg-gray-500 text-white">

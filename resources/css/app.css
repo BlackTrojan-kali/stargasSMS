@@ -29,6 +29,15 @@
         background: var(--primary);
     }
 
+    .Productcard {
+        background-color: var(--ternary);
+        @apply p-4 rounded-md relative;
+    }
+
+    .Productcard button {
+        @apply p-2 absolute bottom-2 right-10 bg-slate-500/70 rounded-md;
+    }
+
     .secondary {
         background-color: var(--secondary);
     }

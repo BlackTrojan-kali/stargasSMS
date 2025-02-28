@@ -116,6 +116,15 @@
 
                 </ul>
             </div>
+            <div class="font-bold cursor-pointer dropdown relative">GERER CLIENTS<i class="fa-solid fa-angle-down"></i>
+                <ul class="drop-items">
+
+                    <!-- <li class="elem" id="activate-pdf-form">Etats des mouvements</li> -->
+                    <li class="elem"><a href="{{ route('client-cats') }}">CATEGORIES CLIENTS</a></li>
+                    <li class="elem"><a href="{{ route('list-clients') }}">CLIENTS</a></li>
+                    <li class="elem"><a href="{{ route('client-price') }}">PRIX CLIENTS</a></li>
+                </ul>
+            </div>
         </nav>
     </header>
 

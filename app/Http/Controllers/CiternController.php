@@ -55,7 +55,7 @@ class CiternController extends Controller
     }
     public function showFormAddCitern(Request $request)
     {
-        return view("addCitern");
+        return view("super.addCitern");
     }
     public function moveGpl(Request $request)
     {
