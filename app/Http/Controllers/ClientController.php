@@ -30,9 +30,11 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.list_client_cats", ["clientcats" => $clientcats, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.list_client_cats", ["clientcats" => $clientcats, "stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.list_client_cats", ["clientsList" => $clients, "articlesList" => $articles,"clientcats" => $clientcats, "stocks" => $stocks, "accessories" => $accessories]);
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
         }
@@ -48,9 +50,11 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.create_client_cat", ["mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.create_client_cat", ["stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.create_client_cat", ["clientsList" => $clients, "articlesList" => $articles,"stocks" => $stocks, "accessories" => $accessories]);
 
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
@@ -80,9 +84,11 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.modify_client_cat", ["clientCat" => $clientcat, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.modify_client_cat", ["clientCat" => $clientcat, "stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.modify_client_cat", ["clientsList" => $clients, "articlesList" => $articles,"clientCat" => $clientcat, "stocks" => $stocks, "accessories" => $accessories]);
 
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
@@ -119,6 +125,8 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.list-clients", ["clients" => $clients, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
                 return view("commercial.list-clients", ["clients" => $clients, "stocks" => $stocks, "accessories" => $accessories]);
@@ -139,9 +147,11 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.create_client", ["categories" => $categories, "regions" => $regions, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.create_client", ["categories" => $categories, "regions" => $regions, "stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.create_client", ["clientsList" => $clients, "articlesList" => $articles,"categories" => $categories, "regions" => $regions, "stocks" => $stocks, "accessories" => $accessories]);
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
         }
@@ -181,9 +191,11 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.modif_client", ["client" => $client, "categories" => $categories, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.modif_client", ["client" => $client, "categories" => $categories, "stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.modif_client", ["clientsList" => $clients, "articlesList" => $articles,"client" => $client, "categories" => $categories, "stocks" => $stocks, "accessories" => $accessories]);
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
         }
@@ -228,9 +240,11 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.prix-client", ["prices" => $prices, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.prix-client", ["prices" => $prices, "stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.prix-client", ["clientsList" => $clients, "articlesList" => $articles, "clientsList" => $clients, "articlesList" => $articles, "prices" => $prices, "stocks" => $stocks, "accessories" => $accessories]);
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
         }
@@ -250,7 +264,9 @@ class ClientController extends Controller
             case "commercial":
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.create-client-price", ["clients" => $clients, "articles" => $articles, "stocks" => $stocks, "accessories" => $accessories]);
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
+                return view("commercial.create-client-price", ["clientsList" => $clients, "articlesList" => $articles, "clients" => $clients, "articles" => $articles, "stocks" => $stocks, "accessories" => $accessories]);
             default:
                 return back()->withErrors(["error" => "you are not authorized to access this ressource"]);
         }
@@ -261,11 +277,13 @@ class ClientController extends Controller
             "client" => "string | required",
             "article" => "string | required",
             "price" => "numeric | required",
+            "consigne_price" => "numeric | required",
         ]);
         $price = new Clientprice();
         $price->id_client = $request->client;
         $price->id_article = $request->article;
         $price->unite_price = $request->price;
+        $price->consigne_price = $request->consigne_price;
         $price->save();
         return back()->withSuccess("price created with success");
     }
@@ -287,19 +305,23 @@ class ClientController extends Controller
                 $fixe  = Citerne::where("type", "fixe")->get();
                 return view("controller.edit-prices", ["price" => $price, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             case "commercial":
+                $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+                $clients = Client::all();
                 $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
                 $accessories = Article::where("type", "=", "accessoire")->get("title");
-                return view("commercial.edit-prices", ["price" => $price, "stocks" => $stocks, "accessories" => $accessories]);
+                return view("commercial.edit-prices", ["clientsList" => $clients, "articlesList" => $articles, "price" => $price, "stocks" => $stocks, "accessories" => $accessories]);
         }
     }
     public function updatePrice($idPrice, Request $request)
     {
         $request->validate([
             "price" => "numeric | required",
+            "consigne_price" => "numeric | required",
         ]);
 
         $price = Clientprice::findOrFail($idPrice);
         $price->unite_price = $request->price;
+        $price->consigne_price = $request->consigne_price;
         $price->save();
         return back()->withSuccess("price modified successfully");
     }

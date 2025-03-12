@@ -1,4 +1,4 @@
-@extends("Layouts.comLayout")
+@extends('Layouts.comLayout')
 @section('content')
     <div class="w-full">
         <center>
@@ -46,10 +46,17 @@
                         @endif
                     </div>
                     <div class="modal-champs">
-                        <label for="">Prix:</label>
+                        <label for="">Prix GPL:</label>
                         <input type="number" name="price">
                         @if ($errors->has('price'))
                             <b class="text-red-500">{{ $errors->first('price') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Prix Consigne:</label>
+                        <input type="number" name="consigne_price">
+                        @if ($errors->has('consigne_price'))
+                            <b class="text-red-500">{{ $errors->first('consigne_price') }}</b>
                         @endif
                     </div>
                     <div class="modal-validation">

@@ -107,12 +107,15 @@ Route::group(["middleware" => "auth"], function () {
                   Route::get("/commercial/modifyversement/{id}", "modifyVersement")->name("modifyVersement");
                   Route::post("/commercial/modifyversement/post/{id}", "updateVersement")->name("updateVersement");
                   //add to cart
-                  Route::get("/commercial/addToCart/{idProd}", [Controllers\cartController::class, "add"])->name("addTocart");
+                  Route::post("/commercial/addToCart/", [Controllers\cartController::class, "add"])->name("addTocart");
                   Route::get("/commercial/CartList/", [Controllers\cartController::class, "cartlist"])->name("cartlist");
                   Route::post("/commercial/CartList/Update/{id}", [Controllers\cartController::class, "updateCart"])->name("updateCart");
                   Route::get("/commercial/CartList/delete/{id}", [Controllers\cartController::class, "deleteItem"])->name("deleteItem");
                   Route::post("/commercial/CartList/validate", [Controllers\cartController::class, "validate"])->name("validateCart");
                   Route::get("/commercial/CartList/print/{id}", [Controllers\cartController::class, "printInvoice"])->name("printNeoInvoice");
+                  Route::get("/commercial/modifyInvoice/{id}", [Controllers\cartController::class, "modifySales"])->name("modifyInvoice");
+                  Route::post("/commercial/modifyInvoice/post/{id}", [Controllers\cartController::class, "updateSales"])->name("updateInvoice");
+                  Route::delete("/commercial/deleteInvoice/{id}", [Controllers\cartController::class, "deleteSale"])->name("deleteInvoice");
             }
       );
       Route::middleware(isCommercial::class)->group(function () {
@@ -176,7 +179,7 @@ Route::group(["middleware" => "auth"], function () {
       Route::post("/sales-state-pdf", [Controllers\CommercialController::class, "generate_sale_state"])->name("sale_state_pdf");
       Route::post("/recieves-pdf", [Controllers\CiternController::class, "generate_receive_pdf"])->name("receives_pdf");
       Route::post("/releves-pdf", [Controllers\CiternController::class, "generate_rel_pdf"])->name("releves_pdf");
-
+      Route::post("/sales-new-pdf", [Controllers\CommercialController::class, "generate_new_sale_state"])->name("new-sales-pdf");
       //manage roles and regions
       Route::get("/roles", [Controllers\RoleController::class, "index"])->name("roles");
       Route::get("/create-role", [Controllers\RoleController::class, "create"])->name("create-role");

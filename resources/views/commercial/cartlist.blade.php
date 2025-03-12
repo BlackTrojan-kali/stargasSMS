@@ -1,38 +1,44 @@
 @extends('Layouts.ComLayout')
 @section('content')
     <div>
-        List des elements
-        <div class="grid grid-cols-3 w-full">
-            @foreach (Cart::content() as $row)
-                <div class="font-bold w-3/5 p-4 m-4 shadow-lg rounded-md bg-slate-200 ">
-                    <h1>{{ $row->name == 'stargas' ? 'bouteille-gaz' : $row->name }}</h1>
-                    <p><b>{{ $row->weight > 0 ? $row->weight . ' kg' : '' }}</b></p>
-                    <form method="POST" action="{{ route('updateCart', [$row->rowId]) }}">
-                        @csrf
-                        <input type="hidden" name="rowId" value="{{ $row->rowId }}">
-                        <div class="my-5">
-                            <label for="">Qte:</label> <br>
-                            <input class="bg-gray-300  border p-1 border-black rounded-md" type="number" name="qty"
-                                value="{{ $row->qty }}"> <br>
-                        </div>
-                        <div class="flex justify-between">
 
-                            <a href="{{ route('deleteItem', ['id' => $row->rowId]) }}"
-                                class="bg-red-500 text-white p-2 rounded-md">Supprimer</a>
-
-                            <button type="submit" class="bg-gray-200 p-2 rounded-md border border-black">Mettre à
-                                jour</button>
-                        </div>
-                    </form>
-                </div>
-            @endforeach
-        </div>
         <center>
             <div class="w-2/4 border border-slate-300 rounded-md my-4">
                 <div class="bg-slate-500 text-white p-3 ">
                     <h1>Validation du panier</h1>
                 </div>
-                <form method="POST" class="p-4" action="{{ route('validateCart') }}">
+
+                List des elements
+                <div class="flex flex-col gap-2 w-full p-2 ">
+                    @foreach (Cart::content() as $row)
+                        <div class="font-bold w-full flex gap-4  p-2  shadow-lg rounded-md bg-slate-200 ">
+                            <h1 class="mt-2">{{ $row->name == 'stargas' ? 'bouteille-gaz' : $row->name }}
+                                {{ $row->weight > 0 ? $row->weight . ' kg' : '' }}
+                            </h1>
+                            <form class="flex w-4/6 gap-4" method="POST" action="{{ route('updateCart', [$row->rowId]) }}">
+                                @csrf
+                                <input type="hidden" class="flex" name="rowId" value="{{ $row->rowId }}">
+                                <div>
+                                    <label for="">Qte:</label>
+                                    <input class="bg-gray-300  border p-1 border-black rounded-md" type="number"
+                                        name="qtyup" value="{{ $row->qty }}"> <br>
+                                </div>
+                                <div class="flex gap-4 justify-between h-10">
+
+                                    <a href="{{ route('deleteItem', ['id' => $row->rowId]) }}"
+                                        class="bg-red-500 text-white p-2 rounded-md">Supprimer</a>
+
+                                    <button type="submit"
+                                        class="bg-gray-200 p-2 rounded-md border border-black">Modifier</button>
+                                </div>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+
+                <button id="add-products-form" class="p-2 text-white primary rounded-md">Ajouter un article</button>
+
+                <form method="POST" class="p-4 " action="{{ route('validateCart') }}">
                     @csrf
                     <div class="champs">
                         <label for="">Client:</label>
@@ -83,4 +89,65 @@
             </div>
         </center>
     </div>
+
+    <div id="add-products" class="modals">
+        <center>
+
+            <div class="modal-active">
+                <div class="modal-head">
+                    <h1>Ajouter un Article</h1>
+                    <b class="close-modal">X </b>
+                </div>
+                <b class="success text-green-500"></b>
+                <b class="errors text-red-500"></b>
+                <form method="POST" action="{{ route('addTocart') }}">
+                    @csrf
+                    <div class="modal-champs">
+                        <label for="">Article:</label>
+                        <select name="article" id="">
+                            @foreach ($articles as $article)
+                                <option value="{{ $article->id }}">
+                                    {{ $article->type == 'accessoire' ? $article->title : $article->type . ' ' . $article->weight . ' KG' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('article'))
+                            <b class="text-red-500">{{ $errors->first('article') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-champs">
+                        <label for="">Qte:</label>
+                        <input type="number" name="qty">
+                        @if ($errors->has('qty'))
+                            <b class="text-red-500">{{ $errors->first('qty') }}</b>
+                        @endif
+                    </div>
+                    <div class="modal-validation">
+                        <button type="reset">annuler</button>
+                        <button type="submit" id="submitForm">creer</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+    <script type="module">
+        $(function() {
+            //ACTION versement historique
+            $("#add-products-form").on("click", function(e) {
+                e.preventDefault()
+                if ($("#add-products").hasClass("modals")) {
+                    $("#add-products").addClass("modals-active");
+                    $("#add-products").removeClass("modals");
+                }
+
+                $(".close-modal").on("click", function(e) {
+                    e.preventDefault()
+                    if ($("#add-products").hasClass("modals-active")) {
+                        $("#add-products").addClass("modals");
+                        $("#add-products").removeClass("modals-active");
+                    }
+                })
+            })
+        })
+    </script>
 @endsection

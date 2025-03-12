@@ -30,12 +30,12 @@
     }
 
     .Productcard {
-        background-color: var(--ternary);
-        @apply p-4 rounded-md relative;
+        width: 300px;
+        @apply p-4 rounded-md relative bg-slate-100 shadow-md;
     }
 
     .Productcard button {
-        @apply p-2 absolute bottom-2 right-10 bg-slate-500/70 rounded-md;
+        @apply p-2 absolute bottom-2 right-10 bg-slate-500/30 rounded-md;
     }
 
     .secondary {

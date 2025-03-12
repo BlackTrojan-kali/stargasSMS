@@ -14,6 +14,7 @@ use App\Models\Versement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Client;
 use App\Models\Invoices;
 
 class CommercialController extends Controller
@@ -24,8 +25,9 @@ class CommercialController extends Controller
 
         $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
         $accessories = Article::where("type", "=", "accessoire")->get("title");
-        $articles = Article::all();
-        return view("commercial.dashboard", ["articles" => $articles, "stocks" => $stocks, "accessories" => $accessories]);
+        $articles = Article::where("state", 1)->orWhere("type", "accessoire")->get();
+        $clients = Client::all();
+        return view("commercial.dashboard", ["clientsList" => $clients, "articlesList" => $articles, "stocks" => $stocks, "accessories" => $accessories]);
     } //
     public function ventes(Request $request, $type)
     {
@@ -35,23 +37,27 @@ class CommercialController extends Controller
         $mobile = Citerne::where("type", "mobile")->get();
         $mobile = Citerne::where("type", "mobile")->get();
         $fixe  = Citerne::where("type", "fixe")->get();
+        $clients = Client::all();
+        $articles = Article::where("state", 1)->orWhere("type", "accessoire")->get();
         if ($type == "versements") {
             $versements1 = Versement::where("bank", "AFB")->where("region", "=", Auth::user()->region)->get();
             $versements2 = Versement::where("bank", "CCA")->where("region", "=", Auth::user()->region)->get();
             $versements3 = Versement::where("bank", "CAISSE")->where("region", "=", Auth::user()->region)->get();
             if (Auth::user()->role == 'controller') {
-                return view("controller.historique-versements", ["ventes" => $versements1, "ventes2" => $versements2, "ventes3" => $versements3, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
+                return view("controller.historique-versements", ["clientsList" => $clients, "articlesList" => $articles, "ventes" => $versements1, "ventes2" => $versements2, "ventes3" => $versements3, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             }
-            return view("commercial.historique-versements", ["stocks" => $stocks, "accessories" => $accessories, "ventes" => $versements1, "ventes3" => $versements3,  "ventes2" => $versements2, "type" => $type]);
+            return view("commercial.historique-versements", ["clientsList" => $clients, "articlesList" => $articles, "stocks" => $stocks, "accessories" => $accessories, "ventes" => $versements1, "ventes3" => $versements3,  "ventes2" => $versements2, "type" => $type]);
         } else {
             $ventes = Vente::where("type", $type)->where("region", Auth::user()->region)->get();
             //neo invoices
-            $sales = Invoicetrace::join("invoices", "id_invoice", "invoices.id")->leftJoin("clients", "clients.id", "invoices.id_client")->where("invoicetraces.region", Auth::user()->region)->where("invoices.type", $type)->with("invoice", "article")->get("*");
+            $sales = Invoicetrace::join("invoices", "id_invoice", "invoices.id")->leftJoin("clients", "clients.id", "invoices.id_client")->where("invoicetraces.region", Auth::user()->region)->where("invoicetraces.type", $type)->where("invoices.type", $type)->with("invoice", "article")->get("*");
             $articles = Article::where("type", "bouteille-gaz")->where("state", 1)->get();
+            $articlesAll = Article::where("state", 1)->orWhere("type", "accessoire")->get();
+            $clients = Client::all();
             if (Auth::user()->role == 'controller') {
-                return view("controller.historique-ventes", ["ventes" => $ventes, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
+                return view("controller.historique-ventes", ["clientsList" => $clients, "articlesList" => $articlesAll, "ventes" => $ventes, "type" => $type, "mobile" => $mobile, "fixe" => $fixe, "stocks" => $stocks]);
             } else {
-                return view("commercial.historique-ventes", ["sales" => $sales, "articles" => $articles, "stocks" => $stocks, "accessories" => $accessories, "ventes" => $ventes, "type" => $type]);
+                return view("commercial.historique-ventes", ["clientsList" => $clients, "articlesList" => $articlesAll, "sales" => $sales, "articles" => $articles, "stocks" => $stocks, "accessories" => $accessories, "ventes" => $ventes, "type" => $type]);
             }
         }
     }
@@ -61,7 +67,9 @@ class CommercialController extends Controller
         $stocks = Stock::where("region", "=", Auth::user()->region)->where("category", "commercial")->with("article")->get();
         $accessories = Article::where("type", "=", "accessoire")->get("title");
         $sales = Vente::where("region", "=", Auth::user()->region)->where("service", Auth::user()->role)->with("article")->orderBy("created_at", "DESC")->get();
-        return view("commercial.SalesHistory", ["sales" => $sales, "accessories" => $accessories, "stocks" => $stocks]);
+        $articles = Article::where("state", 1)->orWhere("type", "accessoire")->get();
+        $clients = Client::all();
+        return view("commercial.SalesHistory", ["clientsList" => $clients, "articlesList" => $articles, "sales" => $sales, "accessories" => $accessories, "stocks" => $stocks]);
     }
     public function saveBottleMove(Request $request, $action, $state)
     {
@@ -199,7 +207,9 @@ class CommercialController extends Controller
         $accessories = Article::where("type", "=", "accessoire")->get("title");
         $allMoves = Movement::join("stocks", "stock_id")->where("stocks.region", Auth::user()->region)->with("fromStock", "fromArticle")->where("entree", 1)->where("service", Auth::user()->role)->orderBy("created_at", "DESC")->get();
         $allMovesOut = Movement::with("fromStock", "fromArticle")->where("sortie", 1)->where("service", Auth::user()->role)->orderBy("created_at", "DESC")->get();
-        return view("manager.history", ["accessories" => $accessories, "allMoves" => $allMoves, "allMovesOut" => $allMovesOut]);
+        $articles = Article::where("state", 1)->orwhere("type", "accessoire")->get();
+        $clients = Client::all();
+        return view("manager.history", ["clientsList" => $clients, "articlesList" => $articles, "accessories" => $accessories, "allMoves" => $allMoves, "allMovesOut" => $allMovesOut]);
     }
 
     public function makeSales(Request $request, $type)
@@ -334,6 +344,36 @@ class CommercialController extends Controller
             $sales = Vente::whereBetween("created_at", [$request->depart, $request->fin])->where("type", $request->sale)->where("region", Auth::user()->region)->get();
         }
         $pdf = Pdf::loadview("salesPdf", ["fromDate" => $fromDate, "toDate" => $toDate, "sales" => $sales, "type" => $request->sale]);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+
+        $canvas = $dom_pdf->get_canvas();
+        $canvas->page_text(510, 800, "[{PAGE_NUM} sur {PAGE_COUNT}]", null, 15, array(0, 0, 0));
+        return $pdf->download(Auth::user()->role . "" . Auth::user()->region . $fromDate . $toDate . ".pdf");
+    }
+
+    public function generate_new_sale_state(Request $request)
+    {
+        $request->validate(
+            [
+                "depart" => "date | required",
+                "fin" => "date | required",
+                "name" => "string | nullable",
+                "sale" => "string |required",
+                "client" => "string | required",
+                "article" => "string | required",
+            ]
+        );
+        $fromDate = $request->depart;
+        $toDate = $request->fin;
+
+        if ($request->client != "all") {
+
+            $sales = Invoicetrace::join("invoices", "invoices.id", "invoicetraces.id_invoice")->leftJoin("clients", "clients.id", "invoices.id_client")->where("invoices.id_client", intval($request->client))->whereBetween("invoicetraces.created_at", [$request->depart, $request->fin])->where("invoicetraces.type", $request->sale)->where("invoicetraces.region", Auth::user()->region)->where("id_article", intval($request->article))->with("article")->get();
+        } else {
+            $sales = Invoicetrace::join("invoices", "invoices.id", "invoicetraces.id_invoice")->leftJoin("clients", "clients.id", "invoices.id_client")->whereBetween("invoicetraces.created_at", [$request->depart, $request->fin])->where("invoicetraces.type", $request->sale)->where("invoicetraces.region", Auth::user()->region)->where("id_article", intval($request->article))->with("article")->get();
+        }
+        $pdf = Pdf::loadview("NewSalesPdf", ["fromDate" => $fromDate, "toDate" => $toDate, "sales" => $sales, "type" => $request->sale]);
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
 

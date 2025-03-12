@@ -32,6 +32,13 @@
                             <p class="text-red-500">{{ $erros->first('price') }}</p>
                         @endif
                     </div>
+                    <div class="modal-champs">
+                        <label for="">Prix Consigne:</label>
+                        <input type="number" name="consigne_price" value="{{ $price->consigne_price }}">
+                        @if ($errors->has('consigne_price'))
+                            <b class="text-red-500">{{ $errors->first('consigne_price') }}</b>
+                        @endif
+                    </div>
                     <div class="modal-validation">
                         <button type="reset">annuler</button>
                         <button type="submit">creer</button>

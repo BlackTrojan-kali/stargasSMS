@@ -5,7 +5,7 @@
         <h1 class="p-2 mt-5 font-bold text-2xl">Historique des {{ strtoupper($type) }}S
         </h1>
         <!-- Neo  invoices -->
-        <table class="history scroll mt-10 w-full border-2 border-collapse border-gray-400 ">
+        <table id="table-invoices" class="history scroll mt-10 w-full border-2 border-collapse border-gray-400 ">
             <thead class="p-3 bg-gray-500 text-white">
                 <tr>
                     <th>
@@ -17,6 +17,9 @@
 
                     <th>
                         prix total
+                    </th>
+                    <th>
+                        total facture
                     </th>
                     <th>
                         encaissé
@@ -32,7 +35,7 @@
             <tbody>
 
                 @foreach ($sales as $sale)
-                    <tr id="{{ $sale->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
+                    <tr id="{{ $sale->invoice->id }}" class="hover:text-white hover:bg-blue-400 hover:cursor-pointer">
                         <?php $total_unit = 0; ?>
                         <td class="border  border-black">{{ $sale->nom . ' ' . $sale->prenom }}</td>
                         <td class="border  border-black">
@@ -45,11 +48,14 @@
                             {{ $total_unit }}
                         </td>
                         <td class="border  border-black">
+                            {{ $sale->invoice->total_price }}
+                        </td>
+                        <td class="border  border-black">
                             {{ $sale->recieved }}
                         </td>
                         <td class="border  border-black">
-                            <?php $ecart = $sale->recieved - $total_unit; ?>
-                            @if ($ecart >= $total_unit)
+                            <?php $ecart = $sale->recieved - $sale->invoice->total_price; ?>
+                            @if ($ecart >= 0)
                                 <p class="text-blue-400">{{ $ecart }}</p>
                             @else
                                 <p class="text-red-500">{{ $ecart }}</p>
@@ -59,7 +65,8 @@
                         <td class="border  border-black"><a
                                 href="{{ route('printNeoInvoice', ['id' => $sale->invoice->id]) }}"><i
                                     class="text-teal-900 fa-solid fa-download" title="generer pdf"></i></a>
-                            <a href="{{ route('modifySale', $sale->id) }}"><i
+
+                            <a href="{{ route('modifyInvoice', $sale->id_invoice) }}"><i
                                     class="text-blue-500 fa-solid fa-pen-to-square" title="modifier"></i></a>
 
                             <?php
@@ -69,7 +76,7 @@
                             $interval = $date2->diff($now);
                             $days = $interval->format('%a');
                             ?>
-                            @if ($days <= 3)
+                            @if ($days <= 1000)
                                 <i class="text-red-500 delete fa-solid fa-trash" title="supprimer"></i>
                             @endif
                         </td>
@@ -193,6 +200,42 @@
                     }
                 })
             })
+
+            $("#table-invoices").on("click", ".delete", function() {
+                var id = $(this).parent().parent().attr("id");
+                var token = $("meta[name='csrf-token']").attr("content");
+                Swal.fire({
+                    title: "Etes vous sures ? cette operation est irreversible",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Supprimer",
+                    denyButtonText: `Annuler`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/commercial/deleteInvoice/" + id,
+                            dataType: "json",
+                            data: {
+                                "id": id,
+                                "_token": token,
+                            },
+                            method: "DELETE",
+                            success: function(res) {
+                                toastr.warning(res.message)
+                                $("#" + id).load(location.href + " #" + id)
+                            },
+                            error: function(xhr, status, err) {
+                                console.log(xhr)
+                                console.log(err)
+                            }
+                        })
+                    } else if (result.isDenied) {
+                        Swal.fire("Changement non enregistre", "", "info");
+                    }
+                })
+            })
+
         })
     </script>
 @endsection

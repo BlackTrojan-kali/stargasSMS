@@ -10,7 +10,8 @@
                     <td>id</td>
                     <td>Nom Client</td>
                     <td>Article</td>
-                    <td>Prix</td>
+                    <td>Prix GPL</td>
+                    <td>Prix Consigne</td>
                     <td>Date</td>
                     <td>Action</td>
                 </tr>
@@ -28,6 +29,9 @@
                         </td>
                         <td>
                             {{ $price->unite_price }} XAF
+                        </td>
+                        <td>
+                            {{ $price->consigne_price }} XAF
                         </td>
                         <td>
                             {{ $price->created_at }}
